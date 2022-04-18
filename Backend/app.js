@@ -8,9 +8,11 @@ mongoose.connect(url);
 const con = mongoose.connection;
 con.on('open', () => {
     console.log('DB connected');
-})
+});
 
-const routes = require('./routers/routes');
+app.use(express.json())
+
+const routes = require('./routers/student_routes');
 app.use('/rp', routes);
 
 app.listen(9000, () => {
