@@ -3,9 +3,9 @@ import React from 'react';
 
 function Login() {
     return (
-        <div className="row">
+        <div className="row" style={{minHeight: 'calc(100vh - 325px)'}}>
             {/*<div className="col-12" style={{fontSize: '45px', textAlign: 'center'}}>*/}
-                {/*Research Project Management Tool*/}
+            {/*Research Project Management Tool*/}
             {/*</div>*/}
             <div className="col-12">
                 <div style={{
