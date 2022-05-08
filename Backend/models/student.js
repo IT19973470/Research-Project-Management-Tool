@@ -20,5 +20,6 @@ const studentSchema = new Schema({
         required: [true, 'Phone is required']
     }
 });
+
 const student = mongoose.model('Student', studentSchema);
 module.exports = student;

@@ -8,7 +8,6 @@ router.get(prefix + 'get', (req, res) => {
 });
 
 router.post(prefix + 'add', (req, res) => {
-
     res.send('Gt')
 });
 
