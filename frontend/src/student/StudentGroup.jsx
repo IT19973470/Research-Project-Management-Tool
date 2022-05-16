@@ -28,7 +28,7 @@ export const StudentGroups = () => {
                                 Create new group
                             </button>
                         </div>
-                        <div style={{display: 'flex',marginTop:'20px'}}>
+                        <div style={{display: 'flex', marginTop: '20px'}}>
                             <span style={{marginRight: '30px'}}>Student ID</span>
                             <span style={{width: '100%'}}>
                             <input type="text" className="form-control"/>
@@ -38,6 +38,29 @@ export const StudentGroups = () => {
                                 Search
                             </button>
                         </div>
+                        <div>IT19973470 is registered for a group</div>
+                        <button className="btn btn-warning"
+                                style={{fontWeight: 'bold', marginLeft: '10px'}}>
+                            Add
+                        </button>
+                        <table className="table table-striped" style={{marginTop: '40px'}}>
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col" width="20%">Student ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col" width="5%" style={{textAlign: 'center'}}>Delete</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>2</td>
+                                <td>3</td>
+                                <td>4</td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

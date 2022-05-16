@@ -5,7 +5,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 export const RegisterStudent = () => {
     let navigate = useNavigate();
 
+    const [id, setId] = useState('');
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
+    const [address, setAddress] = useState('');
     const [password, setPassword] = useState('');
 
     return (
@@ -23,32 +26,46 @@ export const RegisterStudent = () => {
                 }}>
                     <div style={{width: '500px'}}>
                         <div style={{display: 'flex'}}>
+                            <span style={{marginRight: '30px'}}>Student ID</span>
+                            <span style={{width: '100%'}}>
+                            <input type="text" className="form-control"
+                                   onChange={e => setId(e.target.value)}/>
+                        </span>
+                        </div>
+                        <div style={{display: 'flex'}}>
                             <span style={{marginRight: '30px'}}>Full Name</span>
                             <span style={{width: '100%'}}>
-                            <input type="text" className="form-control"/>
+                            <input type="text" className="form-control"
+                                   onChange={e => setName(e.target.value)}/>
                         </span>
                         </div>
                         <div style={{display: 'flex', marginTop: '15px'}}>
                             <span style={{marginRight: '35px'}}>Email</span>
                             <span style={{width: '100%'}}>
-                            <input type="text" className="form-control"/>
+                            <input type="text" className="form-control"
+                                   onChange={e => setEmail(e.target.value)}/>
                         </span>
                         </div>
                         <div style={{display: 'flex', marginTop: '15px'}}>
                             <span style={{marginRight: '35px'}}>Address</span>
                             <span style={{width: '100%'}}>
-                            <input type="text" className="form-control"/>
+                            <input type="text" className="form-control"
+                                   onChange={e => setAddress(e.target.value)}/>
                         </span>
                         </div>
                         <div style={{display: 'flex', marginTop: '15px'}}>
                             <span style={{marginRight: '35px'}}>Password</span>
                             <span style={{width: '100%'}}>
-                            <input type="password" className="form-control"/>
+                            <input type="password" className="form-control"
+                                   onChange={e => setPassword(e.target.value)}/>
                         </span>
                         </div>
                         <div style={{width: '100%', textAlign: 'center'}}>
                             <button className="btn btn-warning"
-                                    style={{marginTop: '30px', fontSize: '20px', fontWeight: 'bold'}}>
+                                    style={{marginTop: '30px', fontSize: '20px', fontWeight: 'bold'}}
+                                    onClick={() => {
+                                        RegisterStudent()
+                                    }}>
                                 Register
                             </button>
                         </div>
@@ -58,32 +75,29 @@ export const RegisterStudent = () => {
         </div>
     );
 
-    function RegisterUser() {
-        if (UserData.type === 'customer') {
-            navigate('/customer_profile');
-        } else if (UserData.type === 'trader') {
-            navigate('/trader_profile');
-        }
-    }
-
-    function Login() {
+    function RegisterStudent() {
+        console.log(444)
         const requestOptions = {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
+                id: id,
+                name: name,
                 email: email,
+                address: address,
                 password: password
             })
         };
-        fetch('http://localhost:3000/cart/user/login', requestOptions)
+        fetch('http://localhost:9000/rpmt/student/register', requestOptions)
             .then(response => response.json())
             .then(reply => {
-                if (reply !== null && UserData.type === 'customer') {
-                    UserData.id = reply.id;
-                    navigate('/view_items');
-                } else if (reply !== null && UserData.type === 'trader') {
-                    navigate('/trader_items');
-                }
+                console.log(reply);
+                // if (reply !== null && UserData.type === 'customer') {
+                //     UserData.id = reply.id;
+                //     navigate('/view_items');
+                // } else if (reply !== null && UserData.type === 'trader') {
+                //     navigate('/trader_items');
+                // }
             });
     }
 };

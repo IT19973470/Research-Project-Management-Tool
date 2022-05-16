@@ -1,8 +1,10 @@
 const express = require('express')
 const mongoose = require('mongoose')
-const url = 'mongodb://localhost/rp'
+const cors = require('cors')
+const url = 'mongodb://localhost/rpmt'
 
 const app = express();
+app.use(cors())
 mongoose.connect(url);
 
 const con = mongoose.connection;
@@ -13,7 +15,7 @@ con.on('open', () => {
 app.use(express.json())
 
 const routes = require('./routers/student_routes');
-app.use('/rp', routes);
+app.use('/rpmt', routes);
 
 app.listen(9000, () => {
     console.log('Server started')
