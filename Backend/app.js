@@ -12,10 +12,9 @@ con.on('open', () => {
     console.log('DB connected');
 });
 
-app.use(express.json())
-
-const routes = require('./routers/student_routes');
-app.use('/rpmt', routes);
+app.use(express.json());
+app.use('/rpmt/user', require('./routers/user_routes'));
+app.use('/rpmt/student', require('./routers/student_routes'));
 
 app.listen(9000, () => {
     console.log('Server started')

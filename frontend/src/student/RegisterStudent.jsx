@@ -19,7 +19,6 @@ export const RegisterStudent = () => {
             <div className="col-12">
                 <div style={{
                     width: '100%',
-
                     marginTop: '50px',
                     display: 'flex',
                     justifyContent: 'center'
@@ -76,7 +75,6 @@ export const RegisterStudent = () => {
     );
 
     function RegisterStudent() {
-        console.log(444)
         const requestOptions = {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -88,7 +86,7 @@ export const RegisterStudent = () => {
                 password: password
             })
         };
-        fetch('http://localhost:9000/rpmt/student/register', requestOptions)
+        fetch('http://localhost:9000/rpmt/student/student_register', requestOptions)
             .then(response => response.json())
             .then(reply => {
                 console.log(reply);

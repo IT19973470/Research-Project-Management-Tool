@@ -1,12 +1,68 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useState, useEffect} from 'react';
 import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {Environment} from "../../../Backend/Environment";
 
 export const StudentGroups = () => {
     let navigate = useNavigate();
 
-    const [email, setEmail] = useState('');
+    const [id, setId] = useState('');
     const [password, setPassword] = useState('');
+
+    const [registered, setRegistered] = useState(false);
+    const [otherUserRegistered, setOtherUserRegistered] = useState(0);
+    const [newGroup, setNewGroup] = useState(false);
+    const [students, setStudents] = useState(null);
+
+    useEffect(() => {
+        CheckGroup(false)
+    })
+
+    let registeredContent;
+    if (registered) {
+        registeredContent =
+            <div>
+                {JSON.parse(localStorage.getItem('user'))._id} is registered for a group.
+                Group ID is {JSON.parse(localStorage.getItem('group')).groupId}
+            </div>
+    } else if (!newGroup) {
+        registeredContent =
+            <div>
+                <div style={{textAlign: 'center'}}>
+                    <span style={{lineHeight: '2px'}}>I have not registered for a group</span>
+                </div>
+                <div>
+                    <div style={{display: 'flex', marginTop: '20px'}}>
+                        <span style={{marginRight: '30px'}}>Group ID</span>
+                        <span style={{width: '100%'}}>
+                            <input type="text" className="form-control"
+                                   onChange={e => setId(e.target.value)}/>
+                        </span>
+                        <button className="btn btn-warning"
+                                style={{fontWeight: 'bold', marginLeft: '10px'}}
+                                onClick={() => CheckGroup(true)}>
+                            Search
+                        </button>
+                    </div>
+                    <div>
+                        <button className="btn btn-warning"
+                                style={{fontWeight: 'bold', marginLeft: '10px'}}
+                                onClick={() => RegisterGroup()}>
+                            Add
+                        </button>
+                        <button className="btn btn-warning"
+                                style={{marginTop: '30px', fontWeight: 'bold', marginLeft: '10px'}}
+                                onClick={() => {
+                                    setId('')
+                                    RegisterGroup()
+                                }}>
+                            Create new group
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+    }
 
     return (
         <div className="row">
@@ -21,28 +77,7 @@ export const StudentGroups = () => {
                     justifyContent: 'center'
                 }}>
                     <div style={{width: '500px'}}>
-                        <div style={{textAlign: 'center'}}>
-                            <span style={{lineHeight: '2px'}}>I have not registered for a group</span>
-                            <button className="btn btn-warning"
-                                    style={{marginTop: '30px', fontWeight: 'bold', marginLeft: '10px'}}>
-                                Create new group
-                            </button>
-                        </div>
-                        <div style={{display: 'flex', marginTop: '20px'}}>
-                            <span style={{marginRight: '30px'}}>Student ID</span>
-                            <span style={{width: '100%'}}>
-                            <input type="text" className="form-control"/>
-                        </span>
-                            <button className="btn btn-warning"
-                                    style={{fontWeight: 'bold', marginLeft: '10px'}}>
-                                Search
-                            </button>
-                        </div>
-                        <div>IT19973470 is registered for a group</div>
-                        <button className="btn btn-warning"
-                                style={{fontWeight: 'bold', marginLeft: '10px'}}>
-                            Add
-                        </button>
+                        {registeredContent}
                         <table className="table table-striped" style={{marginTop: '40px'}}>
                             <thead>
                             <tr>
@@ -53,12 +88,15 @@ export const StudentGroups = () => {
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
-                            </tr>
+                            {
+                                students && students.map((student, key) => {
+                                    return <tr key={key}>
+                                        <td>{key + 1}</td>
+                                        <td>{student._id}</td>
+                                        <td>{student.name}</td>
+                                    </tr>
+                                })
+                            }
                             </tbody>
                         </table>
                     </div>
@@ -67,31 +105,61 @@ export const StudentGroups = () => {
         </div>
     );
 
-    function RegisterUser() {
-        if (UserData.type === 'customer') {
-            navigate('/customer_profile');
-        } else if (UserData.type === 'trader') {
-            navigate('/trader_profile');
+    function CheckGroup(searchGroup) {
+        let userId;
+        if (searchGroup) {
+            userId = id;
+        } else {
+            userId = JSON.parse(localStorage.getItem('user'))._id;
         }
+        const requestOptions = {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
+        };
+        fetch(Environment.url + 'student/check_group/' + userId, requestOptions)
+            .then(response => response.json())
+            .then(reply => {
+                if (reply.length === 0) {
+                    setRegistered(false)
+                } else {
+                    setRegistered(true)
+                    setStudents(reply);
+                    // GetGroup();
+                }
+            });
     }
 
-    function Login() {
+    function RegisterGroup() {
         const requestOptions = {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                email: email,
-                password: password
+                groupId: id,
+                student: JSON.parse(localStorage.getItem('user'))._id
             })
         };
-        fetch('http://localhost:3000/cart/user/login', requestOptions)
+        fetch('http://localhost:9000/rpmt/student/add_group', requestOptions)
             .then(response => response.json())
             .then(reply => {
-                if (reply !== null && UserData.type === 'customer') {
-                    UserData.id = reply.id;
-                    navigate('/view_items');
-                } else if (reply !== null && UserData.type === 'trader') {
-                    navigate('/trader_items');
+                console.log(reply)
+                if (reply !== null) {
+                    setRegistered(true);
+                    localStorage.setItem('group', JSON.stringify(reply))
+                }
+            });
+    }
+
+    function GetGroup() {
+        const requestOptions = {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
+        };
+        fetch('http://localhost:9000/rpmt/student/get_group/' + JSON.parse(localStorage.getItem('user'))._id, requestOptions)
+            .then(response => response.json())
+            .then(reply => {
+                console.log(reply)
+                if (reply !== null) {
+
                 }
             });
     }

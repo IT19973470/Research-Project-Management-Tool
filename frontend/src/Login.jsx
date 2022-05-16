@@ -26,28 +26,33 @@ export const Login = () => {
                         <div style={{display: 'flex'}}>
                             <span style={{marginRight: '30px'}}>Username</span>
                             <span style={{width: '100%'}}>
-                            <input type="text" className="form-control"/>
+                            <input type="text" className="form-control"
+                                   onChange={e => setEmail(e.target.value)}/>
                         </span>
                         </div>
                         <div style={{display: 'flex', marginTop: '15px'}}>
                             <span style={{marginRight: '35px'}}>Password</span>
                             <span style={{width: '100%'}}>
-                            <input type="password" className="form-control"/>
+                            <input type="password" className="form-control"
+                                   onChange={e => setPassword(e.target.value)}/>
                         </span>
                         </div>
                         <div style={{width: '100%', textAlign: 'center'}}>
                             <button className="btn btn-warning"
-                                    style={{marginTop: '30px', fontSize: '20px', fontWeight: 'bold'}}>
+                                    style={{marginTop: '30px', fontSize: '20px', fontWeight: 'bold'}}
+                                    onClick={() => {
+                                        Login()
+                                    }}>
                                 Sign In
                             </button>
                             {/*<button className="btn btn-warning"*/}
-                                    {/*style={{*/}
-                                        {/*marginTop: '30px',*/}
-                                        {/*fontSize: '20px',*/}
-                                        {/*fontWeight: 'bold',*/}
-                                        {/*marginLeft: '30px'*/}
-                                    {/*}}>*/}
-                                {/*Sign Up*/}
+                            {/*style={{*/}
+                            {/*marginTop: '30px',*/}
+                            {/*fontSize: '20px',*/}
+                            {/*fontWeight: 'bold',*/}
+                            {/*marginLeft: '30px'*/}
+                            {/*}}>*/}
+                            {/*Sign Up*/}
                             {/*</button>*/}
                         </div>
                     </div>
@@ -55,14 +60,6 @@ export const Login = () => {
             </div>
         </div>
     );
-
-    function RegisterUser() {
-        if (UserData.type === 'customer') {
-            navigate('/customer_profile');
-        } else if (UserData.type === 'trader') {
-            navigate('/trader_profile');
-        }
-    }
 
     function Login() {
         const requestOptions = {
@@ -73,12 +70,12 @@ export const Login = () => {
                 password: password
             })
         };
-        fetch('http://localhost:3000/cart/user/login', requestOptions)
+        fetch('http://localhost:9000/rpmt/user/login', requestOptions)
             .then(response => response.json())
             .then(reply => {
                 if (reply !== null) {
-                    UserData.id = reply.id;
-                    navigate('/register_student');
+                    localStorage.setItem('user', JSON.stringify(reply));
+                    navigate('/student_groups');
                 }
             });
     }
