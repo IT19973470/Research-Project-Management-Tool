@@ -6,12 +6,16 @@ import './NavStudent.css';
 export const NavStudent = () => {
     let navigate = useNavigate();
 
-
-
     return (
         <div className='navS' style={{paddingLeft: '10px', paddingTop: '10px', paddingRight: '10px', marginTop: '0px'}}>
-            <div>Register Group</div>
-            <div>Research Topic</div>
+            <div onClick={() => {
+                navigate('/student_groups')
+            }}>Register Group
+            </div>
+            <div onClick={() => {
+                navigate('/research_topic')
+            }}>Research Topic
+            </div>
         </div>
     );
 };

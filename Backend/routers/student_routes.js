@@ -3,6 +3,7 @@ const router = express.Router();
 const Student = require('../models/Student');
 const StudentGroup = require('../models/StudentGroup');
 const User = require('../models/User');
+const ResearchTopic = require('../models/ResearchTopic');
 
 router.get('/check_group/:id', (req, res, next) => {
     let students = [];
@@ -54,6 +55,22 @@ router.post('/add_group', (req, res, next) => {
             res.send(studentGroup);
         }).catch(next);
     }
+});
+
+router.post('/add_research_topic', (req, res, next) => {
+    ResearchTopic.create(req.body).then((researchTopic) => {
+        res.send(researchTopic);
+    }).catch(next);
+});
+
+router.get('/topic_registered/:id', (req, res, next) => {
+    ResearchTopic.findOne({groupId: req.params.id}).then((researchTopic) => {
+        if (researchTopic !== null) {
+            res.send({reply: researchTopic});
+        } else {
+            res.send({reply: null});
+        }
+    }).catch(next);
 });
 
 module.exports = router;
