@@ -10,14 +10,15 @@ export const Login = () => {
     const [password, setPassword] = useState('');
 
     return (
-        <div className="row" style={{minHeight: 'calc(100vh - 325px)'}}>
+        <div className="row">
+        {/*<div className="row" style={{minHeight: 'calc(100vh - 325px)'}}>*/}
             {/*<div className="col-12" style={{fontSize: '45px', textAlign: 'center'}}>*/}
             {/*Research Project Management Tool*/}
             {/*</div>*/}
             <div className="col-12">
                 <div style={{
                     width: '100%',
-                    height: '50px',
+
                     marginTop: '100px',
                     display: 'flex',
                     justifyContent: 'center'

@@ -14,31 +14,21 @@ router.get('/check_group/:id', (req, res, next) => {
                 // console.log(student)
                 students.push(student)
                 if (students.length === studentsArr.students.length) {
-                    res.send(students);
+                    res.send({students: students, groupId: studentsArr.groupId});
                 }
             })
         })
     }).catch(next);
 });
 
-// router.get('/get_group/:id', (req, res, next) => {
-//     let students = [];
-//     StudentGroup.find({
-//         students: req.params.id
-//     }).then((studentsArr) => {
-//         new Promise(() => {
-//             studentsArr[0].students.forEach((student) => {
-//                 console.log(student)
-//                 Student.find({_id: student}).then((student) => {
-//                     students.push(student)
-//                 })
-//             })
-//         }).then(() => {
-//             res.send(students);
-//             // console.log(students)
-//         })
-//     }).catch(next);
-// });
+router.delete('/remove_from_group/:groupId/:id', (req, res, next) => {
+    StudentGroup.updateOne(
+        {groupId: req.params.groupId},
+        {$pull: {'students': req.params.id}}
+    ).then((studentsArr) => {
+        res.send({reply: true});
+    }).catch(next);
+});
 
 router.post('/student_register', (req, res, next) => {
     req.body._id = req.body.id

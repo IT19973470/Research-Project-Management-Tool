@@ -16,7 +16,7 @@ export const StudentGroups = () => {
 
     useEffect(() => {
         CheckGroup(false)
-    })
+    }, [])
 
     let registeredContent;
     if (registered) {
@@ -24,6 +24,11 @@ export const StudentGroups = () => {
             <div>
                 {JSON.parse(localStorage.getItem('user'))._id} is registered for a group.
                 Group ID is {JSON.parse(localStorage.getItem('group')).groupId}
+                <button className="btn btn-warning"
+                        style={{fontWeight: 'bold', marginLeft: '10px'}}
+                        onClick={() => RemoveGroup()}>
+                    Remove from group
+                </button>
             </div>
     } else if (!newGroup) {
         registeredContent =
@@ -38,11 +43,6 @@ export const StudentGroups = () => {
                             <input type="text" className="form-control"
                                    onChange={e => setId(e.target.value)}/>
                         </span>
-                        <button className="btn btn-warning"
-                                style={{fontWeight: 'bold', marginLeft: '10px'}}
-                                onClick={() => CheckGroup(true)}>
-                            Search
-                        </button>
                     </div>
                     <div>
                         <button className="btn btn-warning"
@@ -67,7 +67,7 @@ export const StudentGroups = () => {
     return (
         <div className="row">
             <div className="col-12" style={{fontSize: '45px', textAlign: 'center'}}>
-                Register Student
+                Register Group
             </div>
             <div className="col-12">
                 <div style={{
@@ -84,7 +84,6 @@ export const StudentGroups = () => {
                                 <th scope="col">#</th>
                                 <th scope="col" width="20%">Student ID</th>
                                 <th scope="col">Name</th>
-                                <th scope="col" width="5%" style={{textAlign: 'center'}}>Delete</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -123,7 +122,9 @@ export const StudentGroups = () => {
                     setRegistered(false)
                 } else {
                     setRegistered(true)
-                    setStudents(reply);
+                    setStudents(reply.students);
+                    localStorage.setItem('group', JSON.stringify(reply))
+                    console.log(reply)
                     // GetGroup();
                 }
             });
@@ -149,17 +150,17 @@ export const StudentGroups = () => {
             });
     }
 
-    function GetGroup() {
+    function RemoveGroup() {
         const requestOptions = {
-            method: 'GET',
+            method: 'DELETE',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/student/get_group/' + JSON.parse(localStorage.getItem('user'))._id, requestOptions)
+        fetch('http://localhost:9000/rpmt/student/remove_from_group/' + JSON.parse(localStorage.getItem('group')).groupId + '/' + JSON.parse(localStorage.getItem('user'))._id, requestOptions)
             .then(response => response.json())
             .then(reply => {
-                console.log(reply)
-                if (reply !== null) {
-
+                if (reply) {
+                    setRegistered(false)
+                    localStorage.removeItem('group');
                 }
             });
     }

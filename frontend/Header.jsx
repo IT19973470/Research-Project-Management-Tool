@@ -69,6 +69,10 @@ export const Header = () => {
                                     color: '#794903',
                                     fontSize: '16px',
                                     cursor: 'pointer'
+                                }}
+                                onClick={() => {
+                                    navigate('/');
+                                    localStorage.clear()
                                 }}>
                                 Logout
                             </div>
