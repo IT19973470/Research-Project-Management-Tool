@@ -16,6 +16,10 @@ export const NavStudent = () => {
                 navigate('/research_topic')
             }}>Research Topic
             </div>
+            <div onClick={() => {
+                navigate('/request_supervisor')
+            }}>Request Supervisor
+            </div>
         </div>
     );
 };

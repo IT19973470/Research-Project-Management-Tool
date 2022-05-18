@@ -2,34 +2,25 @@ import React, {Component, useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export const ResearchTopic = () => {
+export const RequestSupervisor = () => {
     let navigate = useNavigate();
 
     const [topic, setTopic] = useState('');
     const [topicRegistered, setTopicRegistered] = useState(false);
-    const [topicAccepted, setTopicAccepted] = useState(false);
 
     useEffect(() => {
         RegisteredForTopic()
     }, [])
 
-    let contentTopicRegistered;
-    let contentTopicAccepted;
+    let content;
 
     if (topicRegistered) {
-        contentTopicRegistered =
+        content =
             <div>
                 Topic is {topic}
-                <button className="btn btn-warning"
-                        style={{marginTop: '30px', fontSize: '20px', fontWeight: 'bold'}}
-                        onClick={() => {
-                            UnregisterTopic()
-                        }}>
-                    Unregister
-                </button>
             </div>
     } else {
-        contentTopicRegistered =
+        content =
             <div>
                 <div style={{display: 'flex'}}>
                     <span style={{marginRight: '30px'}}>Description</span>
@@ -50,22 +41,10 @@ export const ResearchTopic = () => {
             </div>
     }
 
-    if (topicAccepted) {
-        contentTopicAccepted =
-            <div>
-                Topic is accepted by the supervisor
-            </div>
-    } else {
-        contentTopicAccepted =
-            <div>
-                Topic is not accepted
-            </div>
-    }
-
     return (
         <div className="row">
             <div className="col-12" style={{fontSize: '45px', textAlign: 'center'}}>
-                Research Topic
+                Request Supervisor
             </div>
             <div className="col-12">
                 <div style={{
@@ -75,7 +54,7 @@ export const ResearchTopic = () => {
                     justifyContent: 'center'
                 }}>
                     <div style={{width: '500px'}}>
-                        {contentTopicRegistered}
+                        {content}
                     </div>
                 </div>
             </div>
@@ -90,32 +69,13 @@ export const ResearchTopic = () => {
         fetch('http://localhost:9000/rpmt/student/topic_registered/' + JSON.parse(localStorage.getItem('group')).groupId, requestOptions)
             .then(response => response.json())
             .then(reply => {
-                if (reply.reply !== null && reply.reply.registered) {
+                console.log(reply)
+                if (reply.reply !== null) {
                     setTopicRegistered(true);
                     setTopic(reply.reply.topic);
                 } else {
                     setTopicRegistered(false);
                 }
-            });
-    }
-
-    function UnregisterTopic() {
-        const requestOptions = {
-            method: 'DELETE',
-            headers: {'Content-Type': 'application/json'}
-        };
-        fetch('http://localhost:9000/rpmt/student/remove_research_topic/' + JSON.parse(localStorage.getItem('group')).groupId, requestOptions)
-            .then(response => response.json())
-            .then(reply => {
-                if (reply) {
-                    setTopicRegistered(false);
-                }
-                // if (reply !== null && UserData.type === 'customer') {
-                //     UserData.id = reply.id;
-                //     navigate('/view_items');
-                // } else if (reply !== null && UserData.type === 'trader') {
-                //     navigate('/trader_items');
-                // }
             });
     }
 
@@ -125,9 +85,7 @@ export const ResearchTopic = () => {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 groupId: JSON.parse(localStorage.getItem('group')).groupId,
-                topic: topic,
-                accepted: false,
-                registered: true
+                topic: topic
             })
         };
         fetch('http://localhost:9000/rpmt/student/add_research_topic', requestOptions)

@@ -63,8 +63,27 @@ router.post('/add_research_topic', (req, res, next) => {
     }).catch(next);
 });
 
+router.delete('/remove_research_topic/:id', (req, res, next) => {
+    ResearchTopic.updateOne(
+        {
+            $and: [
+                {groupId: req.params.id},
+                {registered: true}
+            ]
+        },
+        {registered: false}
+    ).then((researchTopic) => {
+        res.send({reply: true});
+    }).catch(next);
+});
+
 router.get('/topic_registered/:id', (req, res, next) => {
-    ResearchTopic.findOne({groupId: req.params.id}).then((researchTopic) => {
+    ResearchTopic.findOne({
+        $and: [
+            {groupId: req.params.id},
+            {registered: true}
+        ]
+    }).then((researchTopic) => {
         if (researchTopic !== null) {
             res.send({reply: researchTopic});
         } else {

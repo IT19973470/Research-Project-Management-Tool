@@ -9,6 +9,14 @@ const ResearchTopicSchema = new Schema({
     topic: {
         type: String,
         required: [true, 'Topic is required']
+    },
+    accepted: {
+        type: Boolean,
+        required: [true, 'Accept is required']
+    },
+    registered: {
+        type: Boolean,
+        required: [true, 'Register is required']
     }
 });
 
