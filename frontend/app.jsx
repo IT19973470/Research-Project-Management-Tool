@@ -9,6 +9,8 @@ import {
 import {Login} from "./src/Login";
 import {RegisterStudent} from "./src/student/RegisterStudent";
 import {StudentGroups} from "./src/student/StudentGroup";
+import {ResearchTopic} from "./src/student/ResearchTopic";
+import {RequestSupervisor} from "./src/student/RequestSupervisor";
 // import {Header} from "./Header";
 // import {ViewItems} from "./src/customer/ViewItems";
 // import {ViewWishList} from "./src/customer/ViewWishList";
@@ -24,6 +26,8 @@ export const App = () => {
             <Route path='/' exact element={<Login/>}/>
             <Route path='register_student' element={<RegisterStudent/>}/>
             <Route path='student_groups' element={<StudentGroups/>}/>
+            <Route path='research_topic' element={<ResearchTopic/>}/>
+            <Route path='request_supervisor' element={<RequestSupervisor/>}/>
             {/*<Route path='view_cart' element={<ViewCart/>}/>*/}
             {/*<Route path='view_wishlist' element={<ViewWishList/>}/>*/}
 
