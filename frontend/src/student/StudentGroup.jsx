@@ -124,7 +124,7 @@ export const StudentGroups = () => {
                     setRegistered(true)
                     setStudents(reply.students);
                     localStorage.setItem('group', JSON.stringify(reply))
-                    console.log(reply)
+                    // console.log(reply)
                     // GetGroup();
                 }
             });
@@ -142,7 +142,7 @@ export const StudentGroups = () => {
         fetch('http://localhost:9000/rpmt/student/add_group', requestOptions)
             .then(response => response.json())
             .then(reply => {
-                console.log(reply)
+                // console.log(reply)
                 if (reply !== null) {
                     setRegistered(true);
                     localStorage.setItem('group', JSON.stringify(reply))

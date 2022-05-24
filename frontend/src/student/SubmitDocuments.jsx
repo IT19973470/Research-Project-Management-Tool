@@ -2,7 +2,7 @@ import React, {Component, useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export const ResearchTopic = () => {
+export const SubmitDocuments = () => {
     let navigate = useNavigate();
 
     const [topic, setTopic] = useState('');
@@ -73,7 +73,7 @@ export const ResearchTopic = () => {
     return (
         <div className="row">
             <div className="col-12" style={{fontSize: '45px', textAlign: 'center'}}>
-                Research Topic
+                Submit Documents
             </div>
             <div className="col-12">
                 <div style={{

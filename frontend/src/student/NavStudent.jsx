@@ -13,12 +13,20 @@ export const NavStudent = () => {
             }}>Register Group
             </div>
             <div onClick={() => {
+                navigate('/request_supervisor')
+            }}>Request Supervisor
+            </div>
+            <div onClick={() => {
                 navigate('/research_topic')
             }}>Research Topic
             </div>
             <div onClick={() => {
-                navigate('/request_supervisor')
-            }}>Request Supervisor
+                navigate('/submit_documents')
+            }}>Submit Documents
+            </div>
+            <div onClick={() => {
+                navigate('/download_templates')
+            }}>Download Templates
             </div>
         </div>
     );
