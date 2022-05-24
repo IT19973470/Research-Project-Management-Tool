@@ -4,6 +4,7 @@ const Student = require('../models/Student');
 const StudentGroup = require('../models/StudentGroup');
 const User = require('../models/User');
 const ResearchTopic = require('../models/ResearchTopic');
+const GroupSupervisor = require('../models/GroupSupervisor');
 
 router.get('/check_group/:id', (req, res, next) => {
     let students = [];
@@ -89,6 +90,12 @@ router.get('/topic_registered/:id', (req, res, next) => {
         } else {
             res.send({reply: null});
         }
+    }).catch(next);
+});
+
+router.post('/add_group_supervisor', (req, res, next) => {
+    GroupSupervisor.create(req.body).then((groupSupervisor) => {
+        res.send(groupSupervisor);
     }).catch(next);
 });
 

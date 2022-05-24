@@ -89,7 +89,7 @@ export const RegisterStudent = () => {
         fetch('http://localhost:9000/rpmt/student/student_register', requestOptions)
             .then(response => response.json())
             .then(reply => {
-                console.log(reply);
+                // console.log(reply);
                 // if (reply !== null && UserData.type === 'customer') {
                 //     UserData.id = reply.id;
                 //     navigate('/view_items');
