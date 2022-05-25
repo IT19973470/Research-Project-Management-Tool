@@ -43,6 +43,14 @@ export const ModifyUsers = () => {
         console.log(students)
         fetch('http://localhost:9000/rpmt/admin/update/'+id,requestOptions)
     }
+    function deleteID(did){
+        const requestOptions ={
+            method:'DELETE',
+            headers:{'Content-Type':'application/json'},
+        };
+        console.log(students)
+        fetch('http://localhost:9000/rpmt/admin/delete/'+did,requestOptions)
+    }
     return(
             <div className="row">
                 <div className="col-12" style={{fontSize: '45px', textAlign: 'center'}}>
@@ -76,7 +84,7 @@ export const ModifyUsers = () => {
                                             <td>{student.email}</td>
                                             <td>{student.address}</td>
                                             <td><button onClick={()=>getFields(student)} style={{backgroundColor: "transparent",border:"none",color:"black"}}>Update</button></td>
-                                            <td><button  style={{backgroundColor: "transparent",border:"none",color:"black"}}>Delete</button></td>
+                                            <td><button onClick={()=>deleteID(student._id)} style={{backgroundColor: "transparent",border:"none",color:"black"}}>Delete</button></td>
 
                                         </tr>
                                     })
