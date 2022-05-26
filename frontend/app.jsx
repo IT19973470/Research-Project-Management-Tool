@@ -14,6 +14,7 @@ import {RequestSupervisor} from "./src/student/RequestSupervisor";
 import {SubmitDocuments} from "./src/student/SubmitDocuments";
 import {DownloadTemplates} from "./src/student/DownloadTemplates";
 import {ModifyUsers} from "./src/admin/ModifyUsers";
+import {Marking} from "./src/admin/Marking";
 // import {Header} from "./Header";
 // import {ViewItems} from "./src/customer/ViewItems";
 // import {ViewWishList} from "./src/customer/ViewWishList";
@@ -35,6 +36,7 @@ export const App = () => {
             <Route path='download_templates' element={<DownloadTemplates/>}/>
             //admin
             <Route path='modify_users' element={<ModifyUsers/>}/>
+            <Route path='marking' element={<Marking/>}/>
             {/*<Route path='view_cart' element={<ViewCart/>}/>*/}
             {/*<Route path='view_wishlist' element={<ViewWishList/>}/>*/}
 
