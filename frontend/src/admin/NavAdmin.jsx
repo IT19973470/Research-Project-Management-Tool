@@ -16,6 +16,10 @@ export const NavAdmin = () => {
                 navigate('/marking')
             }}>Marking
             </div>
+            <div onClick={() => {
+                navigate('/submission')
+            }}>Submission
+            </div>
         </div>
 
     );
