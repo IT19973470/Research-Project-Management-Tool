@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router();
 const Student = require('../models/Student');
 let Mark = require('../models/Marking');
+let Submission =require('../models/Submission')
 
 router.route("/displayUsers").get((req,res)=>{
     Student.find().then((students)=>{
@@ -67,7 +68,7 @@ router.route("/deleteMarking/:id").delete(async(req,res)=>{
 //       console.log(err)
 //     })
 // })
-router.post('/add', (req, res, next) => {
+let router1 = router.post('/add', (req, res, next) => {
     if (req.body._id === '') {
         console.log(req.body)
         req.body._id = 'M' + Math.floor(Math.random() * 10000);
@@ -77,8 +78,27 @@ router.post('/add', (req, res, next) => {
     }
 });
 
+router.post('/addMarking', (req, res, next) => {
+    if (req.body._id === '') {
+        console.log(req.body)
+        req.body._id = 'S' + Math.floor(Math.random() * 10000);
+        Submission.create(req.body).then((data) => {
+            res.send(data);
+        }).catch(next);
+    }
+});
+
+
 router.route("/displayMarking").get((req,res)=>{
     Mark.find().then((students)=>{
+        res.json(students)
+    }).catch((err)=>{
+        console.log(err)
+    })
+})
+
+router.route("/displaySubmission").get((req,res)=>{
+    Submission.find().then((students)=>{
         res.json(students)
     }).catch((err)=>{
         console.log(err)

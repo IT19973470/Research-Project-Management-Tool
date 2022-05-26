@@ -17,7 +17,7 @@ export const Marking = () => {
         fetch('http://localhost:9000/rpmt/admin/displayMarking',requestOptions)
             .then(response=>{ return response.json()})
             .then(data=>{
-                // console.log(data)
+                 console.log(data)
                 setMarking(data)
             });
     })
