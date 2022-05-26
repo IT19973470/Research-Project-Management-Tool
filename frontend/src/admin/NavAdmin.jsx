@@ -12,6 +12,11 @@ export const NavAdmin = () => {
                 navigate('/modify_users')
             }}>Modify Users
             </div>
+            <div onClick={() => {
+                navigate('/marking')
+            }}>Marking
+            </div>
         </div>
+
     );
 };

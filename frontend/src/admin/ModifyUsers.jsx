@@ -115,7 +115,5 @@ export const ModifyUsers = () => {
                     </div>
                 </div>
             </div>
-
         )
-
 };
