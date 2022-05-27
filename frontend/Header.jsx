@@ -55,7 +55,7 @@ export const Header = () => {
                                     fontSize: '16px'
                                 }}
                                 onClick={() => {
-                                    navigate('/register_student');
+                                    navigate('/student/register_student');
                                 }}>
                                 Create Account |
                             </div>
