@@ -1,4 +1,5 @@
 const express = require('express')
+const upload = require('express-fileupload')
 const router = express.Router();
 const Student = require('../models/Student');
 const StudentGroup = require('../models/StudentGroup');
@@ -97,6 +98,19 @@ router.post('/add_group_supervisor', (req, res, next) => {
     GroupSupervisor.create(req.body).then((groupSupervisor) => {
         res.send(groupSupervisor);
     }).catch(next);
+});
+
+router.post('/submit_documents', (req, res) => {
+    if (req.files) {
+        let file = req.files.file;
+        file.mv('C:/xampp/htdocs/NodeFile/' + file.name, (err) => {
+            if (err) {
+                res.send(err)
+            } else {
+                res.send('File Uploaded');
+            }
+        })
+    }
 });
 
 module.exports = router;
