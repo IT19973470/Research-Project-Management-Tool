@@ -1,6 +1,7 @@
 import React, {Component, useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {Environment} from "../../../Backend/Environment";
 
 export const ResearchTopic = () => {
     let navigate = useNavigate();
@@ -11,7 +12,7 @@ export const ResearchTopic = () => {
     const [groupRegistered, setGroupRegistered] = useState(false);
 
     useEffect(() => {
-        RegisteredForTopic()
+        CheckGroup();
     }, [])
 
     let content;
@@ -24,7 +25,7 @@ export const ResearchTopic = () => {
                     Please register for a group before select a research topic.
                 </div>
             </div>
-    }else if (topicRegistered) {
+    } else if (topicRegistered) {
         content =
             <div>
                 Topic is {topic}
@@ -91,9 +92,9 @@ export const ResearchTopic = () => {
     );
 
     function RegisteredForTopic() {
-        let groupId = JSON.parse(localStorage.getItem('group')) !== null ? JSON.parse(localStorage.getItem('group')).groupId : null;
-        if (groupId !== null) {
-            setGroupRegistered(true);
+        // let groupId = JSON.parse(localStorage.getItem('group')) !== null ? JSON.parse(localStorage.getItem('group')).groupId : null;
+        // if (groupId !== null) {
+            // setGroupRegistered(true);
             const requestOptions = {
                 method: 'GET',
                 headers: {'Content-Type': 'application/json'}
@@ -108,9 +109,7 @@ export const ResearchTopic = () => {
                         setTopicRegistered(false);
                     }
                 });
-        } else {
-            setGroupRegistered(false);
-        }
+        // }
     }
 
     function UnregisterTopic() {
@@ -157,6 +156,26 @@ export const ResearchTopic = () => {
                 // } else if (reply !== null && UserData.type === 'trader') {
                 //     navigate('/trader_items');
                 // }
+            });
+    }
+
+    function CheckGroup() {
+        const requestOptions = {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
+        };
+        fetch(Environment.url + 'student/check_group/' + JSON.parse(localStorage.getItem('user'))._id, requestOptions)
+            .then(response => response.json())
+            .then(reply => {
+                if (reply.length === 0) {
+                    setGroupRegistered(false)
+                } else {
+                    setGroupRegistered(true)
+                    localStorage.setItem('group', JSON.stringify(reply))
+                    RegisteredForTopic()
+                    // console.log(reply)
+                    // GetGroup();
+                }
             });
     }
 };
