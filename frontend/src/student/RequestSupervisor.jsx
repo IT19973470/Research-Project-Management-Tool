@@ -1,6 +1,7 @@
 import React, {Component, useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {Environment} from "../../../Backend/Environment";
 
 export const RequestSupervisor = () => {
     let navigate = useNavigate();
@@ -12,6 +13,7 @@ export const RequestSupervisor = () => {
     const [groupRegistered, setGroupRegistered] = useState(false);
 
     useEffect(() => {
+        CheckGroup();
         GetSupervisors();
         // RequestedSupervisor()
     }, [])
@@ -67,7 +69,7 @@ export const RequestSupervisor = () => {
         padding: '15px'
     };
 
-    if (supervisors !== null) {
+    if (groupRegistered && supervisors !== null) {
         supervisorsList =
             <div>
                 <table style={{width: '100%'}}>
@@ -147,6 +149,22 @@ export const RequestSupervisor = () => {
     //         setGroupRegistered(false);
     //     }
     // }
+
+    function CheckGroup() {
+        const requestOptions = {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
+        };
+        fetch(Environment.url + 'student/check_group/' + JSON.parse(localStorage.getItem('user'))._id, requestOptions)
+            .then(response => response.json())
+            .then(reply => {
+                if (reply.length === 0) {
+                    setGroupRegistered(false)
+                } else {
+                    setGroupRegistered(true)
+                }
+            });
+    }
 
     function RegisterSupervisor(supervisorObj, val) {
         const requestOptions = {
