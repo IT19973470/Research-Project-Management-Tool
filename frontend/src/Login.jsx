@@ -76,7 +76,7 @@ export const Login = () => {
             .then(reply => {
                 if (reply !== null) {
                     localStorage.setItem('user', JSON.stringify(reply));
-                    navigate('/student_groups');
+                    navigate('/student/student_groups');
                 }
             });
     }

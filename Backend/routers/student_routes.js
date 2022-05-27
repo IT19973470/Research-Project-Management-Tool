@@ -95,9 +95,29 @@ router.get('/topic_registered/:id', (req, res, next) => {
 });
 
 router.post('/add_group_supervisor', (req, res, next) => {
-    GroupSupervisor.create(req.body).then((groupSupervisor) => {
-        res.send(groupSupervisor);
-    }).catch(next);
+    GroupSupervisor.findOne({groupId: req.body.groupId}).then((supervisor) => {
+        let body;
+        if (req.body.val === 0) {
+            body = {
+                supervisor: req.body.supervisor
+            }
+        } else {
+            body = {
+                coSupervisor: req.body.coSupervisor
+            }
+        }
+        if (supervisor !== null) {
+            GroupSupervisor.updateOne(
+                {groupId: req.body.groupId}, body
+            ).then((supervisorObj) => {
+                res.send({supervisor: req.body.supervisor, coSupervisor: req.body.coSupervisor, val: req.body.val});
+            }).catch(next);
+        } else {
+            GroupSupervisor.create(req.body).then((groupSupervisor) => {
+                res.send(groupSupervisor);
+            }).catch(next);
+        }
+    });
 });
 
 router.post('/submit_documents', (req, res) => {
@@ -111,6 +131,46 @@ router.post('/submit_documents', (req, res) => {
             }
         })
     }
+});
+
+router.get('/get_supervisors/:id', (req, res, next) => {
+    let supers = [
+        {
+            _id: 1,
+            name: 'Gayan',
+            interests: 'ML'
+        },
+        {
+            _id: 2,
+            name: 'Kamal',
+            interests: 'AI'
+        },
+        {
+            _id: 3,
+            name: 'Sunil',
+            interests: 'Network'
+        },
+        {
+            _id: 4,
+            name: 'Amal',
+            interests: 'IOT'
+        }
+    ];
+    GroupSupervisor.findOne({groupId: req.params.id}).then((grpSupervisor) => {
+        supers.forEach((superObj) => {
+            if (grpSupervisor.supervisor == superObj._id) {
+                superObj.markedSuper = true
+            } else {
+                superObj.markedSuper = false
+            }
+            if (grpSupervisor.coSupervisor == superObj._id) {
+                superObj.markedCoSuper = true
+            } else {
+                superObj.markedCoSuper = false
+            }
+        })
+        res.send(supers);
+    })
 });
 
 module.exports = router;

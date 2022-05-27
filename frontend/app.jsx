@@ -29,12 +29,12 @@ export const App = () => {
     return (
         <Routes>
             <Route path='/' exact element={<Login/>}/>
-            <Route path='register_student' element={<RegisterStudent/>}/>
-            <Route path='student_groups' element={<StudentGroups/>}/>
-            <Route path='research_topic' element={<ResearchTopic/>}/>
-            <Route path='request_supervisor' element={<RequestSupervisor/>}/>
-            <Route path='submit_documents' element={<SubmitDocuments/>}/>
-            <Route path='download_templates' element={<DownloadTemplates/>}/>
+            <Route path='/student/register_student' element={<RegisterStudent/>}/>
+            <Route path='/student/student_groups' element={<StudentGroups/>}/>
+            <Route path='/student/research_topic' element={<ResearchTopic/>}/>
+            <Route path='/student/request_supervisor' element={<RequestSupervisor/>}/>
+            <Route path='/student/submit_documents' element={<SubmitDocuments/>}/>
+            <Route path='/student/download_templates' element={<DownloadTemplates/>}/>
             //admin
             <Route path='modify_users' element={<ModifyUsers/>}/>
             <Route path='marking' element={<Marking/>}/>
