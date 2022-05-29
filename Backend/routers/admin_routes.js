@@ -4,6 +4,7 @@ const Student = require('../models/Student');
 let Mark = require('../models/Marking');
 let Submission = require('../models/Submission')
 let SupervisorTopic = require("../models/SupervisorTopic")
+let AddPannel =require("../models/Panel")
 router.route("/displayUsers").get((req, res) => {
     Student.find().then((students) => {
         res.json(students)
@@ -92,6 +93,16 @@ let router2 = router.post('/addSupervisorTopic', (req, res, next) => {
     console.log(req.body)
     SupervisorTopic.create(
         {_id: 'S' + Math.floor(Math.random() * 10000), interests:[req.body.interests]}
+    ).then((data) => {
+        res.send(data);
+    }).catch(next);
+
+});
+
+let router3 = router.post('/addPannel', (req, res, next) => {
+    console.log(req.body)
+    AddPannel.create(
+        {_id: 'P' + Math.floor(Math.random() * 10000), name:req.body.name,grouplist:[req.body.grouplist],stafflist:[req.body.stafflist]}
     ).then((data) => {
         res.send(data);
     }).catch(next);

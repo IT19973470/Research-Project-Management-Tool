@@ -36,7 +36,7 @@ export const SupervisorRegister = () => {
                     <label htmlFor="na,e">Interests:</label>
                     <input type="text"  className="form-control" id="name" placeholder="Enter Submission details"  onChange={(e)=>{setTitle(e.target.value)}}/>
                     <div>
-                        {array.map(array => <h2>{array}</h2>)}
+                       {array.map(array => <span>{array}<br/></span>)}
                     </div>
                     <button type="button" onClick={()=>handleChange(interests)}  className="btn btn-primary" >Add Interest</button>
                 </div>
