@@ -2,52 +2,52 @@ const express = require('express')
 const router = express.Router();
 const Student = require('../models/Student');
 let Mark = require('../models/Marking');
-let Submission =require('../models/Submission')
-
-router.route("/displayUsers").get((req,res)=>{
-    Student.find().then((students)=>{
+let Submission = require('../models/Submission')
+let SupervisorTopic = require("../models/SupervisorTopic")
+router.route("/displayUsers").get((req, res) => {
+    Student.find().then((students) => {
         res.json(students)
-    }).catch((err)=>{
+    }).catch((err) => {
         console.log(err)
     })
 })
-router.route("/update/:id").put(async(req,res)=>{
-    let userID=req.params.id;
-    const {_id,name,email,address}=req.body;
-    const updateStudent={
+router.route("/update/:id").put(async (req, res) => {
+    let userID = req.params.id;
+    const {_id, name, email, address} = req.body;
+    const updateStudent = {
         _id,
         name,
         email,
         address
     }
-    const  update =await Student.findByIdAndUpdate(userID, updateStudent)
-        .then((user)=>{
-            res.status(200).send({status:"User updated",user:user})
-        }).catch((err)=>{
-            res.status(500).send({status:"Error",error:err.message})
+    const update = await Student.findByIdAndUpdate(userID, updateStudent)
+        .then((user) => {
+            res.status(200).send({status: "User updated", user: user})
+        }).catch((err) => {
+            res.status(500).send({status: "Error", error: err.message})
         })
 
 })
 
 
-router.route("/delete/:id").delete(async(req,res)=>{
-    let userID =req.params.id;
+router.route("/delete/:id").delete(async (req, res) => {
+    let userID = req.params.id;
     await Student.findByIdAndDelete(userID)
-        .then(()=>{
-            res.status(200).send({status:"User deleted"})
-        }).catch((err)=>{
+        .then(() => {
+            res.status(200).send({status: "User deleted"})
+        }).catch((err) => {
             console.log(err.message);
-            res.status(500).send({status:"Error",error:err.message})
+            res.status(500).send({status: "Error", error: err.message})
         })
 })
-router.route("/deleteMarking/:id").delete(async(req,res)=>{
-    let markingID =req.params.id;
+router.route("/deleteMarking/:id").delete(async (req, res) => {
+    let markingID = req.params.id;
     await Mark.findByIdAndDelete(markingID)
-        .then(()=>{
-            res.status(200).send({status:"Marking deleted"})
-        }).catch((err)=>{
+        .then(() => {
+            res.status(200).send({status: "Marking deleted"})
+        }).catch((err) => {
             console.log(err.message);
-            res.status(500).send({status:"Error",error:err.message})
+            res.status(500).send({status: "Error", error: err.message})
         })
 })
 
@@ -88,19 +88,28 @@ router.post('/addMarking', (req, res, next) => {
     }
 });
 
+let router2 = router.post('/addSupervisorTopic', (req, res, next) => {
+    console.log(req.body)
+    SupervisorTopic.create(
+        {_id: 'S' + Math.floor(Math.random() * 10000), interests:[req.body.interests]}
+    ).then((data) => {
+        res.send(data);
+    }).catch(next);
 
-router.route("/displayMarking").get((req,res)=>{
-    Mark.find().then((students)=>{
+});
+
+router.route("/displayMarking").get((req, res) => {
+    Mark.find().then((students) => {
         res.json(students)
-    }).catch((err)=>{
+    }).catch((err) => {
         console.log(err)
     })
 })
 
-router.route("/displaySubmission").get((req,res)=>{
-    Submission.find().then((students)=>{
+router.route("/displaySubmission").get((req, res) => {
+    Submission.find().then((students) => {
         res.json(students)
-    }).catch((err)=>{
+    }).catch((err) => {
         console.log(err)
     })
 })
