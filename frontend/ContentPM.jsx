@@ -1,7 +1,7 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
 import {App} from "./app";
-import {NavPanelMember} from "./src/panel-member/NavPanelMember";
+import {NavPanelMember} from "./src/panel_member/NavPanelMember";
 
 export const ContentPM = () => {
     let navigate = useNavigate();
