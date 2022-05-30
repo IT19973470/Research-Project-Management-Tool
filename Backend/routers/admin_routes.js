@@ -41,6 +41,17 @@ router.route("/delete/:id").delete(async (req, res) => {
             res.status(500).send({status: "Error", error: err.message})
         })
 })
+router.route("/deleteS/:id").delete(async (req, res) => {
+    let userID = req.params.id;
+    console.log(userID)
+    await SupervisorTopic.findByIdAndDelete(userID)
+        .then(() => {
+            res.status(200).send({status: "User deleted"})
+        }).catch((err) => {
+            console.log(err.message);
+            res.status(500).send({status: "Error", error: err.message})
+        })
+})
 router.route("/deleteMarking/:id").delete(async (req, res) => {
     let markingID = req.params.id;
     await Mark.findByIdAndDelete(markingID)
@@ -119,6 +130,19 @@ router.route("/updateS/:id").put(async (req, res) => {
     ).then((studentGroup) => {
         res.send(studentGroup);
     })
+
+    // router.route("/deleteSupervisor/:id").delete(async (req, res) => {
+    //     let markingID = req.params.id;
+    //     console.log(markingID)
+    //     await SupervisorTopic.findByIdAndDelete(markingID)
+    //         .then(() => {
+    //             res.status(200).send({status: "Marking deleted"})
+    //         }).catch((err) => {
+    //             console.log(err.message);
+    //             res.status(500).send({status: "Error", error: err.message})
+    //         })
+    // })
+
     // const update = await Student.findByIdAndUpdate(userID, updateStudent)
     //     .then((user) => {
     //         res.status(200).send({status: "User updated", user: user})

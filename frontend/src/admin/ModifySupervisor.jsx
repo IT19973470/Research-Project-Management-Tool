@@ -66,8 +66,7 @@ export default function  ModifySupervisor()  {
             method:'DELETE',
             headers:{'Content-Type':'application/json'},
         };
-        console.log(students)
-        fetch('http://localhost:9000/rpmt/admin/delete/'+did ,requestOptions)
+        fetch('http://localhost:9000/rpmt/admin/deleteS/'+did ,requestOptions)
     }
 
 
@@ -101,7 +100,7 @@ export default function  ModifySupervisor()  {
                                         <td>{supervisor.interests.join(', ')}</td>
 
                                         <td><button onClick={()=>getTextFields(supervisor)} style={{backgroundColor: "transparent",border:"none",color:"black"}}>Update</button></td>
-                                        <td><button style={{backgroundColor: "transparent",border:"none",color:"black"}}>Delete</button></td>
+                                        <td><button onClick={()=>deleteID(supervisor._id)} style={{backgroundColor: "transparent",border:"none",color:"black"}}>Delete</button></td>
 
                                     </tr>
                                 })
