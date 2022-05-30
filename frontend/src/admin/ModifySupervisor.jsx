@@ -3,10 +3,8 @@ import './ModifySupervisor.css';
 export default function  ModifySupervisor()  {
 
     const [supervisor, setSupervisor] = useState(null);
-    const [name, setName] =useState("");
-    const [email, setEmail] =useState("");
     const [id, setId] =useState("");
-    const [address, setAddress] =useState("");
+
     var [array, setArray] = useState([]);
     const [data, setText]=useState("")
     useEffect (()=>{
@@ -21,20 +19,6 @@ export default function  ModifySupervisor()  {
                 setSupervisor(data)
             });
     })
-
-    function a(){
-
-        var options = ["1", "2", "3", "4", "5"];
-
-        for(var i = 0; i < options.length; i++) {
-            var opt = options[i];
-            var el = document.createElement("option");
-            el.textContent = opt;
-            el.value = opt;
-            select.appendChild(el);
-        }
-
-    }
 
     function getFields(student) {
         console.log(student)
@@ -117,7 +101,7 @@ export default function  ModifySupervisor()  {
                                         <td>{supervisor.interests.join(', ')}</td>
 
                                         <td><button onClick={()=>getTextFields(supervisor)} style={{backgroundColor: "transparent",border:"none",color:"black"}}>Update</button></td>
-                                        <td><button onClick={a} style={{backgroundColor: "transparent",border:"none",color:"black"}}>Delete</button></td>
+                                        <td><button style={{backgroundColor: "transparent",border:"none",color:"black"}}>Delete</button></td>
 
                                     </tr>
                                 })
@@ -134,8 +118,9 @@ export default function  ModifySupervisor()  {
                             </div>
                             <div className="form-group">
                                 <div className="select-editable">
-                                    <select id="selectNumber" onChange={(e)=>{setText(e.target.value)}}>
+                                    <select id="selectNumber" onClick={(e)=>{setText(e.target.value)}}>
                                         <option>Select Interest</option>
+                                        <option></option>
                                     </select>
                                     <input type="text" value={data} className="form-control" id="name1" placeholder="Select Interest"  onChange={(e)=>{setText(e.target.value)}}/></div>
                                   <button type="button"  onClick={handleChange} className="btn btn-primary" >+</button>
