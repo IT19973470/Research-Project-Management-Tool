@@ -18,6 +18,7 @@ import {Marking} from "./src/admin/Marking";
 import {Submission} from "./src/admin/submission";
 import {SupervisorRegister} from "./src/supervisor/SupervisorRegister";
 import {ViewTopics} from "./src/panel_member/ViewTopics";
+import AddPannel from "./src/admin/AddPannel";
 
 // import {Header} from "./Header";
 // import {ViewItems} from "./src/customer/ViewItems";
@@ -43,6 +44,7 @@ export const App = () => {
             <Route path='marking' element={<Marking/>}/>
             <Route path='submission' element={<Submission/>}/>
             <Route path='supervisor' element={<SupervisorRegister/>}/>
+            <Route path='panel' element={<AddPannel/>}/>
             {/*<Route path='view_cart' element={<ViewCart/>}/>*/}
             {/*<Route path='view_wishlist' element={<ViewWishList/>}/>*/}
 
