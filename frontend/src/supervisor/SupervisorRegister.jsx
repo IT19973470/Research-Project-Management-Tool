@@ -18,9 +18,9 @@ export const SupervisorRegister = () => {
 
        fetch('http://localhost:9000/rpmt/admin/addSupervisorTopic',requestOptions)
     }
-    const handleChange = (newValue) => {
-        console.log(array)
-        setArray((array) => [...array, newValue]);
+    const handleChange = () => {
+        console.log(interests)
+        setArray((array) => [...array, interests]);
     };
 
     return (
@@ -38,7 +38,7 @@ export const SupervisorRegister = () => {
                     <div>
                        {array.map(array => <span>{array}<br/></span>)}
                     </div>
-                    <button type="button" onClick={()=>handleChange(interests)}  className="btn btn-primary" >Add Interest</button>
+                    <button type="button" onClick={handleChange}  className="btn btn-primary" >Add Interest</button>
                 </div>
 
                 <button type="button" onClick={add}  className="btn btn-primary" >Add</button>

@@ -69,6 +69,7 @@ router.route("/deleteMarking/:id").delete(async (req, res) => {
 //       console.log(err)
 //     })
 // })
+
 let router1 = router.post('/add', (req, res, next) => {
     if (req.body._id === '') {
         console.log(req.body)
@@ -92,7 +93,7 @@ router.post('/addMarking', (req, res, next) => {
 let router2 = router.post('/addSupervisorTopic', (req, res, next) => {
     console.log(req.body)
     SupervisorTopic.create(
-        {_id: 'S' + Math.floor(Math.random() * 10000), interests:[req.body.interests]}
+        {_id: 'S' + Math.floor(Math.random() * 10000), interests:req.body.interests}
     ).then((data) => {
         res.send(data);
     }).catch(next);
@@ -109,6 +110,23 @@ let router3 = router.post('/addPannel', (req, res, next) => {
 
 });
 
+router.route("/updateS/:id").put(async (req, res) => {
+    console.log(req.body)
+    let userID = req.params.id;
+    SupervisorTopic.updateMany(
+        {_id:userID},
+        {$set: {interests: req.body.interests}}
+    ).then((studentGroup) => {
+        res.send(studentGroup);
+    })
+    // const update = await Student.findByIdAndUpdate(userID, updateStudent)
+    //     .then((user) => {
+    //         res.status(200).send({status: "User updated", user: user})
+    //     }).catch((err) => {
+    //         res.status(500).send({status: "Error", error: err.message})
+    //     })
+
+})
 router.route("/displayMarking").get((req, res) => {
     Mark.find().then((students) => {
         res.json(students)
@@ -119,6 +137,13 @@ router.route("/displayMarking").get((req, res) => {
 
 router.route("/displaySubmission").get((req, res) => {
     Submission.find().then((students) => {
+        res.json(students)
+    }).catch((err) => {
+        console.log(err)
+    })
+})
+router.route("/displaySupervisor").get((req, res) => {
+    SupervisorTopic.find().then((students) => {
         res.json(students)
     }).catch((err) => {
         console.log(err)

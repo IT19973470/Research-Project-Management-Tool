@@ -12,6 +12,7 @@ export const ModifyUsers  = () => {
         console.log(a)
         if(a==="Student"){
             setStudent(true)
+            setSupervisor(false)
         }
         else if(a==="Supervisor"){
             setSupervisor(true)
