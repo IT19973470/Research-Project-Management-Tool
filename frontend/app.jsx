@@ -17,6 +17,8 @@ import {ModifyUsers} from "./src/admin/ModifyUsers";
 import {Marking} from "./src/admin/Marking";
 import {Submission} from "./src/admin/submission";
 import {SupervisorRegister} from "./src/supervisor/SupervisorRegister";
+import {ViewTopics} from "./src/panel_member/ViewTopics";
+
 // import {Header} from "./Header";
 // import {ViewItems} from "./src/customer/ViewItems";
 // import {ViewWishList} from "./src/customer/ViewWishList";
@@ -49,6 +51,9 @@ export const App = () => {
             {/*<Route path='view_inventory' element={<ViewInventory/>}/>*/}
             {/*<Route path='view_customers' element={<ViewCustomers/>}/>*/}
             {/*<Route path='promotions' element={<Promotions/>}/>*/}
+            //panel member
+            <Route path='/panel_member/view_topics' element={<ViewTopics/>}/>
+
         </Routes>
     )
 };

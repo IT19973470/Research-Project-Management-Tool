@@ -79,7 +79,7 @@ export const Marking = () => {
                         <table className="table table-striped" style={{marginTop: '40px'}}>
                             <thead>
                             <tr>
-                                <th scope="col">#</th>
+                                <th >#</th>
                                 <th scope="col" width="20%">Criteria</th>
                                 <th scope="col">Mark Distribution</th>
                             </tr>
