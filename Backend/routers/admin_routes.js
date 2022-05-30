@@ -5,6 +5,7 @@ let Mark = require('../models/Marking');
 let Submission = require('../models/Submission')
 let SupervisorTopic = require("../models/SupervisorTopic")
 let AddPannel =require("../models/Panel")
+let studentGroup=require("../models/StudentGroup")
 router.route("/displayUsers").get((req, res) => {
     Student.find().then((students) => {
         res.json(students)
@@ -114,7 +115,7 @@ let router2 = router.post('/addSupervisorTopic', (req, res, next) => {
 let router3 = router.post('/addPannel', (req, res, next) => {
     console.log(req.body)
     AddPannel.create(
-        {_id: 'P' + Math.floor(Math.random() * 10000), name:req.body.name,grouplist:[req.body.grouplist],stafflist:[req.body.stafflist]}
+        {_id: 'P' + Math.floor(Math.random() * 10000), name:req.body.name,grouplist:req.body.grouplist,stafflist:req.body.stafflist}
     ).then((data) => {
         res.send(data);
     }).catch(next);
@@ -168,6 +169,13 @@ router.route("/displaySubmission").get((req, res) => {
 })
 router.route("/displaySupervisor").get((req, res) => {
     SupervisorTopic.find().then((students) => {
+        res.json(students)
+    }).catch((err) => {
+        console.log(err)
+    })
+})
+router.route("/displayGroups").get((req, res) => {
+    studentGroup.find().then((students) => {
         res.json(students)
     }).catch((err) => {
         console.log(err)
