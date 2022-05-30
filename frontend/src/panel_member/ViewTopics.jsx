@@ -20,25 +20,13 @@ export const ViewTopics = () => {
         fetch('http://localhost:9000/rpmt/panel_member/viewTopics', requestOptions)
             .then(response => { return response.json()})
             .then(data => {
-                console.log(data);
+                // console.log(data);
                 setResearchTopic(data);
             });
     });
 
-    function viewGroupDetails(groupId){
-        const requestOptions = {
-            method: 'GET',
-            headers: {'Content-Type' : 'application/json'}
-        };
-        console.log(studentGroup);
-        fetch('http://localhost:9000/rpmt/panel_member/viewGroup/'+ groupId, requestOptions)
-            .then(response => {return response.json()})
-            .then(data => {
-                console.log(data);
-                setStudentGroup(data);
-                navigate('/group_details');
-            })
-
+    function viewGroupDetails(){
+                navigate('/panel_member/group_details');
     }
 
     return(
@@ -64,7 +52,7 @@ export const ViewTopics = () => {
                             <td>{researchTopic.groupId}</td>
                             <td>{researchTopic.topic}</td>
                             <td>{researchTopic.accepted.toString()}</td>
-                            <td><button onClick={() => viewGroupDetails(researchTopic.groupId)}>View</button></td>
+                            <td><button onClick={() => viewGroupDetails()}>View</button></td>
                         </tr>
                     })
                 }

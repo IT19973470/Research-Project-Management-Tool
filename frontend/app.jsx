@@ -17,6 +17,7 @@ import {ModifyUsers} from "./src/admin/ModifyUsers";
 import {Marking} from "./src/admin/Marking";
 import {Submission} from "./src/admin/submission";
 import {ViewTopics} from "./src/panel_member/ViewTopics";
+import {GroupDetails} from "./src/panel_member/GroupDetails";
 // import {Header} from "./Header";
 // import {ViewItems} from "./src/customer/ViewItems";
 // import {ViewWishList} from "./src/customer/ViewWishList";
@@ -50,6 +51,7 @@ export const App = () => {
             {/*<Route path='promotions' element={<Promotions/>}/>*/}
             //panel member
             <Route path='/panel_member/view_topics' element={<ViewTopics/>}/>
+            <Route path='/panel_member/group_details' element={<GroupDetails/>}/>
 
         </Routes>
     )

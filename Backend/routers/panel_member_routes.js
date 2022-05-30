@@ -14,18 +14,11 @@ router.route('/viewTopics').get((req, res) => {
 
 router.route('/viewGroup/:id').get(async (req, res) => {
     let students = [];
-    let groupId = req.params.groupId;
-    await StudentGroup.findOne((groupId)).then((details)=>{res.json(details)})
-        // .then((studentArray) => {
-        //     studentArray && studentArray.students.forEach((studentId) =>{
-        //         Student.find().then((students) => {res.json(students)})
-        //     })
-        // })
-        // .then(() => {
-        //     res.status(200).send(req.body.toString())
-        // }).catch(err => {
-        //     res.status(500).send({status: 'Error', error:err.message})
-        // })
+    let groupId = req.params.id;
+    await StudentGroup.find(({_id: groupId})).then((details) => {
+        res.json(details)
+    })
+
 });
 
 module.exports = router;
