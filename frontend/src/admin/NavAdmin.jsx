@@ -24,6 +24,10 @@ export const NavAdmin = () => {
                 navigate('/panel')
             }}>Pannel
             </div>
+            <div onClick={() => {
+                navigate('/rolls')
+            }}>View Rolls
+            </div>
         </div>
 
     );

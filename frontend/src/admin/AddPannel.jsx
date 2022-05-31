@@ -10,29 +10,38 @@ export default function  AddPannel()  {
     var [array2, setArray2] = useState([]);
     const [data, setText]=useState("")
     useEffect (()=>{
-        const requestOptions = {
+        getGroups(),getSupervisor()
+
+    }, [])
+
+    function getGroups(){
+    const requestOptions1 = {
+        method: 'GET',
+        headers: {'Content-Type': 'application/json'}
+    };
+    fetch('http://localhost:9000/rpmt/admin/displayGroups',requestOptions1)
+        .then(response1=>{ return response1.json()})
+        .then(data1=>{
+            setStudents(data1)
+        });
+
+    }
+    function getSupervisor() {
+        const requestOptions2 = {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/admin/displaySupervisor',requestOptions)
-            .then(response=>{ return response.json()})
-            .then(data=>{
+        fetch('http://localhost:9000/rpmt/admin/displaySupervisor', requestOptions2)
+            .then(response2 => {
+                return response2.json()
+            })
+            .then(data2 => {
                 //   console.log(data)
-                setSupervisor(data)
+                setSupervisor(data2)
             });
 
-        const requestOptions1 = {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json'}
-        };
-        fetch('http://localhost:9000/rpmt/admin/displayGroups',requestOptions)
-            .then(response=>{ return response.json()})
-            .then(data=>{
-                // console.log(data)
-                setStudents(data)
-            });
-    })
 
+    }
     function getFields(student) {
         console.log(student)
         setText(student)
@@ -132,13 +141,13 @@ export default function  AddPannel()  {
                                 </thead>
                                 <tbody>
                                 {
-                                    students && students.map((student, key) => {
+                                    students && students.map((students, key) => {
                                         return <tr key={key}>
                                             <td>{key + 1}</td>
-                                            <td>{student._id}</td>
-                                            <td>{student.groupId}</td>
-                                            <td>{student.students.join(', ')}</td>
-                                            <td><button onClick={()=>getTextFieldsGroup(student)} style={{backgroundColor: "transparent",border:"none",color:"black"}}>Add</button></td>
+                                            <td>{students._id}</td>
+                                            <td>{students.groupId}</td>
+                                            <td>{students.students.join(', ')}</td>
+                                            <td><button onClick={()=>getTextFieldsGroup(students)} style={{backgroundColor: "transparent",border:"none",color:"black"}}>Add</button></td>
 
                                         </tr>
                                     })
