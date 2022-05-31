@@ -18,9 +18,10 @@ import {Marking} from "./src/admin/Marking";
 import {Submission} from "./src/admin/submission";
 import {SupervisorRegister} from "./src/supervisor/SupervisorRegister";
 import {ViewTopics} from "./src/panel_member/ViewTopics";
+import {GroupDetails} from "./src/panel_member/GroupDetails";
+import {Group} from "./src/panel_member/Group";
 import AddPannel from "./src/admin/AddPannel";
 import ViewRolls from "./src/admin/ViewRolls";
-
 // import {Header} from "./Header";
 // import {ViewItems} from "./src/customer/ViewItems";
 // import {ViewWishList} from "./src/customer/ViewWishList";
@@ -57,7 +58,8 @@ export const App = () => {
             {/*<Route path='promotions' element={<Promotions/>}/>*/}
             //panel member
             <Route path='/panel_member/view_topics' element={<ViewTopics/>}/>
-
+            <Route path='/panel_member/group_details' element={<GroupDetails/>}/>
+            <Route path='/panel_member/group' element={<Group/>}/>
         </Routes>
     )
 };
