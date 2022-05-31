@@ -6,6 +6,7 @@ let Submission = require('../models/Submission')
 let SupervisorTopic = require("../models/SupervisorTopic")
 let AddPannel =require("../models/Panel")
 let studentGroup=require("../models/StudentGroup")
+let researchtopics=require("../models/ResearchTopic")
 router.route("/displayUsers").get((req, res) => {
     Student.find().then((students) => {
         res.json(students)
@@ -179,6 +180,21 @@ router.route("/displayGroups").get((req, res) => {
         res.json(students)
     }).catch((err) => {
         console.log(err)
+    })
+})
+
+
+router.route("/viewRoles").get((req, res) => {
+    AddPannel.aggregate([
+        {$lookup:
+            {from:"studentgroups",localField:"grouplist",foreignField:"groupId",as:"Groups"},
+        },
+        {$lookup:
+                {from:"supervisortopics",localField:"stafflist",foreignField:"_id",as:"Staff"}
+        }
+
+    ]).then((s)=>{
+        res.json(s)
     })
 })
 
