@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import GroupDetails from "./GroupDetails";
 
 export const ViewTopics = () => {
 
@@ -11,7 +12,10 @@ export const ViewTopics = () => {
     const [accepted, setAccepted] = useState('');
     const [studentGroup, setStudentGroup] = useState('');
 
-
+    function getFields(student) {
+        console.log(student.groupId)
+        setGroupId(student)
+    }
     useEffect( () =>{
         const requestOptions = {
             method: 'GET',
@@ -23,7 +27,7 @@ export const ViewTopics = () => {
                 // console.log(data);
                 setResearchTopic(data);
             });
-    });
+    },[]);
 
     function viewGroupDetails(){
                 navigate('/panel_member/group_details');
@@ -52,12 +56,16 @@ export const ViewTopics = () => {
                             <td>{researchTopic.groupId}</td>
                             <td>{researchTopic.topic}</td>
                             <td>{researchTopic.accepted.toString()}</td>
-                            <td><button onClick={() => viewGroupDetails()}>View</button></td>
+                            <td><button onClick={()=>getFields(researchTopic)}>View</button></td>
                         </tr>
                     })
                 }
                 </tbody>
             </table>
+            {
+                <GroupDetails IdPass={groupId}/>
+            }
         </div>
+
     );
 }

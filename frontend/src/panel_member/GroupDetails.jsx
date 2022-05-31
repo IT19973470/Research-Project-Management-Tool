@@ -1,29 +1,27 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 
-export const GroupDetails = () => {
+export default function GroupDetails (groupId)  {
     let navigate = useNavigate();
-
-    const [studentGroup, setStudentGroup] = useState('');
-
+    //console.log(groupId)
+    let [studentGroup, setStudentGroup] = useState('');
     useEffect(() => {
-        viewGroupDetails(studentGroup);
-    })
-    let groupId = studentGroup.groupId;
+         viewGroupDetails();
+    },)
+    // studentGroup.groupId = this.props.groupId;
 
-    function viewGroupDetails(groupId){
+    function viewGroupDetails(){
         const requestOptions = {
             method: 'GET',
             headers: {'Content-Type' : 'application/json'}
         };
-        console.log(studentGroup);
-        fetch('http://localhost:9000/rpmt/panel_member/viewGroup/'+ groupId, requestOptions)
+        fetch('http://localhost:9000/rpmt/panel_member/viewGroup/'+groupId.IdPass.groupId, requestOptions)
             .then(response => {return response.json()})
             .then(data => {
-                console.log(data);
+               // console.log(data[0]);
                 setStudentGroup(data);
-                navigate('/panel_member/group_details');
             })
+        console.log(studentGroup)
 
     }
 
@@ -38,7 +36,6 @@ export const GroupDetails = () => {
                     <th>#</th>
                     <th scope={'col'} width={'20%'}>Group ID</th>
                     <th scope={'col'} width={'30%'}>Research Topic</th>
-                    <th scope={'col'} width={'30%'}>Group Leader</th>
                     <th scope={'col'} width={'30%'}>Members</th>
                     <th scope={'col'} width={'30%'}>Feedback</th>
                 </tr>
@@ -49,8 +46,8 @@ export const GroupDetails = () => {
                             return <tr key={key}>
                                 <td>{key+1}</td>
                                 <td>{studentGroup.groupId}</td>
-                                <td>{studentGroup.topic}</td>
-                                <td>{studentGroup.students}</td>
+                                <td>{groupId.IdPass.topic}</td>
+                                <td><span>{studentGroup.students.join(', ')}</span></td>
                             </tr>
                         })
                     }
