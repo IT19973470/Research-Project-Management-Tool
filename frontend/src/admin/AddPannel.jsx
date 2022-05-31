@@ -106,6 +106,7 @@ export default function  AddPannel()  {
                     justifyContent: 'center'
                 }}>
                     <div style={{width: '500px'}}>
+
                         <table className="table table-striped" style={{marginTop: '40px'}}>
                             <thead>
                             <tr>

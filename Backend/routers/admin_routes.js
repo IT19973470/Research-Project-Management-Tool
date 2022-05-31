@@ -191,6 +191,9 @@ router.route("/viewRoles").get((req, res) => {
         },
         {$lookup:
                 {from:"supervisortopics",localField:"stafflist",foreignField:"_id",as:"Staff"}
+        },
+        {$lookup:
+                {from:"groupsupervisors",localField:"grouplist",foreignField:"groupId",as:"Supervisor"}
         }
 
     ]).then((s)=>{

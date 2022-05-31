@@ -157,18 +157,20 @@ router.get('/get_supervisors/:id', (req, res, next) => {
         }
     ];
     GroupSupervisor.findOne({groupId: req.params.id}).then((grpSupervisor) => {
-        supers.forEach((superObj) => {
-            if (grpSupervisor.supervisor == superObj._id) {
-                superObj.markedSuper = true
-            } else {
-                superObj.markedSuper = false
-            }
-            if (grpSupervisor.coSupervisor == superObj._id) {
-                superObj.markedCoSuper = true
-            } else {
-                superObj.markedCoSuper = false
-            }
-        })
+        if(grpSupervisor!==null) {
+            supers.forEach((superObj) => {
+                if (grpSupervisor.supervisor == superObj._id) {
+                    superObj.markedSuper = true
+                } else {
+                    superObj.markedSuper = false
+                }
+                if (grpSupervisor.coSupervisor == superObj._id) {
+                    superObj.markedCoSuper = true
+                } else {
+                    superObj.markedCoSuper = false
+                }
+            })
+        }
         res.send(supers);
     })
 });
