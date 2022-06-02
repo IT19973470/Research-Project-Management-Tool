@@ -11,14 +11,31 @@ router.get('/check_group/:id', (req, res, next) => {
         students: req.params.id
     }).then((studentsArr) => {
         studentsArr && studentsArr.students.forEach((studentId) => {
-            Student.findOne({_id: studentId}).then((student) => {
-                // console.log(student)
-                students.push(student)
-                if (students.length === studentsArr.students.length) {
-                    res.send({students: students, groupId: studentsArr.groupId});
+            getStudent(studentId).then(student => {
+                    students.push(student)
                 }
-            })
+            )
         })
+        Promise.all(studentPromises).then(() => {
+            if (studentsArr !== null) {
+                res.send({
+                    students: students,
+                    groupId: studentsArr.groupId,
+                    leader: studentsArr.leader
+                });
+            } else {
+                res.send([])
+            }
+        })
+    }).catch(next);
+});
+
+router.get('/set_leader/:id/:leaderId', (req, res, next) => {
+    StudentGroup.updateOne(
+        {groupId: req.params.id},
+        {leader: req.params.leaderId}
+    ).then((studentsArr) => {
+        res.send({reply: true})
     }).catch(next);
 });
 
@@ -63,10 +80,15 @@ function getStudent(studentId) {
     return studentPromise;
 }
 
-router.delete('/remove_from_group/:groupId/:id', (req, res, next) => {
+router.delete('/remove_from_group/:groupId/:id/:leader', (req, res, next) => {
+    let body;
+    if (req.params.leader) {
+        body = {$pull: {'students': req.params.id}, leader: ''}
+    } else {
+        body = {$pull: {'students': req.params.id}}
+    }
     StudentGroup.updateOne(
-        {groupId: req.params.groupId},
-        {$pull: {'students': req.params.id}}
+        {groupId: req.params.groupId}, body
     ).then((studentsArr) => {
         res.send({reply: true});
     }).catch(next);
@@ -89,7 +111,7 @@ router.post('/add_group', (req, res, next) => {
             req.body.leader = req.body.student
         }
         StudentGroup.create(req.body).then((studentGroup) => {
-            res.send(studentGroup);
+            res.send(req.body);
         }).catch(next);
     } else {
         StudentGroup.updateOne(
@@ -211,12 +233,12 @@ router.get('/get_supervisors/:id', (req, res, next) => {
     ];
     StudentGroup.findOne({groupId: req.params.id}).then((grpSupervisor) => {
         supers.forEach((superObj) => {
-            if (grpSupervisor.supervisor == superObj._id) {
+            if (grpSupervisor && grpSupervisor.supervisor == superObj._id) {
                 superObj.markedSuper = true
             } else {
                 superObj.markedSuper = false
             }
-            if (grpSupervisor.coSupervisor == superObj._id) {
+            if (grpSupervisor && grpSupervisor.coSupervisor == superObj._id) {
                 superObj.markedCoSuper = true
             } else {
                 superObj.markedCoSuper = false

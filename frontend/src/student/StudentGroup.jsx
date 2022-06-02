@@ -2,6 +2,7 @@ import React, {Component, useState, useEffect} from 'react';
 import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Environment} from "../../../Backend/Environment";
+import 'font-awesome/css/font-awesome.min.css';
 
 export const StudentGroups = () => {
     let navigate = useNavigate();
@@ -14,6 +15,7 @@ export const StudentGroups = () => {
     const [newGroup, setNewGroup] = useState(false);
     const [students, setStudents] = useState(null);
     const [groups, setGroups] = useState(null);
+    const [leader, setLeader] = useState('');
 
     useEffect(() => {
         AllGroups()
@@ -43,6 +45,7 @@ export const StudentGroups = () => {
                         <span style={{marginRight: '30px'}}>Group ID</span>
                         <span style={{width: '100%'}}>
                             <input type="text" className="form-control"
+                                   value={id}
                                    onChange={e => setId(e.target.value)}/>
                         </span>
                     </div>
@@ -94,7 +97,28 @@ export const StudentGroups = () => {
                                     return <tr key={key}>
                                         <td>{key + 1}</td>
                                         <td>{student._id}</td>
-                                        <td>{student.name}</td>
+                                        <td>
+                                            {
+                                                (student._id == leader) ?
+                                                    <span>{student.name} (Leader)</span> :
+                                                    <span>{student.name}</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            {
+                                                (student._id == leader) ?
+                                                    <div>
+                                                        Marked
+                                                    </div>
+                                                    :
+                                                    <button onClick={() => {
+                                                        // setSupervisor(supervisorObj)
+                                                        markLeader(student._id)
+                                                    }
+                                                    }>Set as leader
+                                                    </button>
+                                            }
+                                        </td>
                                     </tr>
                                 })
                             }
@@ -106,27 +130,49 @@ export const StudentGroups = () => {
             <div>
                 {
                     groups && groups.map((group, key1) => {
-                        return <div key={key1} style={{
+                        return <div className="row" key={key1} style={{
                             border: '1px solid black',
                             borderRadius: '10px',
                             marginTop: '15px',
                             padding: '10px'
                         }}>
-                            <div>
-                                <span style={{fontWeight: 'bold'}}>Group ID : </span>
-                                <span>{group.groupId}</span>
+                            <div className="col-10">
+                                <div>
+                                    <span style={{fontWeight: 'bold'}}>Group ID : </span>
+                                    <span>{group.groupId}</span>
+                                </div>
+                                <div>
+                                    <span style={{fontWeight: 'bold'}}>Group Leader : </span>
+                                    {
+                                        (group.leader !== null) ?
+                                            <span>{group.leader.name} ( {group.leader._id} )</span> :
+                                            <span>No leader assigned</span>
+                                    }
+                                </div>
+                                <div>
+                                    <span style={{fontWeight: 'bold'}}>Members : </span>
+                                    {
+                                        group.students.map((student, key2) => {
+                                            return <span key={key2}>{student.name} ( {student._id} ) , </span>
+                                        })
+                                    }
+                                </div>
+                                <div>
+                                    <span style={{fontWeight: 'bold'}}>Members Count : </span>
+                                    <span>{group.students.length}</span>
+                                </div>
+                                <div>
+                                    <span style={{fontWeight: 'bold'}}>Max Count : </span>
+                                    <span>4</span>
+                                </div>
                             </div>
-                            <div>
-                                <span style={{fontWeight: 'bold'}}>Group Leader : </span>
-                                <span>{group.leader.name} ({group.leader._id})</span>
-                            </div>
-                            <div>
-                                <span style={{fontWeight: 'bold'}}>Members : </span>
-                            {
-                                group.students.map((student, key2) => {
-                                    return <span key={key2}>{student.name} ({student._id}), </span>
-                                })
-                            }
+                            <div className="col-2"
+                                 style={{display: 'grid', justifyContent: 'center', alignContent: 'center'}}>
+                                <i className="fa fa-pencil" style={{color: 'green'}}
+                                   onClick={() => {
+                                       setStudents(group.students);
+                                       setId(group.groupId)
+                                   }}></i>
                             </div>
                         </div>
                     })
@@ -154,8 +200,9 @@ export const StudentGroups = () => {
                 } else {
                     setRegistered(true)
                     setStudents(reply.students);
+                    setLeader(reply.leader)
                     localStorage.setItem('group', JSON.stringify(reply))
-                    // console.log(reply)
+                    console.log(reply)
                     // GetGroup();
                 }
             });
@@ -174,25 +221,32 @@ export const StudentGroups = () => {
         fetch('http://localhost:9000/rpmt/student/add_group', requestOptions)
             .then(response => response.json())
             .then(reply => {
-                // console.log(reply)
+                console.log(reply)
                 if (reply !== null) {
-                    setRegistered(true);
                     localStorage.setItem('group', JSON.stringify(reply))
+                    CheckGroup(false)
+                    AllGroups();
                 }
             });
     }
 
     function RemoveGroup() {
+        let grpLeader = false;
+        if (leader == JSON.parse(localStorage.getItem('user'))._id) {
+            grpLeader = true;
+        }
         const requestOptions = {
             method: 'DELETE',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/student/remove_from_group/' + JSON.parse(localStorage.getItem('group')).groupId + '/' + JSON.parse(localStorage.getItem('user'))._id, requestOptions)
+        fetch('http://localhost:9000/rpmt/student/remove_from_group/' + JSON.parse(localStorage.getItem('group')).groupId + '/' + JSON.parse(localStorage.getItem('user'))._id + '/' + grpLeader, requestOptions)
             .then(response => response.json())
             .then(reply => {
                 if (reply) {
-                    setRegistered(false)
+                    setRegistered(false);
                     localStorage.removeItem('group');
+                    setStudents([]);
+                    AllGroups();
                 }
             });
     }
@@ -206,6 +260,19 @@ export const StudentGroups = () => {
             .then(response => response.json())
             .then(reply => {
                 setGroups(reply)
+            });
+    }
+
+    function markLeader(leaderId) {
+        const requestOptions = {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
+        };
+        fetch(Environment.url + 'student/set_leader/' + id + '/' + leaderId, requestOptions)
+            .then(response => response.json())
+            .then(reply => {
+                CheckGroup(false);
+                AllGroups();
             });
     }
 };
