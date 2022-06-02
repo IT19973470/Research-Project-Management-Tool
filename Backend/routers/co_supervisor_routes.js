@@ -3,6 +3,7 @@ const router = express.Router();
 const ResearchTopic = require('../models/ResearchTopic');
 const GroupSupervisor = require('../models/GroupSupervisor');
 const CoSupervisorTopic = require('../models/CoSupervisorTopic');
+const Marking = require('../models/Marking');
 
 let router1 = router.post('/addCoSupervisorTopic', (req, res, next) => {
     console.log(req.body)
@@ -43,5 +44,21 @@ router.route("/acceptGroups/:groupID").put(async (req, res) => {
         res.send(groupCoSupervisor);
     })
 })
+
+// router.route('/viewDocuments').get((req, res) => {
+//     ResearchTopic.find().then((topics) => {
+//         res.json(topics);
+//     }).catch(err => {
+//         console.log(err);
+//     })
+// });
+
+router.route('/viewMarking').get((req, res) => {
+    Marking.find().then((Markings) => {
+        res.json(Markings);
+    }).catch(err => {
+        console.log(err);
+    })
+});
 
 module.exports = router;

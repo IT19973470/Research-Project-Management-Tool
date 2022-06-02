@@ -6,6 +6,7 @@ const SupervisorTopic = require('../models/SupervisorTopic')
 const Student = require('../models/Student');
 const Supervisor = require("../models/Supervisor");
 const GroupSupervisor = require('../models/GroupSupervisor');
+const Marking = require('../models/Marking');
 
 router.route("/add_supervisor").post((req,res)=>{
     const name = req.body.name;
@@ -67,9 +68,17 @@ router.route("/acceptGroups/:groupID").put(async (req, res) => {
     })
 })
 
-router.route('/viewDocuments').get((req, res) => {
-    ResearchTopic.find().then((topics) => {
-        res.json(topics);
+// router.route('/viewDocuments').get((req, res) => {
+//     ResearchTopic.find().then((topics) => {
+//         res.json(topics);
+//     }).catch(err => {
+//         console.log(err);
+//     })
+// });
+
+router.route('/viewMarking').get((req, res) => {
+    Marking.find().then((Markings) => {
+        res.json(Markings);
     }).catch(err => {
         console.log(err);
     })
