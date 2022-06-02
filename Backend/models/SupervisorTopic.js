@@ -9,8 +9,17 @@ const SupervisorTopic = new Schema({
     name: {
         type: String
     },
+    email:{
+        type:String
+    },
+    mobile:{
+        type:String
+    },
     interests: {
         type: Array
+    },
+    address:{
+        type:String
     }
 });
 
