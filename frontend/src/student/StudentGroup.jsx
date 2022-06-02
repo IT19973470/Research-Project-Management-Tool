@@ -13,8 +13,10 @@ export const StudentGroups = () => {
     const [otherUserRegistered, setOtherUserRegistered] = useState(0);
     const [newGroup, setNewGroup] = useState(false);
     const [students, setStudents] = useState(null);
+    const [groups, setGroups] = useState(null);
 
     useEffect(() => {
+        AllGroups()
         CheckGroup(false)
     }, [])
 
@@ -47,14 +49,14 @@ export const StudentGroups = () => {
                     <div>
                         <button className="btn btn-warning"
                                 style={{fontWeight: 'bold', marginLeft: '10px'}}
-                                onClick={() => RegisterGroup()}>
+                                onClick={() => RegisterGroup(false)}>
                             Add
                         </button>
                         <button className="btn btn-warning"
                                 style={{marginTop: '30px', fontWeight: 'bold', marginLeft: '10px'}}
                                 onClick={() => {
                                     setId('')
-                                    RegisterGroup()
+                                    RegisterGroup(true)
                                 }}>
                             Create new group
                         </button>
@@ -101,6 +103,35 @@ export const StudentGroups = () => {
                     </div>
                 </div>
             </div>
+            <div>
+                {
+                    groups && groups.map((group, key1) => {
+                        return <div key={key1} style={{
+                            border: '1px solid black',
+                            borderRadius: '10px',
+                            marginTop: '15px',
+                            padding: '10px'
+                        }}>
+                            <div>
+                                <span style={{fontWeight: 'bold'}}>Group ID : </span>
+                                <span>{group.groupId}</span>
+                            </div>
+                            <div>
+                                <span style={{fontWeight: 'bold'}}>Group Leader : </span>
+                                <span>{group.leader.name} ({group.leader._id})</span>
+                            </div>
+                            <div>
+                                <span style={{fontWeight: 'bold'}}>Members : </span>
+                            {
+                                group.students.map((student, key2) => {
+                                    return <span key={key2}>{student.name} ({student._id}), </span>
+                                })
+                            }
+                            </div>
+                        </div>
+                    })
+                }
+            </div>
         </div>
     );
 
@@ -130,13 +161,14 @@ export const StudentGroups = () => {
             });
     }
 
-    function RegisterGroup() {
+    function RegisterGroup(leader) {
         const requestOptions = {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 groupId: id,
-                student: JSON.parse(localStorage.getItem('user'))._id
+                student: JSON.parse(localStorage.getItem('user'))._id,
+                leader: leader
             })
         };
         fetch('http://localhost:9000/rpmt/student/add_group', requestOptions)
@@ -162,6 +194,18 @@ export const StudentGroups = () => {
                     setRegistered(false)
                     localStorage.removeItem('group');
                 }
+            });
+    }
+
+    function AllGroups() {
+        const requestOptions = {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
+        };
+        fetch(Environment.url + 'student/get_groups', requestOptions)
+            .then(response => response.json())
+            .then(reply => {
+                setGroups(reply)
             });
     }
 };

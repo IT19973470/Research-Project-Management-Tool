@@ -4,8 +4,6 @@ const router = express.Router();
 const Student = require('../models/Student');
 const StudentGroup = require('../models/StudentGroup');
 const User = require('../models/User');
-const ResearchTopic = require('../models/ResearchTopic');
-const GroupSupervisor = require('../models/GroupSupervisor');
 
 router.get('/check_group/:id', (req, res, next) => {
     let students = [];
@@ -23,6 +21,47 @@ router.get('/check_group/:id', (req, res, next) => {
         })
     }).catch(next);
 });
+
+router.get('/get_groups', (req, res, next) => {
+    let studentGrp = [];
+    StudentGroup.find().then((studentGroupsArr) => {
+        studentGroupsArr && studentGroupsArr.forEach((studentGrpObj) => {
+            let students = [];
+            let leader;
+            studentGrpObj && studentGrpObj.students.forEach((studentId) => {
+                getStudent(studentId).then(student => {
+                        students.push(student)
+                    }
+                )
+            })
+            getStudent(studentGrpObj.leader).then(student => {
+                leader = student;
+            })
+            Promise.all(studentPromises).then(() => {
+                studentGrp.push({
+                    groupId: studentGrpObj.groupId,
+                    students: students,
+                    leader: leader
+                })
+            })
+        })
+        Promise.all(studentPromises).then(() => {
+            res.send(studentGrp)
+        })
+    }).catch(next);
+});
+
+let studentPromises = [];
+
+function getStudent(studentId) {
+    let studentPromise = new Promise(resolve => {
+        Student.findOne({_id: studentId}).then((student) => {
+            resolve(student);
+        })
+    })
+    studentPromises.push(studentPromise);
+    return studentPromise;
+}
 
 router.delete('/remove_from_group/:groupId/:id', (req, res, next) => {
     StudentGroup.updateOne(
@@ -45,7 +84,10 @@ router.post('/student_register', (req, res, next) => {
 router.post('/add_group', (req, res, next) => {
     if (req.body.groupId === '') {
         req.body.groupId = 'G' + Math.floor(Math.random() * 10000);
-        req.body.students = [req.body.student]
+        req.body.students = [req.body.student];
+        if (req.body.leader) {
+            req.body.leader = req.body.student
+        }
         StudentGroup.create(req.body).then((studentGroup) => {
             res.send(studentGroup);
         }).catch(next);
@@ -60,34 +102,45 @@ router.post('/add_group', (req, res, next) => {
 });
 
 router.post('/add_research_topic', (req, res, next) => {
-    ResearchTopic.create(req.body).then((researchTopic) => {
-        res.send(researchTopic);
+    StudentGroup.updateMany(
+        {groupId: req.body.groupId, "topics.topicRegistered": true},
+        {$set: {"topics.$.topicRegistered": false}}
+    ).then(() => {
+        StudentGroup.updateOne(
+            {groupId: req.body.groupId},
+            {
+                $push: {
+                    topics: req.body.topic
+                }
+            }
+        ).then(() => {
+            StudentGroup.findOne({groupId: req.body.groupId}).then((studentGrp) => {
+                res.send(studentGrp.topics.reverse());
+            })
+        }).catch(next);
     }).catch(next);
 });
 
 router.delete('/remove_research_topic/:id', (req, res, next) => {
-    ResearchTopic.updateOne(
+    StudentGroup.updateOne(
         {
             $and: [
                 {groupId: req.params.id},
-                {registered: true}
+                {topicRegistered: true}
             ]
         },
-        {registered: false}
+        {topicRegistered: false}
     ).then((researchTopic) => {
         res.send({reply: true});
     }).catch(next);
 });
 
 router.get('/topic_registered/:id', (req, res, next) => {
-    ResearchTopic.findOne({
-        $and: [
-            {groupId: req.params.id},
-            {registered: true}
-        ]
+    StudentGroup.findOne({
+        groupId: req.params.id
     }).then((researchTopic) => {
         if (researchTopic !== null) {
-            res.send({reply: researchTopic});
+            res.send({reply: researchTopic.topics.reverse()});
         } else {
             res.send({reply: null});
         }
@@ -95,7 +148,7 @@ router.get('/topic_registered/:id', (req, res, next) => {
 });
 
 router.post('/add_group_supervisor', (req, res, next) => {
-    GroupSupervisor.findOne({groupId: req.body.groupId}).then((supervisor) => {
+    StudentGroup.findOne({groupId: req.body.groupId}).then((supervisor) => {
         let body;
         if (req.body.val === 0) {
             body = {
@@ -107,13 +160,13 @@ router.post('/add_group_supervisor', (req, res, next) => {
             }
         }
         if (supervisor !== null) {
-            GroupSupervisor.updateOne(
+            StudentGroup.updateOne(
                 {groupId: req.body.groupId}, body
             ).then((supervisorObj) => {
                 res.send({supervisor: req.body.supervisor, coSupervisor: req.body.coSupervisor, val: req.body.val});
             }).catch(next);
         } else {
-            GroupSupervisor.create(req.body).then((groupSupervisor) => {
+            StudentGroup.create(req.body).then((groupSupervisor) => {
                 res.send(groupSupervisor);
             }).catch(next);
         }
@@ -138,25 +191,25 @@ router.get('/get_supervisors/:id', (req, res, next) => {
         {
             _id: 1,
             name: 'Gayan',
-            interests: 'ML'
+            interests: ['ML', 'AI']
         },
         {
             _id: 2,
             name: 'Kamal',
-            interests: 'AI'
+            interests: ['AI']
         },
         {
             _id: 3,
             name: 'Sunil',
-            interests: 'Network'
+            interests: ['Network']
         },
         {
             _id: 4,
             name: 'Amal',
-            interests: 'IOT'
+            interests: ['IOT']
         }
     ];
-    GroupSupervisor.findOne({groupId: req.params.id}).then((grpSupervisor) => {
+    StudentGroup.findOne({groupId: req.params.id}).then((grpSupervisor) => {
         supers.forEach((superObj) => {
             if (grpSupervisor.supervisor == superObj._id) {
                 superObj.markedSuper = true

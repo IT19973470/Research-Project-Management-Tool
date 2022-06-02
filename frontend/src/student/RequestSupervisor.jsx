@@ -85,7 +85,13 @@ export const RequestSupervisor = () => {
                     {
                         supervisors && supervisors.map(function (supervisorObj, key) {
                             return <tr key={key}>
-                                <td style={tableStyle}>{supervisorObj.interests}</td>
+                                <td style={tableStyle}>
+                                {
+                                    supervisorObj.interests && supervisorObj.interests.map(function (interest, key1) {
+                                        return <div>{interest}</div>
+                                    })
+                                }
+                                </td>
                                 <td style={tableStyle}>{supervisorObj.name}</td>
                                 <td style={tableStyle}>
                                     {
@@ -180,7 +186,6 @@ export const RequestSupervisor = () => {
         fetch('http://localhost:9000/rpmt/student/add_group_supervisor', requestOptions)
             .then(response => response.json())
             .then(reply => {
-                console.log(reply)
                 if (reply !== null) {
                     supervisors.forEach((grpSupervisor) => {
                         // console.log(grpSupervisor._id)
@@ -211,6 +216,7 @@ export const RequestSupervisor = () => {
             fetch('http://localhost:9000/rpmt/student/get_supervisors/' + groupId, requestOptions)
                 .then(response => response.json())
                 .then(supervisors => {
+                    console.log(supervisors)
                     setSupervisors(supervisors)
                 });
         }
