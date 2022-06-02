@@ -22,6 +22,9 @@ const SupervisorSchema = new Schema({
     password:{
         type: String,
         required: [true, 'Password is required']
+    },
+    interests: {
+        type: Array
     }
 
 });

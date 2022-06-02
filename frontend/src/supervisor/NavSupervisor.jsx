@@ -1,5 +1,7 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './NavBarSup.css'
 
 const prefix = '/supervisor';
 
@@ -11,6 +13,10 @@ export const NavSupervisor = () => {
             <div onClick={() => {
                 navigate(prefix + '/view_topics')
             }}>View Topics
+            </div>
+            <div onClick={() => {
+                navigate(prefix + '/add_supervisor')
+            }}>Add Supervisor
             </div>
         </div>
     );
