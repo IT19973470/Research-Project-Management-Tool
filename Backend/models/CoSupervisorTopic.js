@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const SupervisorTopic = new Schema({
+const CoSupervisorTopic = new Schema({
     _id: {
         type: String,
         required: [true, 'ID field is required']
@@ -14,5 +14,5 @@ const SupervisorTopic = new Schema({
     }
 });
 
-const supervisorTopic = mongoose.model('SupervisorTopic', SupervisorTopic);
-module.exports = supervisorTopic;
+const cosupervisorTopic = mongoose.model('CoSupervisorTopic', CoSupervisorTopic);
+module.exports = cosupervisorTopic;
