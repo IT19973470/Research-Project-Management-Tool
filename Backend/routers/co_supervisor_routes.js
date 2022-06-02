@@ -1,35 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const ResearchTopic = require('../models/ResearchTopic');
-const StudentGroup = require('../models/StudentGroup');
-const SupervisorTopic = require('../models/SupervisorTopic')
-const Student = require('../models/Student');
-const Supervisor = require("../models/Supervisor");
 const GroupSupervisor = require('../models/GroupSupervisor');
+const CoSupervisorTopic = require('../models/CoSupervisorTopic');
 
-router.route("/add_supervisor").post((req,res)=>{
-    const name = req.body.name;
-    const address = req.body.address;
-    const email = req.body.email;
-    const password  = req.body.password;
-
-    const newSupervisor = new Supervisor({
-        name,
-        address,
-        email,
-        password
-    })
-
-    newSupervisor.save().then(()=>{
-        res.json("Supervisor Added")
-    }).catch((err)=>{
-        console.log(err);
-    })
-})
-
-router.post('/addSupervisorTopic', (req, res, next) => {
+let router1 = router.post('/addCoSupervisorTopic', (req, res, next) => {
     console.log(req.body)
-    SupervisorTopic.create(
+    CoSupervisorTopic.create(
         {_id: 'S' + Math.floor(Math.random() * 10000), interests:req.body.interests}
     ).then((data) => {
         res.send(data);
@@ -61,18 +38,10 @@ router.route("/acceptGroups/:groupID").put(async (req, res) => {
     let groupID = req.params.groupId;
     GroupSupervisor.updateOne(
         {groupId:groupID},
-        {$set: {supervisor: req.body.supervisor}}
-    ).then((groupSupervisor) => {
-        res.send(groupSupervisor);
+        {$set: {coSupervisor: req.body.coSupervisor}}
+    ).then((groupCoSupervisor) => {
+        res.send(groupCoSupervisor);
     })
 })
-
-router.route('/viewDocuments').get((req, res) => {
-    ResearchTopic.find().then((topics) => {
-        res.json(topics);
-    }).catch(err => {
-        console.log(err);
-    })
-});
 
 module.exports = router;

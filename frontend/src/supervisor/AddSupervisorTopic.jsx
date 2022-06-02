@@ -7,19 +7,18 @@ export const AddSupervisorTopic = () => {
     const [name, setName] = useState("");
     const [interests, setTitle] =useState("");
     const [array, setArray] = useState([]);
-    
+
     function add(){
         const requestOptions ={
             method:'POST',
             headers:{'Content-Type':'application/json'},
             body:JSON.stringify({
                 _id:'',
-                name:'',
                 interests:array
             })
         };
 
-       fetch('http://localhost:9000/rpmt/supervisor/addSupervisorTopic',requestOptions)
+       fetch('http://localhost:9000/rpmt/add_supervisor_topic',requestOptions)
     }
     const handleChange = () => {
         console.log(interests)
