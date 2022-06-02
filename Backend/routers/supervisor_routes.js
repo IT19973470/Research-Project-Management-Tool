@@ -10,14 +10,9 @@ const Staff = require("../models/Staff");
 let router1 = router.post('/addSupervisorTopic', (req, res, next) => {
     console.log(req.body)
     SupervisorTopic.create(
-        {
-            _id: 'S' + Math.floor(Math.random() * 10000), 
-            interests:req.body.interests,
-            name:req.body.name,
-            email:req.body.email,
-            address : req.body.address,
-            mobile:req.body.mobile
-        }
+        {_id: 'S' + Math.floor(Math.random() * 10000),
+        name:req.body.name,
+        interests:req.body.interests}
     ).then((data) => {
         res.send(data);
     }).catch(next);

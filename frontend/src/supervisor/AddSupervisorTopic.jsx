@@ -2,21 +2,24 @@ import React, {Component, useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export const SupervisorRegister = () => {
+export const AddSupervisorTopic = () => {
 
+    const [name, setName] = useState("");
     const [interests, setTitle] =useState("");
     const [array, setArray] = useState([]);
+    
     function add(){
         const requestOptions ={
             method:'POST',
             headers:{'Content-Type':'application/json'},
             body:JSON.stringify({
                 _id:'',
+                name:'',
                 interests:array
             })
         };
 
-       fetch('http://localhost:9000/rpmt/admin/addSupervisorTopic',requestOptions)
+       fetch('http://localhost:9000/rpmt/supervisor/addSupervisorTopic',requestOptions)
     }
     const handleChange = () => {
         console.log(interests)
@@ -28,13 +31,13 @@ export const SupervisorRegister = () => {
         <div>
             <form  align="center">
                 <div className="form-group">
-                    <h1>Add Supervisor</h1>
+                    <h1>Add Supervisor Topic</h1>
                     <label htmlFor="na,e">Name:</label>
-                    <input type="text"  className="form-control" id="name"  placeholder="Enter submission title"/>
+                    <input type="text"  className="form-control" id="name"  placeholder="Enter name" onChange={(e)=>{setName(e.target.value)}}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="na,e">Interests:</label>
-                    <input type="text"  className="form-control" id="name" placeholder="Enter Submission details"  onChange={(e)=>{setTitle(e.target.value)}}/>
+                    <input type="text"  className="form-control" id="name" placeholder="Enter interests"  onChange={(e)=>{setTitle(e.target.value)}}/>
                     <div>
                        {array.map(array => <span>{array}<br/></span>)}
                     </div>
