@@ -26,8 +26,12 @@ export const StudentGroups = () => {
     if (registered) {
         registeredContent =
             <div>
-                {JSON.parse(localStorage.getItem('user'))._id} is registered for a group.
-                Group ID is {JSON.parse(localStorage.getItem('group')).groupId}
+                <span style={{paddingTop: '6px'}}>
+                    <span style={{fontWeight: 'bold'}}>{JSON.parse(localStorage.getItem('user'))._id} </span>
+                    is registered for a group.
+                Group ID is
+                    <span style={{fontWeight: 'bold'}}> {JSON.parse(localStorage.getItem('group')).groupId}</span>
+                </span>
                 <button className="btn btn-warning"
                         style={{fontWeight: 'bold', marginLeft: '10px'}}
                         onClick={() => RemoveGroup()}>
@@ -42,27 +46,28 @@ export const StudentGroups = () => {
                 </div>
                 <div>
                     <div style={{display: 'flex', marginTop: '20px'}}>
-                        <span style={{marginRight: '30px'}}>Group ID</span>
-                        <span style={{width: '100%'}}>
+                        <span style={{marginRight: '30px', paddingTop: '6px'}}>Group ID</span>
+                        <span>
                             <input type="text" className="form-control"
                                    value={id}
                                    onChange={e => setId(e.target.value)}/>
                         </span>
-                    </div>
-                    <div>
                         <button className="btn btn-warning"
                                 style={{fontWeight: 'bold', marginLeft: '10px'}}
                                 onClick={() => RegisterGroup(false)}>
                             Add
                         </button>
                         <button className="btn btn-warning"
-                                style={{marginTop: '30px', fontWeight: 'bold', marginLeft: '10px'}}
+                                style={{fontWeight: 'bold', marginLeft: '10px'}}
                                 onClick={() => {
                                     setId('')
                                     RegisterGroup(true)
                                 }}>
                             Create new group
                         </button>
+                    </div>
+                    <div>
+
                     </div>
                 </div>
             </div>
@@ -81,7 +86,7 @@ export const StudentGroups = () => {
                     display: 'flex',
                     justifyContent: 'center'
                 }}>
-                    <div style={{width: '500px'}}>
+                    <div style={{width: '100%'}}>
                         {registeredContent}
                         <table className="table table-striped" style={{marginTop: '40px'}}>
                             <thead>
@@ -107,11 +112,11 @@ export const StudentGroups = () => {
                                         <td>
                                             {
                                                 (student._id == leader) ?
-                                                    <div>
-                                                        Marked
+                                                    <div style={{fontSize: '14px'}}>
+                                                        Marked as leader
                                                     </div>
                                                     :
-                                                    <button onClick={() => {
+                                                    <button className="btn btn-secondary btn-sm" onClick={() => {
                                                         // setSupervisor(supervisorObj)
                                                         markLeader(student._id)
                                                     }
