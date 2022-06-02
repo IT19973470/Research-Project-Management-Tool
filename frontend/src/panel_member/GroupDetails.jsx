@@ -48,6 +48,7 @@ export default function GroupDetails (groupId)  {
                                 <td>{studentGroup.groupId}</td>
                                 <td>{groupId.IdPass.topic}</td>
                                 <td><span>{studentGroup.students.join(', ')}</span></td>
+                                <td><button>Go</button></td>
                             </tr>
                         })
                     }
