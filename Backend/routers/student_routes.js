@@ -174,11 +174,11 @@ router.post('/add_group_supervisor', (req, res, next) => {
         let body;
         if (req.body.val === 0) {
             body = {
-                supervisor: req.body.supervisor
+                supervisor: {_id: req.body.supervisor}
             }
         } else {
             body = {
-                coSupervisor: req.body.coSupervisor
+                coSupervisor: {_id: req.body.coSupervisor}
             }
         }
         if (supervisor !== null) {
@@ -233,15 +233,15 @@ router.get('/get_supervisors/:id', (req, res, next) => {
     ];
     StudentGroup.findOne({groupId: req.params.id}).then((grpSupervisor) => {
         supers.forEach((superObj) => {
-            if (grpSupervisor && grpSupervisor.supervisor == superObj._id) {
-                superObj.markedSuper = true
+            if (grpSupervisor && grpSupervisor.supervisor._id == superObj._id) {
+                superObj.markedSuper = 1
             } else {
-                superObj.markedSuper = false
+                superObj.markedSuper = 0
             }
-            if (grpSupervisor && grpSupervisor.coSupervisor == superObj._id) {
-                superObj.markedCoSuper = true
+            if (grpSupervisor && grpSupervisor.coSupervisor._id == superObj._id) {
+                superObj.markedCoSuper = 1
             } else {
-                superObj.markedCoSuper = false
+                superObj.markedCoSuper = 0
             }
         })
         res.send(supers);

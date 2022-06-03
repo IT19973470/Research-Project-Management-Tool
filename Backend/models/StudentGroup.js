@@ -14,28 +14,13 @@ const StudentGroupSchema = new Schema({
     leader: {
         type: String
     },
-    // topics: {
-    //     topic: {
-    //         type: String
-    //     },
-    //     topicInterests: {
-    //         type: Array
-    //     },
-    //     topicDescription: {
-    //         type: String
-    //     },
-    //     topicAccepted: {
-    //         type: Boolean
-    //     },
-    //     topicRegistered: {
-    //         type: Boolean
-    //     }
-    // },
     supervisor: {
-        type: String
+        _id: String,
+        accepted: Boolean
     },
     coSupervisor: {
-        type: String
+        _id: String,
+        accepted: Boolean
     }
 });
 

@@ -36,49 +36,84 @@ export const RequestSupervisor = () => {
                                 <div>
                                     {
                                         supervisors && supervisors.map(function (supervisorObj, key) {
-                                            return <div key={key} style={{
+                                            return <div className="row" key={key} style={{
                                                 border: '1px solid black',
                                                 borderRadius: '10px',
                                                 marginTop: '15px',
                                                 padding: '10px'
                                             }}>
-                                                <div>
-                                                    {
-                                                        supervisorObj.interests && supervisorObj.interests.map(function (interest, key1) {
-                                                            return <div key={key1}>{interest}</div>
-                                                        })
-                                                    }
+                                                <div className="col-6">
+                                                    <div>
+                                                        <span style={{fontWeight: 'bold'}}>Supervisor Name : </span>
+                                                        <span>{supervisorObj.name}</span>
+                                                    </div>
+                                                    <div>
+                                                        <span style={{fontWeight: 'bold'}}>Interests In : </span>
+                                                        {
+                                                            supervisorObj.interests && supervisorObj.interests.map(function (interest, key1) {
+                                                                return <span key={key1}>{interest} , </span>
+                                                            })
+                                                        }
+                                                    </div>
                                                 </div>
-                                                <div>{supervisorObj.name}</div>
-                                                <div>
-                                                    {
-                                                        supervisorObj.markedSuper ?
-                                                            <div>
-                                                                Marked
-                                                            </div>
-                                                            :
-                                                            <button onClick={() => {
-                                                                // setSupervisor(supervisorObj)
-                                                                RegisterSupervisor(supervisorObj, 0);
-                                                            }
-                                                            }>Add as Supervisor
-                                                            </button>
-                                                    }
-                                                </div>
-                                                <div>
-                                                    {
-                                                        supervisorObj.markedCoSuper ?
-                                                            <div>
-                                                                Marked
-                                                            </div>
-                                                            :
-                                                            <button onClick={() => {
-                                                                // setCoSupervisor(supervisorObj)
-                                                                RegisterSupervisor(supervisorObj, 1);
-                                                            }
-                                                            }>Add as Co-Supervisor
-                                                            </button>
-                                                    }
+                                                <div className="col-6" style={{display: 'grid',alignContent:'center'}}>
+                                                    <div style={{display: 'flex'}}>
+                                                        {
+                                                            supervisorObj.markedCoSuper === 0 ?
+                                                                <div>
+                                                                    {
+                                                                        supervisorObj.markedSuper === 1 ?
+                                                                            <div>
+                                                                                <button
+                                                                                    className="btn btn-danger btn-sm"
+                                                                                    onClick={() => {
+                                                                                        // setSupervisor(supervisorObj)
+                                                                                        RegisterSupervisor(supervisorObj, 0, 0);
+                                                                                    }
+                                                                                    }>Remove the Supervisor
+                                                                                </button>
+                                                                            </div>
+                                                                            :
+                                                                            <button className="btn btn-secondary btn-sm"
+                                                                                    onClick={() => {
+                                                                                        // setSupervisor(supervisorObj)
+                                                                                        RegisterSupervisor(supervisorObj, 0, 1);
+                                                                                    }
+                                                                                    }>Add as Supervisor
+                                                                            </button>
+                                                                    }
+                                                                </div> :
+                                                                <div></div>
+                                                        }
+                                                        {
+                                                            supervisorObj.markedSuper === 0 ?
+                                                                <div>
+                                                                    {
+                                                                        supervisorObj.markedCoSuper === 1 ?
+                                                                            <div>
+                                                                                <button
+                                                                                    className="btn btn-danger btn-sm"
+                                                                                    onClick={() => {
+                                                                                        // setSupervisor(supervisorObj)
+                                                                                        RegisterSupervisor(supervisorObj, 1, 0);
+                                                                                    }
+                                                                                    }>Remove the Co-Supervisor
+                                                                                </button>
+                                                                            </div>
+                                                                            :
+                                                                            <button className="btn btn-secondary btn-sm"
+                                                                                    style={{marginLeft: '10px'}}
+                                                                                    onClick={() => {
+                                                                                        // setCoSupervisor(supervisorObj)
+                                                                                        RegisterSupervisor(supervisorObj, 1, 1);
+                                                                                    }
+                                                                                    }>Add as Co-Supervisor
+                                                                            </button>
+                                                                    }
+                                                                </div> :
+                                                                <div></div>
+                                                        }
+                                                    </div>
                                                 </div>
                                             </div>
                                         })
@@ -117,36 +152,37 @@ export const RequestSupervisor = () => {
             });
     }
 
-    function RegisterSupervisor(supervisorObj, val) {
+    function RegisterSupervisor(supervisorObj, val, register) {
         const requestOptions = {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 groupId: JSON.parse(localStorage.getItem('group')).groupId,
                 val: val,
-                supervisor: val === 0 ? supervisorObj._id : '',
-                coSupervisor: val === 1 ? supervisorObj._id : ''
+                supervisor: register === 1 ? supervisorObj._id : '',
+                coSupervisor: register === 1 ? supervisorObj._id : ''
             })
         };
         fetch('http://localhost:9000/rpmt/student/add_group_supervisor', requestOptions)
             .then(response => response.json())
             .then(reply => {
                 if (reply !== null) {
-                    supervisors.forEach((grpSupervisor) => {
-                        // console.log(grpSupervisor._id)
-                        if (reply.val === 0) {
-                            grpSupervisor.markedSuper = false
-                            if (grpSupervisor._id == reply.supervisor) {
-                                grpSupervisor.markedSuper = true
-                            }
-                        } else {
-                            grpSupervisor.markedCoSuper = false
-                            if (grpSupervisor._id == reply.coSupervisor) {
-                                grpSupervisor.markedCoSuper = true
-                            }
-                        }
-                    })
-                    setSupervisors(JSON.parse(JSON.stringify(supervisors)))
+                    GetSupervisors();
+                    // supervisors.forEach((grpSupervisor) => {
+                    //     // console.log(grpSupervisor._id)
+                    //     if (reply.val === 0) {
+                    //         grpSupervisor.markedSuper = 0
+                    //         if (grpSupervisor._id == reply.supervisor._id) {
+                    //             grpSupervisor.markedSuper = 1
+                    //         }
+                    //     } else {
+                    //         grpSupervisor.markedCoSuper = 0
+                    //         if (grpSupervisor._id == reply.coSupervisor._id) {
+                    //             grpSupervisor.markedCoSuper = 1
+                    //         }
+                    //     }
+                    // })
+                    // setSupervisors(JSON.parse(JSON.stringify(supervisors)))
                 }
             });
     }
