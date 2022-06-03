@@ -20,6 +20,7 @@ import {SupervisorRegister} from "./src/supervisor/SupervisorRegister";
 import {ViewTopics} from "./src/panel_member/ViewTopics";
 import AddPannel from "./src/admin/AddPannel";
 import ViewRolls from "./src/admin/ViewRolls";
+import {CreateAccountAdmin} from "./src/admin/CreateAccountAdmin";
 
 // import {Header} from "./Header";
 // import {ViewItems} from "./src/customer/ViewItems";
@@ -47,6 +48,7 @@ export const App = () => {
             <Route path='supervisor' element={<SupervisorRegister/>}/>
             <Route path='panel' element={<AddPannel/>}/>
             <Route path='rolls' element={<ViewRolls/>}/>
+            <Route path='register' element={<CreateAccountAdmin/>}/>
             {/*<Route path='view_cart' element={<ViewCart/>}/>*/}
             {/*<Route path='view_wishlist' element={<ViewWishList/>}/>*/}
 

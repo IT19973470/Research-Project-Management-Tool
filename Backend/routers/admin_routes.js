@@ -1,13 +1,14 @@
 const express = require('express')
 const router = express.Router();
 const Student = require('../models/Student');
+const Admin = require('../models/Admin');
 let Mark = require('../models/Marking');
 let Submission = require('../models/Submission')
 let SupervisorTopic = require("../models/SupervisorTopic")
 let AddPannel =require("../models/Panel")
 let studentGroup=require("../models/StudentGroup")
 let researchtopics=require("../models/ResearchTopic")
-
+const User = require('../models/User');
 
 
 router.route("/displayUsers").get((req, res) => {
@@ -125,7 +126,15 @@ let router3 = router.post('/addPannel', (req, res, next) => {
     }).catch(next);
 
 });
-
+router.post('/admin_register', (req, res, next) => {
+    console.log(req.body)
+    req.body._id = req.body.id
+    Admin.create(req.body).then((admin) => {
+        User.create(req.body).then(() => {
+            res.send(admin);
+        })
+    }).catch(next);
+});
 router.route("/updateS/:id").put(async (req, res) => {
     console.log(req.body)
     let userID = req.params.id;
@@ -135,6 +144,7 @@ router.route("/updateS/:id").put(async (req, res) => {
     ).then((studentGroup) => {
         res.send(studentGroup);
     })
+
 
     // router.route("/deleteSupervisor/:id").delete(async (req, res) => {
     //     let markingID = req.params.id;
