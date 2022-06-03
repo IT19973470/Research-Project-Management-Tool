@@ -5,16 +5,18 @@ import {Environment} from "../../../Backend/Environment";
 import 'font-awesome/css/font-awesome.min.css';
 
 export const StudentGroups = () => {
-    let navigate = useNavigate();
+    // let navigate = useNavigate();
 
     const [id, setId] = useState('');
-    const [password, setPassword] = useState('');
+    // const [password, setPassword] = useState('');
 
     const [registered, setRegistered] = useState(false);
-    const [otherUserRegistered, setOtherUserRegistered] = useState(0);
+    // const [otherUserRegistered, setOtherUserRegistered] = useState(0);
     const [newGroup, setNewGroup] = useState(false);
-    const [students, setStudents] = useState(null);
-    const [groups, setGroups] = useState(null);
+    const [students, setStudents] = useState([]);
+    const [availableGroups, setAvailableGroups] = useState([]);
+    const [filledGroups, setFilledGroups] = useState([]);
+    // const [groups, setGroups] = useState([]);
     const [leader, setLeader] = useState('');
 
     useEffect(() => {
@@ -133,8 +135,9 @@ export const StudentGroups = () => {
                 </div>
             </div>
             <div>
+                <span style={{fontWeight: 'bold'}}>Available Groups - {availableGroups.length}</span>
                 {
-                    groups && groups.map((group, key1) => {
+                    availableGroups && availableGroups.map((group, key1) => {
                         return <div className="row" key={key1} style={{
                             border: '1px solid black',
                             borderRadius: '10px',
@@ -171,13 +174,61 @@ export const StudentGroups = () => {
                                     <span>4</span>
                                 </div>
                             </div>
-                            <div className="col-2"
-                                 style={{display: 'grid', justifyContent: 'center', alignContent: 'center'}}>
-                                <i className="fa fa-pencil" style={{color: 'green'}}
-                                   onClick={() => {
-                                       setStudents(group.students);
-                                       setId(group.groupId)
-                                   }}></i>
+                            {
+                                !registered ?
+                                    <div className="col-2"
+                                         style={{display: 'grid', justifyContent: 'center', alignContent: 'center'}}>
+                                        <i className="fa fa-pencil" style={{color: 'green'}}
+                                           onClick={() => {
+                                               setStudents(group.students);
+                                               setId(group.groupId)
+                                           }}></i>
+                                    </div> :
+                                    <div></div>
+                            }
+                        </div>
+                    })
+                }
+            </div>
+            <div style={{marginTop: '20px'}}>
+                <span style={{fontWeight: 'bold'}}>Filled Groups - {filledGroups.length}</span>
+                {
+                    filledGroups && filledGroups.map((group, key1) => {
+                        return <div className="row" key={key1} style={{
+                            border: '1px solid black',
+                            borderRadius: '10px',
+                            marginTop: '15px',
+                            padding: '10px'
+                        }}>
+                            <div className="col-10">
+                                <div>
+                                    <span style={{fontWeight: 'bold'}}>Group ID : </span>
+                                    <span>{group.groupId}</span>
+                                </div>
+                                <div>
+                                    <span style={{fontWeight: 'bold'}}>Group Leader : </span>
+                                    {
+                                        (group.leader !== null) ?
+                                            <span>{group.leader.name} ( {group.leader._id} )</span> :
+                                            <span>No leader assigned</span>
+                                    }
+                                </div>
+                                <div>
+                                    <span style={{fontWeight: 'bold'}}>Members : </span>
+                                    {
+                                        group.students.map((student, key2) => {
+                                            return <span key={key2}>{student.name} ( {student._id} ) , </span>
+                                        })
+                                    }
+                                </div>
+                                <div>
+                                    <span style={{fontWeight: 'bold'}}>Members Count : </span>
+                                    <span>{group.students.length}</span>
+                                </div>
+                                <div>
+                                    <span style={{fontWeight: 'bold'}}>Max Count : </span>
+                                    <span>4</span>
+                                </div>
                             </div>
                         </div>
                     })
@@ -257,14 +308,24 @@ export const StudentGroups = () => {
     }
 
     function AllGroups() {
+        let availableGrps = [];
+        let filledGrps = [];
         const requestOptions = {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
         fetch(Environment.url + 'student/get_groups', requestOptions)
             .then(response => response.json())
-            .then(reply => {
-                setGroups(reply)
+            .then(groups => {
+                groups.forEach(group => {
+                    if (group.students.length === 4) {
+                        filledGrps.push(group)
+                    } else if (group.students.length > 0) {
+                        availableGrps.push(group)
+                    }
+                })
+                setAvailableGroups(availableGrps);
+                setFilledGroups(filledGrps)
             });
     }
 
@@ -273,7 +334,7 @@ export const StudentGroups = () => {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch(Environment.url + 'student/set_leader/' + id + '/' + leaderId, requestOptions)
+        fetch(Environment.url + 'student/set_leader/' + JSON.parse(localStorage.getItem('group')).groupId + '/' + leaderId, requestOptions)
             .then(response => response.json())
             .then(reply => {
                 CheckGroup(false);

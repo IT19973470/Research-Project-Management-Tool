@@ -78,9 +78,11 @@ export const ResearchTopic = () => {
                                 <div>
                                     <span style={{fontWeight: 'bold'}}>Topic is accepted by the panel : </span>
                                     {
-                                        (topicObj.topicAccepted) ?
-                                            <i className="fa fa-check" style={{color: 'green'}}></i> :
-                                            <i className="fa fa-times" style={{color: 'red'}}></i>
+                                        (topicObj.topicAccepted === 0) ?
+                                            <i className="fa fa-times" style={{color: 'red'}}></i> :
+                                            (topicObj.topicAccepted === 1) ?
+                                                <span>Pending</span> :
+                                                <i className="fa fa-check" style={{color: 'green'}}></i>
                                     }
                                 </div>
                                 <div>
@@ -94,17 +96,17 @@ export const ResearchTopic = () => {
             </div>
     }
 
-    if (topicAccepted) {
-        contentTopicAccepted =
-            <div>
-                Topic is accepted by the supervisor
-            </div>
-    } else {
-        contentTopicAccepted =
-            <div>
-                Topic is not accepted
-            </div>
-    }
+    // if (topicAccepted) {
+    //     contentTopicAccepted =
+    //         <div>
+    //             Topic is accepted by the supervisor
+    //         </div>
+    // } else {
+    //     contentTopicAccepted =
+    //         <div>
+    //             Topic is not accepted
+    //         </div>
+    // }
 
     return (
         <div className="row">
@@ -148,25 +150,25 @@ export const ResearchTopic = () => {
         // }
     }
 
-    function UnregisterTopic() {
-        const requestOptions = {
-            method: 'DELETE',
-            headers: {'Content-Type': 'application/json'}
-        };
-        fetch('http://localhost:9000/rpmt/student/remove_research_topic/' + JSON.parse(localStorage.getItem('group')).groupId, requestOptions)
-            .then(response => response.json())
-            .then(reply => {
-                if (reply) {
-                    // setTopicRegistered(false);
-                }
-                // if (reply !== null && UserData.type === 'customer') {
-                //     UserData.id = reply.id;
-                //     navigate('/view_items');
-                // } else if (reply !== null && UserData.type === 'trader') {
-                //     navigate('/trader_items');
-                // }
-            });
-    }
+    // function UnregisterTopic() {
+    //     const requestOptions = {
+    //         method: 'DELETE',
+    //         headers: {'Content-Type': 'application/json'}
+    //     };
+    //     fetch('http://localhost:9000/rpmt/student/remove_research_topic/' + JSON.parse(localStorage.getItem('group')).groupId, requestOptions)
+    //         .then(response => response.json())
+    //         .then(reply => {
+    //             if (reply) {
+    //                 // setTopicRegistered(false);
+    //             }
+    //             // if (reply !== null && UserData.type === 'customer') {
+    //             //     UserData.id = reply.id;
+    //             //     navigate('/view_items');
+    //             // } else if (reply !== null && UserData.type === 'trader') {
+    //             //     navigate('/trader_items');
+    //             // }
+    //         });
+    // }
 
     function RegisterTopic() {
         const requestOptions = {
@@ -176,7 +178,7 @@ export const ResearchTopic = () => {
                 groupId: JSON.parse(localStorage.getItem('group')).groupId,
                 topic: {
                     topic: topic,
-                    topicAccepted: false,
+                    topicAccepted: 1,
                     topicRegistered: true,
                     topicDescription: topicDesc,
                     topicAdded: new Date().toLocaleDateString('en-CA')

@@ -3,7 +3,9 @@ const upload = require('express-fileupload')
 const router = express.Router();
 const Student = require('../models/Student');
 const StudentGroup = require('../models/StudentGroup');
+const GroupTopic = require('../models/GroupTopic');
 const User = require('../models/User');
+const mongoose = require('mongoose');
 
 router.get('/check_group/:id', (req, res, next) => {
     let students = [];
@@ -124,22 +126,24 @@ router.post('/add_group', (req, res, next) => {
 });
 
 router.post('/add_research_topic', (req, res, next) => {
-    StudentGroup.updateMany(
+    GroupTopic.updateMany(
         {groupId: req.body.groupId, "topics.topicRegistered": true},
-        {$set: {"topics.$.topicRegistered": false}}
+        {$set: {topicRegistered: false, topicAccepted: 0}}
     ).then(() => {
-        StudentGroup.updateOne(
-            {groupId: req.body.groupId},
-            {
-                $push: {
-                    topics: req.body.topic
+        req.body.topic._id = mongoose.Types.ObjectId();
+        GroupTopic.create(req.body.topic).then((topic) => {
+            console.log(topic)
+            StudentGroup.updateOne(
+                {groupId: req.body.groupId},
+                {
+                    $push: {
+                        topics: req.body.topic._id
+                    }
                 }
-            }
-        ).then(() => {
-            StudentGroup.findOne({groupId: req.body.groupId}).then((studentGrp) => {
-                res.send(studentGrp.topics.reverse());
-            })
-        }).catch(next);
+            ).then(() => {
+                res.send({reply: true})
+            }).catch(next);
+        })
     }).catch(next);
 });
 
@@ -158,27 +162,52 @@ router.delete('/remove_research_topic/:id', (req, res, next) => {
 });
 
 router.get('/topic_registered/:id', (req, res, next) => {
+    let topics = [];
     StudentGroup.findOne({
         groupId: req.params.id
     }).then((researchTopic) => {
-        if (researchTopic !== null) {
-            res.send({reply: researchTopic.topics.reverse()});
-        } else {
-            res.send({reply: null});
-        }
+        // if (researchTopic !== null) {
+        researchTopic && researchTopic.topics.forEach(topicId => {
+            getTopic(topicId).then(topic => {
+                    topics.push(topic)
+                }
+            )
+        })
+        Promise.all(topicPromises).then(() => {
+            if (researchTopic !== null) {
+                res.send({reply: topics.reverse()});
+            } else {
+                res.send({reply: []});
+            }
+        })
+        // } else {
+        //     res.send({reply: null});
+        // }
     }).catch(next);
 });
+
+let topicPromises = [];
+
+function getTopic(topicId) {
+    let topicPromise = new Promise(resolve => {
+        GroupTopic.findOne({_id: topicId}).then((groupTopic) => {
+            resolve(groupTopic)
+        })
+    })
+    topicPromises.push(topicPromise);
+    return topicPromise;
+}
 
 router.post('/add_group_supervisor', (req, res, next) => {
     StudentGroup.findOne({groupId: req.body.groupId}).then((supervisor) => {
         let body;
         if (req.body.val === 0) {
             body = {
-                supervisor: {_id: req.body.supervisor}
+                supervisor: {_id: req.body.supervisor, accepted: false}
             }
         } else {
             body = {
-                coSupervisor: {_id: req.body.coSupervisor}
+                coSupervisor: {_id: req.body.coSupervisor, accepted: false}
             }
         }
         if (supervisor !== null) {

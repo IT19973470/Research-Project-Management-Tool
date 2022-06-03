@@ -56,7 +56,8 @@ export const RequestSupervisor = () => {
                                                         }
                                                     </div>
                                                 </div>
-                                                <div className="col-6" style={{display: 'grid',alignContent:'center'}}>
+                                                <div className="col-6"
+                                                     style={{display: 'grid', alignContent: 'center'}}>
                                                     <div style={{display: 'flex'}}>
                                                         {
                                                             supervisorObj.markedCoSuper === 0 ?
@@ -64,6 +65,13 @@ export const RequestSupervisor = () => {
                                                                     {
                                                                         supervisorObj.markedSuper === 1 ?
                                                                             <div>
+                                                                                <span style={{
+                                                                                    marginRight: '10px',
+                                                                                    fontSize: '14px',
+                                                                                    fontWeight: 'bold'
+                                                                                }}>
+                                                                                    Supervisor is marked
+                                                                                </span>
                                                                                 <button
                                                                                     className="btn btn-danger btn-sm"
                                                                                     onClick={() => {
@@ -91,6 +99,13 @@ export const RequestSupervisor = () => {
                                                                     {
                                                                         supervisorObj.markedCoSuper === 1 ?
                                                                             <div>
+                                                                                <span style={{
+                                                                                    marginRight: '10px',
+                                                                                    fontSize: '14px',
+                                                                                    fontWeight: 'bold'
+                                                                                }}>
+                                                                                    Co-Supervisor is marked
+                                                                                </span>
                                                                                 <button
                                                                                     className="btn btn-danger btn-sm"
                                                                                     onClick={() => {
