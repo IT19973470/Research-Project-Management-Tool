@@ -22,12 +22,9 @@ import {GroupDetails} from "./src/panel_member/GroupDetails";
 import {Group} from "./src/panel_member/Group";
 import AddPannel from "./src/admin/AddPannel";
 import ViewRolls from "./src/admin/ViewRolls";
-import {CreateAccountAdmin} from "./src/admin/CreateAccountAdmin";
 import { ViewTopicSup } from "./src/supervisor/ViewTopicsSup";
 import { Evaluation } from "./src/supervisor/Evaluation";
 import {EvaluatePresentation} from "./src/panel_member/EvaluatePresentation";
-import { EvaluateDocument } from "./src/supervisor/EvaluateDocument";
-
 // import {Header} from "./Header";
 // import {ViewItems} from "./src/customer/ViewItems";
 // import {ViewWishList} from "./src/customer/ViewWishList";
@@ -53,7 +50,6 @@ export const App = () => {
             <Route path='submission' element={<Submission/>}/>
             <Route path='panel' element={<AddPannel/>}/>
             <Route path='rolls' element={<ViewRolls/>}/>
-            <Route path='register' element={<CreateAccountAdmin/>}/>
             {/*<Route path='view_cart' element={<ViewCart/>}/>*/}
             {/*<Route path='view_wishlist' element={<ViewWishList/>}/>*/}
 
@@ -71,11 +67,13 @@ export const App = () => {
             <Route path='/supervisor/view_topics' element={<ViewTopicSup/>}/>
             <Route path='supervisor/add_supervisor' element={<AddSupervisorTopic/>}/>
             <Route path='supervisor/evaluation' element={<Evaluation/>}/>
-            <Route path='supervisor/evaluate_document' element={<EvaluateDocument/>}/>
 
 
             <Route path='/panel_member/evaluate_presentations' element={<EvaluatePresentation/>}/>
 
+
+            //Supervisor
+            <Route path='/supervisor_topic' element={<AddSupervisorTopic/>}/>
 
         </Routes>
     )

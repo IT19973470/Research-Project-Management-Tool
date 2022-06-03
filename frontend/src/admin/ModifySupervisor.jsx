@@ -4,6 +4,10 @@ export default function  ModifySupervisor()  {
 
     const [supervisor, setSupervisor] = useState(null);
     const [id, setId] =useState("");
+    const [name, setName] =useState("");
+    const [email, setEmail] =useState("");
+    const [adress, setAddress] =useState("");
+
 
     var [array, setArray] = useState([]);
     const [data, setText]=useState("")
@@ -15,7 +19,7 @@ export default function  ModifySupervisor()  {
         fetch('http://localhost:9000/rpmt/admin/displaySupervisor',requestOptions)
             .then(response=>{ return response.json()})
             .then(data=>{
-              //   console.log(data)
+                console.log(data)
                 setSupervisor(data)
             });
     })
@@ -31,6 +35,9 @@ export default function  ModifySupervisor()  {
         var options =[]
          options = student.interests
         setId(student._id)
+        setName(student.name)
+        setEmail(student.email)
+        setAddress(student.address)
         console.log(options[0])
         // console.log(student.interests[0][1])
         // setArray(student.interests)
@@ -56,6 +63,9 @@ export default function  ModifySupervisor()  {
             headers:{'Content-Type':'application/json'},
             body:JSON.stringify({
                 _id:id,
+                name:name,
+                email:email,
+                address:adress,
                 interests:array
             })
         };
@@ -88,6 +98,9 @@ export default function  ModifySupervisor()  {
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col" width="20%">ID</th>
+                                <th scope="col" width="20%">Name</th>
+                                <th scope="col" width="20%">Address</th>
+                                <th scope="col" width="20%">Email</th>
                                 <th scope="col">Interest</th>
                             </tr>
                             </thead>
@@ -97,11 +110,12 @@ export default function  ModifySupervisor()  {
                                     return <tr key={key}>
                                         <td>{key + 1}</td>
                                         <td>{supervisor._id}</td>
+                                        <td>{supervisor.name}</td>
+                                        <td>{supervisor.address}</td>
+                                        <td>{supervisor.email}</td>
                                         <td>{supervisor.interests.join(', ')}</td>
-
                                         <td><button onClick={()=>getTextFields(supervisor)} style={{backgroundColor: "transparent",border:"none",color:"black"}}>Update</button></td>
                                         <td><button onClick={()=>deleteID(supervisor._id)} style={{backgroundColor: "transparent",border:"none",color:"black"}}>Delete</button></td>
-
                                     </tr>
                                 })
                             }
@@ -110,12 +124,19 @@ export default function  ModifySupervisor()  {
 
                         <form  align="center">
                             <div className="form-group">
-
                                 <h1>Update users</h1>
                                 <label htmlFor="na,e">Student ID:</label>
-                                <input type="text" value={id} className="form-control" id="name" readOnly={true} placeholder="Enter Student ID"  onChange={(e)=>{setId(e.target.value)}}/>
+                                <input type="text" value={id} className="form-control" id="id" readOnly={true} placeholder="Enter Student ID"  onChange={(e)=>{setId(e.target.value)}}/>
+                                <label htmlFor="na,e">Student Name:</label>
+                                <input type="text" value={name} className="form-control" id="name"  placeholder="Enter Name"  onChange={(e)=>{setName(e.target.value)}}/>
+                                <label htmlFor="na,e">Address:</label>
+                                <input type="text" value={adress} className="form-control" id="address"  placeholder="Enter Address"  onChange={(e)=>{setAddress(e.target.value)}}/>
+                                <label htmlFor="na,e">Email:</label>
+                                <input type="text" value={email} className="form-control" id="email"  placeholder="Enter Email"  onChange={(e)=>{setEmail(e.target.value)}}/>
+
                             </div>
                             <div className="form-group">
+                                <label htmlFor="na,e">Interest:</label>
                                 <div className="select-editable">
                                     <select id="selectNumber" onClick={(e)=>{setText(e.target.value)}}>
                                         <option>Select Interest</option>

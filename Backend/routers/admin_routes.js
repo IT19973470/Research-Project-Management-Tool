@@ -5,6 +5,7 @@ const Admin = require('../models/Admin');
 let Mark = require('../models/Marking');
 let Submission = require('../models/Submission')
 let SupervisorTopic = require("../models/SupervisorTopic")
+let Supervisor = require("../models/Supervisor")
 let AddPannel =require("../models/Panel")
 let studentGroup=require("../models/StudentGroup")
 let researchtopics=require("../models/ResearchTopic")
@@ -50,7 +51,7 @@ router.route("/delete/:id").delete(async (req, res) => {
 router.route("/deleteS/:id").delete(async (req, res) => {
     let userID = req.params.id;
     console.log(userID)
-    await SupervisorTopic.findByIdAndDelete(userID)
+    await Supervisor.findByIdAndDelete(userID)
         .then(() => {
             res.status(200).send({status: "User deleted"})
         }).catch((err) => {
@@ -138,9 +139,9 @@ router.post('/admin_register', (req, res, next) => {
 router.route("/updateS/:id").put(async (req, res) => {
     console.log(req.body)
     let userID = req.params.id;
-    SupervisorTopic.updateMany(
+    Supervisor.updateMany(
         {_id:userID},
-        {$set: {interests: req.body.interests}}
+        {name:req.body.name,address:req.body.address,email:req.body.email,$set: {interests: req.body.interests}}
     ).then((studentGroup) => {
         res.send(studentGroup);
     })
@@ -182,7 +183,7 @@ router.route("/displaySubmission").get((req, res) => {
     })
 })
 router.route("/displaySupervisor").get((req, res) => {
-    SupervisorTopic.find().then((students) => {
+    Supervisor.find().then((students) => {
         res.json(students)
     }).catch((err) => {
         console.log(err)

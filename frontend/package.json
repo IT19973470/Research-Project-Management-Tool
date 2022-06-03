@@ -1,8 +1,9 @@
 {
   "name": "frontend",
-  "version": "1.0.0",
+  "versimon": "1.0.0",
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "parcel indexA.html"
   },

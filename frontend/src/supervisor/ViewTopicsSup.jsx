@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import GroupDetails from "./GroupDetails";
 
-export const ViewTopics = () => {
+
+export const ViewTopicSup = () => {
 
     let navigate = useNavigate();
 
@@ -12,16 +12,45 @@ export const ViewTopics = () => {
     const [accepted, setAccepted] = useState('');
     const [studentGroup, setStudentGroup] = useState('');
 
-    function getFields(student) {
-        console.log(student.groupId)
-        setGroupId(student)
+    
+    function update(id,value){
+        var users = JSON.parse(localStorage.getItem('user'))
+        var x=users._id
+       
+        console.log(x)
+        var x=localStorage.getItem('user');
+
+        const requestOptions ={
+            method:'PUT',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({
+                accepted:value,
+            })
+        };
+        fetch('http://localhost:9000/rpmt/supervisor/acceptTopic/'+id,requestOptions)
+
+         
+        console.log(x)
+        var x=localStorage.getItem('user');
+
+        const requestOptions2 ={
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({
+                supervisor:users._id
+            })
+        };
+        fetch('http://localhost:9000/rpmt/supervisor/acceptTopic/'+id,requestOptions2)
     }
+
+   
+
     useEffect( () =>{
         const requestOptions = {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/panel_member/viewTopics', requestOptions)
+        fetch('http://localhost:9000/rpmt/supervisor/viewTopics', requestOptions)
             .then(response => { return response.json()})
             .then(data => {
                 // console.log(data);
@@ -44,8 +73,8 @@ export const ViewTopics = () => {
                     <th >#</th>
                     <th scope="col" width="20%">Group ID</th>
                     <th scope="col" width="20%">Topic</th>
-                    <th scope="col" width="20%">Status</th>
-                    <th scope="col" width="40%">View Group Details</th>
+                    <th scope="col" width="20%">Accept</th>
+                    <th scope="col" width="40%">Reject</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -55,16 +84,14 @@ export const ViewTopics = () => {
                             <td>{key+1}</td>
                             <td>{researchTopic.groupId}</td>
                             <td>{researchTopic.topic}</td>
-                            <td>{researchTopic.accepted.toString()}</td>
-                            <td><button onClick={()=>getFields(researchTopic)}>View</button></td>
+                            <td><button onClick={()=>update(researchTopic._id,"true")}>Accept</button></td>
+                            <td><button onClick={()=>update(researchTopic._id,"false")}>Reject</button></td>
                         </tr>
                     })
                 }
                 </tbody>
             </table>
-            {
-                <GroupDetails IdPass={groupId}/>
-            }
+           
         </div>
 
     );

@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './NavAdmin.css';
 import axios from "axios";
+import Progress from "./progress"
 export const Submission = () => {
     const [submission, setSumbission] = useState(null);
     const [title, setTitle] =useState("");
@@ -11,6 +12,7 @@ export const Submission = () => {
     const [type, setType] =useState("");
     const [file, setFile] =useState('');
     const [fname, setFileName] =useState('');
+    const [uploadPercentage,setUploadPercentage] =useState("")
 
     useEffect (()=>{
         const requestOptions = {
@@ -45,18 +47,38 @@ export const Submission = () => {
     //
     //
     // }
+
+    // const onsubmit =async e=>{
+    //     e.preventDefault();
+    //     var formData = new FormData();
+    //     formData.append('file',file)
+    //     try {
+    //         const requestOptions1 = await fetch('http://localhost:9000/upload',{
+    //             method:'POST',
+    //             body:formData
+    //         });
+    //
+    //     }catch (e){}
+    //
+    // }
+
     const onsubmit =async e=>{
         e.preventDefault();
-        var formData = new FormData();
+        const formData = new FormData();
         formData.append('file',file)
-        try {
-            const requestOptions1 = await fetch('http://localhost:9000/upload',{
-                method:'POST',
-                body:formData
+        try{
+            const res =await axios.post('http://localhost:9000/upload',formData,{
+                headers:{
+                    'Content-Type':'multipart/form-data'
+                },
+                onUploadProgress:ProgressEvent=>{
+                    setUploadPercentage(parseInt(Math.round((ProgressEvent.loaded*100)/ProgressEvent.total)))
+                    setTimeout(()=>setUploadPercentage(0),1000)
+                }
             });
 
-        }catch (e){}
-
+        }catch(err){
+        }
     }
 
     function add(){
@@ -132,14 +154,22 @@ export const Submission = () => {
 
 </form>
 
-    <form onSubmit={onsubmit}>
+    <form onSubmit={onsubmit} align="center">
         <div className="form-group">
             <label htmlFor="na,e">File:</label>
             <input type="file"  className="form-control" id="age" placeholder="Enter Date" onChange={onChange}/>
         </div>
-        <input type="submit" value="upload"/>
+        <Progress percentage={uploadPercentage}/>
+        <br/>
+        <input type="submit" className="btn btn-dark" value="upload"/>
+        <br/>
+        <br/>
+        <button type="button" align="center" onClick={add}  className="btn btn-primary" >Add Submission</button>
+        <br/>
+        <br/>
     </form>
-    <button type="button" onClick={add}  className="btn btn-primary" >Add</button>
+
+
 </div>
     );
 };
