@@ -38,7 +38,7 @@ export const AddSupervisorTopic = () => {
         <div>
             <form  align="center">
             <div className="form-group">
-                    <h1>Add Supervisor Topic</h1>
+                    <h1>Add Supervisor</h1>
                     <label htmlFor="na,e">ID:</label>
                     <input type="text"  className="form-control" id="id"  placeholder="Enter Id" onChange={(e)=>{setId(e.target.value)}}/>
                 </div>
@@ -64,8 +64,11 @@ export const AddSupervisorTopic = () => {
                     <div>
                        {array.map(array => <span>{array}<br/></span>)}
                     </div>
+                    <br></br>
                     <button type="button" onClick={handleChange}  className="btn btn-primary" >Add Interest</button>
                 </div>
+
+                <br></br>
 
                 <button type="button" onClick={add}  className="btn btn-primary" >Add</button>
             </form>
