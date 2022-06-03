@@ -1,18 +1,17 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-// const StudentGroup = require('../models/StudentGroup');
 
 const DocumentEvaluationSchema = new Schema({
     _evaluationId:{
         type: String
     },
-    // studentGroup: {
-    //     type: StudentGroup.schema
-    // },
-    documentationMark:{
+    groupId: {
+        type: String
+    },
+    documentMark:{
         type: Number
     },
-    presentationFeedback: {
+    documentFeedback: {
         type: String
     }
 
