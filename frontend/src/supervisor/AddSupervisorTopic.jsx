@@ -38,6 +38,7 @@ export const AddSupervisorTopic = () => {
         <div>
             <form  align="center">
             <div className="form-group">
+                <br></br>
                     <h1>Add Supervisor</h1>
                     <label htmlFor="na,e">ID:</label>
                     <input type="text"  className="form-control" id="id"  placeholder="Enter Id" onChange={(e)=>{setId(e.target.value)}}/>

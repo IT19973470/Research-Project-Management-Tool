@@ -70,7 +70,7 @@ export const App = () => {
             //sup
             <Route path='/supervisor/view_topics' element={<ViewTopicSup/>}/>
             <Route path='supervisor/add_supervisor' element={<AddSupervisorTopic/>}/>
-            <Route path='supervisor/evaluation' element={<Evaluation/>}/>
+            <Route path='supervisor/view_documents' element={<Evaluation/>}/>
             <Route path='supervisor/evaluate_document' element={<EvaluateDocument/>}/>
 
 
