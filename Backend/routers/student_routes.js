@@ -311,7 +311,7 @@ router.get('/get_supervisors/:id', (req, res, next) => {
     })
 });
 
-router.get('/get_upload_links', (req, res, next) => {
+router.get('/get_upload_links/:groupId', (req, res, next) => {
     let supers = [
         {
             _id: 1,
@@ -342,21 +342,39 @@ router.get('/get_upload_links', (req, res, next) => {
             type: 'pdf'
         }
     ];
-    // StudentGroup.findOne({groupId: req.params.id}).then((grpSupervisor) => {
-    //     supers.forEach((superObj) => {
-    //         if (grpSupervisor && grpSupervisor.supervisor._id == superObj._id) {
-    //             superObj.markedSuper = 1
-    //         } else {
-    //             superObj.markedSuper = 0
-    //         }
-    //         if (grpSupervisor && grpSupervisor.coSupervisor._id == superObj._id) {
-    //             superObj.markedCoSuper = 1
-    //         } else {
-    //             superObj.markedCoSuper = 0
-    //         }
-    //     })
-    res.send(supers);
-    // })
+    // let objs=[];
+    FileSubmission.find({groupId: req.params.groupId}).then((uploads) => {
+        supers.forEach((superObj) => {
+            uploads.forEach(file => {
+                // console.log(uploads)
+                if (superObj._id == file.submissionId) {
+                    // console.log(superObj)
+                    superObj.markedUpload = true;
+                    superObj.fileName = file.fileName
+                } else if (!superObj.markedUpload) {
+                    superObj.markedUpload = false;
+                }
+                // objs.push()
+            })
+            //         if (grpSupervisor && grpSupervisor.supervisor._id == superObj._id) {
+            //             superObj.markedSuper = 1
+            //         } else {
+            //             superObj.markedSuper = 0
+            //         }
+            //         if (grpSupervisor && grpSupervisor.coSupervisor._id == superObj._id) {
+            //             superObj.markedCoSuper = 1
+            //         } else {
+            //             superObj.markedCoSuper = 0
+            //         }
+        })
+        res.send(supers);
+    })
 });
+
+router.delete('/remove_file/:submissionId/:groupId', (req, res, next) => {
+    FileSubmission.deleteOne({groupId: req.params.groupId}).then(() => {
+        res.send({reply: true})
+    })
+})
 
 module.exports = router;

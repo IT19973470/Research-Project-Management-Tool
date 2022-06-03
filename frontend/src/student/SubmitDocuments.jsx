@@ -59,13 +59,42 @@ export const SubmitDocuments = () => {
                                             setFileTarget(e)
                                         }}/>
                                     </div>
-                                    <div style={{textAlign: 'right'}}>
-                                        <button className="btn btn-warning btn-sm" style={{fontWeight: 'bold'}}
-                                                onClick={() => {
-                                                    upload(linkObj._id)
-                                                }}>
-                                            Upload
-                                        </button>
+                                    <div className="row" style={{marginTop: '10px'}}>
+                                        <div className="col-12">
+                                            {
+                                                linkObj.markedUpload ?
+                                                    <span>
+                                                        <div style={{
+                                                            fontWeight: 'bold',
+                                                            color: 'green'
+                                                        }}>File is uploaded</div>
+                                                    <div>
+                                                        <span style={{fontWeight: 'bold'}}>File : </span>
+                                                        <span>{linkObj.fileName}</span>
+                                                    </div>
+                                                    </span> :
+                                                    <span></span>
+                                            }
+                                        </div>
+                                        <div className="col-12" style={{textAlign: 'right'}}>
+                                            <button className="btn btn-warning btn-sm" style={{fontWeight: 'bold'}}
+                                                    onClick={() => {
+                                                        upload(linkObj._id)
+                                                    }}>
+                                                Upload
+                                            </button>
+                                            {
+                                                linkObj.markedUpload ?
+                                                    <button className="btn btn-danger btn-sm"
+                                                            style={{fontWeight: 'bold', marginLeft: '10px'}}
+                                                            onClick={() => {
+                                                                removeFile(linkObj._id)
+                                                            }}>
+                                                        Delete
+                                                    </button> :
+                                                    <span></span>
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                             })
@@ -104,12 +133,32 @@ export const SubmitDocuments = () => {
         // }
     }
 
+    function removeFile(submissionId) {
+        const requestOptions = {
+            method: 'DELETE',
+            headers: {'Content-Type': 'application/json'}
+        };
+        fetch('http://localhost:9000/rpmt/student/remove_file/' + submissionId + '/' + JSON.parse(localStorage.getItem('group')).groupId, requestOptions)
+            .then(response => response.json())
+            .then(reply => {
+                if (reply) {
+                    GetLinks();
+                }
+                // if (reply !== null && UserData.type === 'customer') {
+                //     UserData.id = reply.id;
+                //     navigate('/view_items');
+                // } else if (reply !== null && UserData.type === 'trader') {
+                //     navigate('/trader_items');
+                // }
+            });
+    }
+
     function GetLinks() {
         const requestOptions = {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/student/get_upload_links', requestOptions)
+        fetch('http://localhost:9000/rpmt/student/get_upload_links/' + JSON.parse(localStorage.getItem('group')).groupId, requestOptions)
             .then(response => response.json())
             .then(reply => {
                 setLinks(reply)
