@@ -21,8 +21,6 @@ export const Marking = () => {
                 setMarking(data)
             });
     })
-    var x = localStorage.getItem('user') !== null ? JSON.parse(localStorage.getItem('user'), as ,string)['password'] : ''
-
     function getFields(student) {
         console.log(student)
         // setId(student._id)

@@ -10,6 +10,7 @@ export const Submission = () => {
     const [deadline, setDeadline] =useState("");
     const [type, setType] =useState("");
     const [file, setFile] =useState('');
+    const [fname, setFileName] =useState('');
 
     useEffect (()=>{
         const requestOptions = {
@@ -24,24 +25,39 @@ export const Submission = () => {
             });
     })
     const onChange =e=>{
-        console.log(file)
+        console.log(e.target.files[0].name)
         setFile(e.target.files[0])
+        setFileName(e.target.files[0].name)
     }
+    // const onsubmit =async e=>{
+    //     e.preventDefault();
+    //     const formData = new FormData();
+    //     formData.append('file',file)
+    //     try{
+    //         const res =await axios.post('http://localhost:9000/upload',formData,{
+    //             headers:{
+    //                 'Content-Type':'multipart/form-data'
+    //             },
+    //         });
+    //     }catch(err){
+    //
+    //     }
+    //
+    //
+    // }
     const onsubmit =async e=>{
         e.preventDefault();
-        const formData = new FormData();
+        var formData = new FormData();
         formData.append('file',file)
-        try{
-            const res =await axios.post('http://localhost:9000/upload',formData,{
-                headers:{
-                    'Content-Type':'multipart/form-data'
-                },
+        try {
+            const requestOptions1 = await fetch('http://localhost:9000/upload',{
+                method:'POST',
+                body:formData
             });
-        }catch(err){
 
-        }
+        }catch (e){}
+        
     }
-
 
     function add(){
         const requestOptions ={
@@ -52,7 +68,8 @@ export const Submission = () => {
                 title:title,
                 details:details,
                 deadline:deadline,
-                type:type
+                type:type,
+                file:fname
             })
         };
         console.log(deadline)

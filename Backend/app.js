@@ -22,6 +22,7 @@ app.use('/rpmt/panel_member', require('./routers/panel_member_routes'));
 
 app.use(fileUpload())
 app.post("/upload",(req,res)=>{
+    console.log(req.files)
     if(req.files===null){
         console.log(req.files)
         return res.status(401).json({msg:'No'})
