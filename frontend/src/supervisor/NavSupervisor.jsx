@@ -18,6 +18,10 @@ export const NavSupervisor = () => {
                 navigate(prefix + '/add_supervisor')
             }}>Add Supervisor
             </div>
+            <div onClick={() => {
+                navigate(prefix + '/evaluation')
+            }}>Evaluation
+            </div>
         </div>
     );
 }
