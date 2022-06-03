@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-// const StudentGroup = require('../models/StudentGroup');
+const StudentGroup = require('../models/StudentGroup');
 
 const PresentationEvaluationSchema = new Schema({
     _evaluationId:{
         type: String
     },
-    // studentGroup: {
-    //     type: StudentGroup.schema
-    // },
+    groupId: {
+        type: String
+    },
     presentationMark:{
         type: Number
     },

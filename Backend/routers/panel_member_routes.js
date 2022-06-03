@@ -31,6 +31,14 @@ router.route('/viewGroup/:id').get(async (req, res) => {
 
 });
 
+router.route('/viewGroup').get(async (req, res) => {
+    // let groupId = req.params.id;
+    await StudentGroup.find().then((details) => {
+        res.json(details)
+    })
+
+});
+
 router.route('/viewMarking').get((req,res) => {
     Mark.find().then((marking) => {
         res.json(marking);
@@ -48,21 +56,13 @@ router.post('/addPresentationMarking', (req, res, next) => {
 
 });
 
-// router.post('/add_research_topic', (req, res, next) => {
-//     ResearchTopic.create(req.body).then((researchTopic) => {
-//         res.send(researchTopic);
-//     }).catch(next);
-// });
-//
-// let router1 = router.post('/add_supervisor', (req, res, next) => {
-//     console.log(req.body)
-//     supervisor.create(
-//         {_id: req.body._id,name:req.body.name,address:req.body.address,email:req.body.email,password:req.body.password, interests:req.body.interests}
-//     ).then((data) => {
-//         res.send(data);
-//     }).catch(next);
-//
-// });
+router.route('/viewFeedback').get((req,res) => {
+    PresentationEvaluation.find().then((feedback) => {
+        res.json(feedback);
+    }).catch(err => {
+        console.log(err)
+    });
+});
 
 
 module.exports = router;
