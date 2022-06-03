@@ -1,4 +1,4 @@
-import React, {Component, useEffect, useState} from 'react';
+import React, {Component, useEffect, useState, useRef} from 'react';
 import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Environment} from "../../../Backend/Environment";
@@ -13,11 +13,16 @@ export const ChatWindow = () => {
     const [supervisors, setSupervisors] = useState([]);
     const [supervisor, setSupervisor] = useState('');
     const [message, setMessage] = useState('');
+    const [timer, setTimer] = useState('');
 
     useEffect(() => {
         CheckGroup()
         GetSupervisors();
+        // return () => clearTimeout(timer);
     }, [])
+
+    // let timer;
+    // let superviso;
 
     return (
         <div style={{width: '800px'}}>
@@ -53,6 +58,8 @@ export const ChatWindow = () => {
                             <div className="col-2" style={{fontWeight: 'bold'}}>
                                 <select className="form-control" onChange={(e) => {
                                     setSupervisor(e.target.value)
+                                    // superviso = e.target.value
+                                    // console.log(supervisor)
                                     GetChats(e.target.value);
                                 }}>
                                     {
@@ -98,7 +105,7 @@ export const ChatWindow = () => {
             .then(reply => {
                 if (reply) {
                     setMessage('')
-                    GetChats(supervisor);
+                    // GetChats(supervisor);
                 }
                 // if (reply !== null && UserData.type === 'customer') {
                 //     UserData.id = reply.id;
@@ -109,16 +116,27 @@ export const ChatWindow = () => {
             });
     }
 
+    // const countRef = useRef(count);
+    // countRef.current = supervisor;
+    // const value = useRef(0)
+    const that = this
+
     function GetChats(supervisorId) {
-        const requestOptions = {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json'}
-        };
-        fetch('http://localhost:9000/rpmt/student/get_chats_group/' + JSON.parse(localStorage.getItem('group')).groupId + '/' + supervisorId, requestOptions)
-            .then(response => response.json())
-            .then(reply => {
-                setMessages(reply)
-            });
+        clearInterval(timer);
+        setTimer(setInterval(() => {
+            //     console.log(supervisorId)
+            // console.log(timer)
+            const requestOptions = {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'}
+            };
+            fetch('http://localhost:9000/rpmt/student/get_chats_group/' + JSON.parse(localStorage.getItem('group')).groupId + '/' + supervisorId, requestOptions)
+                .then(response => response.json())
+                .then(reply => {
+                    setMessages(reply)
+                });
+            }, 1000)
+        )
     }
 
     function GetSupervisors() {
@@ -132,15 +150,19 @@ export const ChatWindow = () => {
             fetch('http://localhost:9000/rpmt/student/get_supervisors/' + groupId, requestOptions)
                 .then(response => response.json())
                 .then(supervisors => {
-                    console.log(supervisors)
+                    // console.log(supervisors)
                     supervisors.forEach(supervisor => {
                         if (supervisor.markedSuper || supervisor.markedCoSuper) {
                             supervisorsObj.push(supervisor)
                         }
                     })
                     setSupervisors(supervisorsObj)
+                    // console.log(supervisorsObj[0])
                     setSupervisor(supervisorsObj[0]._id);
-                    GetChats(supervisorsObj[0]._id)
+                    // superviso = supervisorsObj[0]._id
+                    // console.log(supervisorsObj[0]._id)
+                    GetChats(supervisorsObj[0]._id);
+                    // GetChats(supervisorsObj[0]._id)
                 });
         }
     }
