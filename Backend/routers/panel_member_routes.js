@@ -40,7 +40,6 @@ router.route('/viewMarking').get((req,res) => {
 });
 
 router.post('/addPresentationMarking', (req, res, next) => {
-
         console.log(req.body)
         req.body._evaluationId = 'P' + Math.floor(Math.random() * 10000);
         PresentationEvaluation.create(req.body).then((data) => {

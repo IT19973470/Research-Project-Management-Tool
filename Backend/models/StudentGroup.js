@@ -7,7 +7,8 @@ const StudentGroupSchema = new Schema({
     },
     students: {
         type: Array
-    }
+    },
+
 });
 
 const studentGroup = mongoose.model('StudentGroup', StudentGroupSchema);

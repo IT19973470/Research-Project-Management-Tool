@@ -3,7 +3,10 @@ import React, {useEffect, useState} from "react";
 export const EvaluatePresentation = () => {
     const [marking, setMarking] = useState(null);
     const [criteria, setCriteria] = useState("");
-    const [marks, setMarks] = useState("");
+    const [_evaluationId, setId] = useState("");
+    const [presentationMark, setMarks] = useState("");
+    const [presentationFeedback, setFeedback] = useState("");
+
 
 
     useEffect(() => {
@@ -19,7 +22,19 @@ export const EvaluatePresentation = () => {
                 console.log(data)
                 setMarking(data);
             });
-    })
+    });
+
+    function add(){
+        const requestOptions ={
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({
+                presentationMark:presentationMark,
+                presentationFeedback:presentationFeedback
+            })
+        };
+        fetch('http://localhost:9000/rpmt/panel_member/addPresentationMarking',requestOptions)
+    }
 
     return (
         <div className={'row'}>
@@ -29,19 +44,22 @@ export const EvaluatePresentation = () => {
                 </div>
                 <div className={'col-6'}>
                     <div style={{width: '600px'}}>
-                        <table className="table table-striped" style={{marginTop: '40px'}}>
-                            <thead>
-                            <tr>
-                                <th scope="col" width="5%">#</th>
-                                <th scope="col" width="20%">Group ID</th>
-                                <th scope="col" width="20%">Presentation</th>
-                                <th scope="col" width="20%">Feedback</th>
-                            </tr>
-                            </thead>
-                            <tbody>
+                        <form  align="center">
+                            {/*<div className="form-group">*/}
+                            {/*    <label htmlFor="na,e">Student Group:</label>*/}
+                            {/*    <input type="text"  className="form-control" id="name"  placeholder="Enter name" onChange={(e)=>{setName(e.target.value)}}/>*/}
+                            {/*</div>*/}
+                            <div className="form-group">
+                                <label htmlFor="na,e">Presentation Mark:</label>
+                                <input type="text"  className="form-control" id="mark"  placeholder="Enter Mark" onChange={(e)=>{setMarks(e.target.value)}}/>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="na,e">Feedback:</label>
+                                <input type="text"  className="form-control" id="feedback"  placeholder="Enter Feedback" onChange={(e)=>{setFeedback(e.target.value)}}/>
+                            </div>
 
-                            </tbody>
-                        </table>
+                            <button type="button" onClick={add}  className="btn btn-primary" >Add</button>
+                        </form>
                     </div>
 
                 </div>
