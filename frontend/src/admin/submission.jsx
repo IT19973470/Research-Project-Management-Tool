@@ -2,13 +2,14 @@ import React, {Component, useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './NavAdmin.css';
-
+import axios from "axios";
 export const Submission = () => {
     const [submission, setSumbission] = useState(null);
     const [title, setTitle] =useState("");
     const [details, setDetails] =useState("");
     const [deadline, setDeadline] =useState("");
     const [type, setType] =useState("");
+    const [file, setFile] =useState('');
 
     useEffect (()=>{
         const requestOptions = {
@@ -22,6 +23,25 @@ export const Submission = () => {
                 setSumbission(data)
             });
     })
+    const onChange =e=>{
+        console.log(file)
+        setFile(e.target.files[0])
+    }
+    const onsubmit =async e=>{
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('file',file)
+        try{
+            const res =await axios.post('http://localhost:9000/upload',formData,{
+                headers:{
+                    'Content-Type':'multipart/form-data'
+                },
+            });
+        }catch(err){
+
+        }
+    }
+
 
     function add(){
         const requestOptions ={
@@ -83,10 +103,6 @@ export const Submission = () => {
         <input type="date"  className="form-control" id="age" placeholder="Enter Date"  onChange={(e)=>{setDeadline(e.target.value)}}/>
     </div>
         <div className="form-group">
-            <label htmlFor="na,e">File:</label>
-            <input type="file"  className="form-control" id="age" placeholder="Enter Date"/>
-        </div>
-        <div className="form-group">
             <label htmlFor="na,e">Type:</label>
            <select  className="form-control" onChange={(e)=>{setType(e.target.value)}} >
                <option></option>
@@ -96,9 +112,17 @@ export const Submission = () => {
 
            </select>
         </div>
-    <button type="button" onClick={add}  className="btn btn-primary" >Add</button>
+
 </form>
 
+    <form onSubmit={onsubmit}>
+        <div className="form-group">
+            <label htmlFor="na,e">File:</label>
+            <input type="file"  className="form-control" id="age" placeholder="Enter Date" onChange={onChange}/>
+        </div>
+        <input type="submit" value="upload"/>
+    </form>
+    <button type="button" onClick={add}  className="btn btn-primary" >Add</button>
 </div>
     );
 };

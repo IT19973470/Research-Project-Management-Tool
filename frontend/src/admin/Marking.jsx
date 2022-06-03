@@ -21,6 +21,7 @@ export const Marking = () => {
                 setMarking(data)
             });
     })
+    var x = localStorage.getItem('user') !== null ? JSON.parse(localStorage.getItem('user'), as ,string)['password'] : ''
 
     function getFields(student) {
         console.log(student)
@@ -52,7 +53,7 @@ export const Marking = () => {
         fetch('http://localhost:9000/rpmt/admin/deleteMarking/'+did,requestOptions)
     }
     return(
-        <div className="row">
+        <div className="row" align="center">
             <form  align="center">
                 <div className="form-group">
                     <h1>Add marking</h1>

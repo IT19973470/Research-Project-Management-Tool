@@ -46,6 +46,8 @@ export const ResearchTopic = () => {
                             <input type="text" className="form-control"
                                    onChange={e => setTopic(e.target.value)}/>
                         </span>
+                    this.Trader.password = localStorage.getItem('user') !== null ? JSON.parse(localStorage.getItem('user') as string)['password'] : ''
+
                 </div>
                 <div style={{width: '100%', textAlign: 'center'}}>
                     <button className="btn btn-warning"

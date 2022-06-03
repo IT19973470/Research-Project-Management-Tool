@@ -7,6 +7,7 @@ let SupervisorTopic = require("../models/SupervisorTopic")
 let AddPannel =require("../models/Panel")
 let studentGroup=require("../models/StudentGroup")
 let researchtopics=require("../models/ResearchTopic")
+
 router.route("/displayUsers").get((req, res) => {
     Student.find().then((students) => {
         res.json(students)
