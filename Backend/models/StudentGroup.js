@@ -7,7 +7,7 @@ const StudentGroupSchema = new Schema({
     },
     students: {
         type: Array
-    },
+    }
 
 });
 

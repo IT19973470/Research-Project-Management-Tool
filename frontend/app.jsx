@@ -26,6 +26,7 @@ import { ViewTopicSup } from "./src/supervisor/ViewTopicsSup";
 import { Evaluation } from "./src/supervisor/Evaluation";
 import {EvaluatePresentation} from "./src/panel_member/EvaluatePresentation";
 import { EvaluateDocument } from "./src/supervisor/EvaluateDocument";
+import {ViewFeedback} from "./src/panel_member/ViewFeedback";
 // import {Header} from "./Header";
 // import {ViewItems} from "./src/customer/ViewItems";
 // import {ViewWishList} from "./src/customer/ViewWishList";
@@ -63,6 +64,8 @@ export const App = () => {
             <Route path='/panel_member/view_topics' element={<ViewTopics/>}/>
             <Route path='/panel_member/group_details' element={<GroupDetails/>}/>
             <Route path='/panel_member/group' element={<Group/>}/>
+            <Route path='/panel_member/evaluate_presentations' element={<EvaluatePresentation/>}/>
+            <Route path='/panel_member/view_feedback' element={<ViewFeedback/>}/>
 
             //sup
             <Route path='/supervisor/view_topics' element={<ViewTopicSup/>}/>
@@ -71,7 +74,7 @@ export const App = () => {
             <Route path='supervisor/evaluate_document' element={<EvaluateDocument/>}/>
 
 
-            <Route path='/panel_member/evaluate_presentations' element={<EvaluatePresentation/>}/>
+
 
 
         </Routes>
