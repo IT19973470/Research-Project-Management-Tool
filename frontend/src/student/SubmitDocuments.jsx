@@ -1,162 +1,131 @@
 import React, {Component, useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {Environment} from "../../../Backend/Environment";
 
 export const SubmitDocuments = () => {
     let navigate = useNavigate();
 
     const [topic, setTopic] = useState('');
     const [topicRegistered, setTopicRegistered] = useState(false);
-    const [topicAccepted, setTopicAccepted] = useState(false);
+    const [links, setLinks] = useState([]);
     const [groupRegistered, setGroupRegistered] = useState(false);
+    const [file, setFile] = useState('');
+    const [fname, setFileName] = useState('');
 
     useEffect(() => {
-        RegisteredForTopic()
+        CheckGroup()
+        GetLinks()
     }, [])
 
-    let content;
-    let contentTopicAccepted;
-
-    if (!groupRegistered) {
-        content =
-            <div>
-                <div>
-                    Please register for a group before select a research topic.
-                </div>
-            </div>
-    }else if (topicRegistered) {
-        content =
-            <div>
-                Topic is {topic}
-                <button className="btn btn-warning"
-                        style={{marginTop: '30px', fontSize: '20px', fontWeight: 'bold'}}
-                        onClick={() => {
-                            UnregisterTopic()
-                        }}>
-                    Unregister
-                </button>
-            </div>
-    } else {
-        content =
-            <div>
-                <div style={{display: 'flex'}}>
-                    <span style={{marginRight: '30px'}}>Description</span>
-                    <span style={{width: '100%'}}>
-                            <input type="text" className="form-control"
-                                   onChange={e => setTopic(e.target.value)}/>
-                        </span>
-                </div>
-                <div style={{width: '100%', textAlign: 'center'}}>
-                    <button className="btn btn-warning"
-                            style={{marginTop: '30px', fontSize: '20px', fontWeight: 'bold'}}
-                            onClick={() => {
-                                RegisterTopic()
-                            }}>
-                        Register
-                    </button>
-                </div>
-            </div>
-    }
-
-    if (topicAccepted) {
-        contentTopicAccepted =
-            <div>
-                Topic is accepted by the supervisor
-            </div>
-    } else {
-        contentTopicAccepted =
-            <div>
-                Topic is not accepted
-            </div>
-    }
-
     return (
-        <div className="row">
-            <div className="col-12" style={{fontSize: '45px', textAlign: 'center'}}>
-                Submit Documents
-            </div>
-            <div className="col-12">
-                <div style={{
-                    width: '100%',
-                    marginTop: '50px',
-                    display: 'flex',
-                    justifyContent: 'center'
-                }}>
-                    <div style={{width: '500px'}}>
-                        {content}
+        <div>
+            {
+                (!groupRegistered) ?
+                    <div>
+                        Please register for a group before select a research topic.
                     </div>
-                </div>
-            </div>
+                    :
+                    <div>
+                        {
+                            links && links.map(function (linkObj, key) {
+                                return <div key={key} style={{
+                                    border: '1px solid black',
+                                    borderRadius: '10px',
+                                    marginTop: '15px',
+                                    padding: '10px'
+                                }}>
+                                    <div>
+                                        <span style={{fontWeight: 'bold'}}>Title : </span>
+                                        <span>{linkObj.title}</span>
+                                    </div>
+                                    <div style={{display: 'flex'}}>
+                                        <div style={{fontWeight: 'bold', marginRight: '10px'}}>
+                                            Details :
+                                        </div>
+                                        <div
+                                            style={{whiteSpace: 'pre-wrap'}}>{linkObj.details}</div>
+                                    </div>
+                                    <div>
+                                        <span style={{fontWeight: 'bold'}}>Type : </span>
+                                        <span>{linkObj.type}</span>
+                                    </div>
+                                    <div>
+                                        <span style={{fontWeight: 'bold'}}>Deadline : </span>
+                                        <span>{linkObj.deadline}</span>
+                                    </div>
+                                    <div>
+                                        <input type="file" onChange={(e) => {
+                                            setFileTarget(e)
+                                        }}/>
+                                    </div>
+                                    <div style={{textAlign: 'right'}}>
+                                        <button className="btn btn-warning btn-sm" style={{fontWeight: 'bold'}}
+                                                onClick={() => {
+                                                    upload(linkObj._id)
+                                                }}>
+                                            Upload
+                                        </button>
+                                    </div>
+                                </div>
+                            })
+                        }
+                    </div>
+            }
         </div>
     );
 
-    function RegisteredForTopic() {
-        let groupId = JSON.parse(localStorage.getItem('group')) !== null ? JSON.parse(localStorage.getItem('group')).groupId : null;
-        if (groupId !== null) {
-            setGroupRegistered(true);
-            const requestOptions = {
-                method: 'GET',
-                headers: {'Content-Type': 'application/json'}
-            };
-            fetch('http://localhost:9000/rpmt/student/topic_registered/' + JSON.parse(localStorage.getItem('group')).groupId, requestOptions)
-                .then(response => response.json())
-                .then(reply => {
-                    if (reply.reply !== null && reply.reply.registered) {
-                        setTopicRegistered(true);
-                        setTopic(reply.reply.topic);
-                    } else {
-                        setTopicRegistered(false);
-                    }
-                });
-        } else {
-            setGroupRegistered(false);
-        }
+    function setFileTarget(e) {
+        // console.log(e.target.files[0].name)
+        setFile(e.target.files[0])
+        setFileName(e.target.files[0].name)
     }
 
-    function UnregisterTopic() {
+    function upload(submissionId) {
+        // const onsubmit =async e=>{
+        //     e.preventDefault();
+        // console.log(file)
+        let formData = new FormData();
+        formData.append('file', file)
+        fetch('http://localhost:9000/rpmt/student/submit_document/' + submissionId + '/' + JSON.parse(localStorage.getItem('group')).groupId, {
+            method: 'POST',
+            body: formData
+        }).then(response => response.json())
+            .then(reply => {
+                console.log(reply)
+            }).catch((error) => {
+            console.error('Error:', error);
+        });
+
+        // }
+    }
+
+    function GetLinks() {
         const requestOptions = {
-            method: 'DELETE',
+            method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/student/remove_research_topic/' + JSON.parse(localStorage.getItem('group')).groupId, requestOptions)
+        fetch('http://localhost:9000/rpmt/student/get_upload_links', requestOptions)
             .then(response => response.json())
             .then(reply => {
-                if (reply) {
-                    setTopicRegistered(false);
-                }
-                // if (reply !== null && UserData.type === 'customer') {
-                //     UserData.id = reply.id;
-                //     navigate('/view_items');
-                // } else if (reply !== null && UserData.type === 'trader') {
-                //     navigate('/trader_items');
-                // }
+                setLinks(reply)
             });
     }
 
-    function RegisterTopic() {
+    function CheckGroup() {
         const requestOptions = {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                groupId: JSON.parse(localStorage.getItem('group')).groupId,
-                topic: topic,
-                accepted: false,
-                registered: true
-            })
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/student/add_research_topic', requestOptions)
+        fetch(Environment.url + 'student/check_group/' + JSON.parse(localStorage.getItem('user'))._id, requestOptions)
             .then(response => response.json())
             .then(reply => {
-                if (reply !== null) {
-                    setTopicRegistered(true);
-                    setTopic(reply.topic);
+                if (reply.length === 0) {
+                    setGroupRegistered(false)
+                } else {
+                    setGroupRegistered(true)
+                    localStorage.setItem('group', JSON.stringify(reply))
                 }
-                // if (reply !== null && UserData.type === 'customer') {
-                //     UserData.id = reply.id;
-                //     navigate('/view_items');
-                // } else if (reply !== null && UserData.type === 'trader') {
-                //     navigate('/trader_items');
-                // }
             });
     }
 };

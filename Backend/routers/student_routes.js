@@ -5,6 +5,7 @@ const Student = require('../models/Student');
 const StudentGroup = require('../models/StudentGroup');
 const GroupTopic = require('../models/GroupTopic');
 const User = require('../models/User');
+const FileSubmission = require('../models/FileSubmission');
 const mongoose = require('mongoose');
 
 router.get('/check_group/:id', (req, res, next) => {
@@ -228,14 +229,22 @@ router.post('/add_group_supervisor', (req, res, next) => {
     });
 });
 
-router.post('/submit_documents', (req, res) => {
+router.post('/submit_document/:submissionId/:groupId', (req, res) => {
+    // console.log(req.files)
     if (req.files) {
         let file = req.files.file;
         file.mv('C:/xampp/htdocs/NodeFile/' + file.name, (err) => {
             if (err) {
                 res.send(err)
             } else {
-                res.send('File Uploaded');
+                FileSubmission.create({
+                    groupId: req.params.groupId,
+                    submissionId: req.params.submissionId,
+                    fileName: req.files.file.name
+                })
+                console.log(req.params.submissionId)
+                // FileSubmission.create()
+                res.send({reply: true});
             }
         })
     }
@@ -279,6 +288,54 @@ router.get('/get_supervisors/:id', (req, res, next) => {
         })
         res.send(supers);
     })
+});
+
+router.get('/get_upload_links', (req, res, next) => {
+    let supers = [
+        {
+            _id: 1,
+            title: 'File Upload 1',
+            details: 'qwe',
+            deadline: '2020-02-01',
+            type: 'pdf'
+        },
+        {
+            _id: 2,
+            title: 'File Upload 2',
+            details: 'qwe',
+            deadline: '2020-02-02',
+            type: 'pdf'
+        },
+        {
+            _id: 3,
+            title: 'File Upload 3',
+            details: 'qwe',
+            deadline: '2020-02-03',
+            type: 'pdf'
+        },
+        {
+            _id: 4,
+            title: 'File Upload 4',
+            details: 'qwe',
+            deadline: '2020-02-05',
+            type: 'pdf'
+        }
+    ];
+    // StudentGroup.findOne({groupId: req.params.id}).then((grpSupervisor) => {
+    //     supers.forEach((superObj) => {
+    //         if (grpSupervisor && grpSupervisor.supervisor._id == superObj._id) {
+    //             superObj.markedSuper = 1
+    //         } else {
+    //             superObj.markedSuper = 0
+    //         }
+    //         if (grpSupervisor && grpSupervisor.coSupervisor._id == superObj._id) {
+    //             superObj.markedCoSuper = 1
+    //         } else {
+    //             superObj.markedCoSuper = 0
+    //         }
+    //     })
+    res.send(supers);
+    // })
 });
 
 module.exports = router;

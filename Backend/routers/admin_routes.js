@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router();
 const Student = require('../models/Student');
 let Mark = require('../models/Marking');
-let Submission =require('../models/Submission')
+let Submission =require('../models/FileSubmission')
 
 router.route("/displayUsers").get((req,res)=>{
     Student.find().then((students)=>{
