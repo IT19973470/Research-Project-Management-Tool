@@ -16,145 +16,90 @@ export const RequestSupervisor = () => {
         CheckGroup();
         GetSupervisors();
         // RequestedSupervisor()
-    }, [])
+    }, []);
 
-    let content;
-
-    if (!groupRegistered) {
-        content =
-            <div>
-                <div>
-                    Please register for a group before request a supervisor.
+    return (
+        <div className="row">
+            <div className="col-12" style={{fontSize: '45px', textAlign: 'center'}}>
+                Request Supervisor & Co-Supervisor
+            </div>
+            <div className="col-12">
+                <div style={{
+                    width: '100%',
+                    marginTop: '50px',
+                    display: 'flex',
+                    justifyContent: 'center'
+                }}>
+                    <div style={{width: '1000px'}}>
+                        {
+                            (groupRegistered && supervisors !== null) ?
+                                <div>
+                                    {
+                                        supervisors && supervisors.map(function (supervisorObj, key) {
+                                            return <div key={key} style={{
+                                                border: '1px solid black',
+                                                borderRadius: '10px',
+                                                marginTop: '15px',
+                                                padding: '10px'
+                                            }}>
+                                                <div>
+                                                    {
+                                                        supervisorObj.interests && supervisorObj.interests.map(function (interest, key1) {
+                                                            return <div key={key1}>{interest}</div>
+                                                        })
+                                                    }
+                                                </div>
+                                                <div>{supervisorObj.name}</div>
+                                                <div>
+                                                    {
+                                                        supervisorObj.markedSuper ?
+                                                            <div>
+                                                                Marked
+                                                            </div>
+                                                            :
+                                                            <button onClick={() => {
+                                                                // setSupervisor(supervisorObj)
+                                                                RegisterSupervisor(supervisorObj, 0);
+                                                            }
+                                                            }>Add as Supervisor
+                                                            </button>
+                                                    }
+                                                </div>
+                                                <div>
+                                                    {
+                                                        supervisorObj.markedCoSuper ?
+                                                            <div>
+                                                                Marked
+                                                            </div>
+                                                            :
+                                                            <button onClick={() => {
+                                                                // setCoSupervisor(supervisorObj)
+                                                                RegisterSupervisor(supervisorObj, 1);
+                                                            }
+                                                            }>Add as Co-Supervisor
+                                                            </button>
+                                                    }
+                                                </div>
+                                            </div>
+                                        })
+                                    }
+                                </div> :
+                                <div></div>
+                        }
+                        {
+                            (!groupRegistered) ?
+                                <div>
+                                    <div>
+                                        Please register for a group before request a supervisor.
+                                    </div>
+                                </div> :
+                                <div></div>
+                        }
+                    </div>
                 </div>
             </div>
-        // } else if (topicRegistered) {
-        //     content =
-        //         <div>
-        //             Topic is {supervisor}
-        //         </div>
-        // } else {
-        //     content =
-        //         <div>
-        //             <div style={{display: 'flex'}}>
-        //                 <span style={{marginRight: '30px'}}>Supervisor</span>
-        //                 <span style={{width: '100%'}}>
-        //                         <input type="text" className="form-control"
-        //                                onChange={e => setSupervisor(e.target.value)}/>
-        //                     </span>
-        //             </div>
-        //             <div style={{display: 'flex'}}>
-        //                 <span style={{marginRight: '30px'}}>Co-Supervisor</span>
-        //                 <span style={{width: '100%'}}>
-        //                         <input type="text" className="form-control"
-        //                                onChange={e => setCoSupervisor(e.target.value)}/>
-        //                     </span>
-        //             </div>
-        //             <div style={{width: '100%', textAlign: 'center'}}>
-        //                 <button className="btn btn-warning"
-        //                         style={{marginTop: '30px', fontSize: '20px', fontWeight: 'bold'}}
-        //                         onClick={() => {
-        //                             RegisterSupervisor()
-        //                         }}>
-        //                     Register
-        //                 </button>
-        //             </div>
-        //         </div>
-    }
-
-    let supervisorsList = [];
-
-    const tableStyle = {
-        border: '1px solid black',
-        borderCollapse: 'collapse',
-        padding: '15px'
-    };
-
-    if (groupRegistered && supervisors !== null) {
-        supervisorsList =
-            <div>
-                <table style={{width: '100%'}}>
-                    <thead>
-                    <tr>
-                        <th>Topic</th>
-                        <th>Supervisor</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {
-                        supervisors && supervisors.map(function (supervisorObj, key) {
-                            return <tr key={key}>
-                                <td style={tableStyle}>
-                                {
-                                    supervisorObj.interests && supervisorObj.interests.map(function (interest, key1) {
-                                        return <div>{interest}</div>
-                                    })
-                                }
-                                </td>
-                                <td style={tableStyle}>{supervisorObj.name}</td>
-                                <td style={tableStyle}>
-                                    {
-                                        supervisorObj.markedSuper ?
-                                            <div>
-                                                Marked
-                                            </div>
-                                            :
-                                            <button onClick={() => {
-                                                // setSupervisor(supervisorObj)
-                                                RegisterSupervisor(supervisorObj, 0);
-                                            }
-                                            }>Add as Supervisor
-                                            </button>
-                                    }
-                                </td>
-                                <td style={tableStyle}>
-                                    {
-                                        supervisorObj.markedCoSuper ?
-                                            <div>
-                                                Marked
-                                            </div>
-                                            :
-                                            <button onClick={() => {
-                                                // setCoSupervisor(supervisorObj)
-                                                RegisterSupervisor(supervisorObj, 1);
-                                            }
-                                            }>Add as Co-Supervisor
-                                            </button>
-                                    }
-                                </td>
-                            </tr>
-                        })
-                    }
-                    </tbody>
-                </table>
-            </div>
-    }
-
-
-    // function RequestedSupervisor() {
-    //     let groupId = JSON.parse(localStorage.getItem('group')) !== null ? JSON.parse(localStorage.getItem('group')).groupId : null;
-    //     if (groupId !== null) {
-    //         setGroupRegistered(true);
-    //         const requestOptions = {
-    //             method: 'GET',
-    //             headers: {'Content-Type': 'application/json'}
-    //         };
-    //         fetch('http://localhost:9000/rpmt/student/topic_registered/' + groupId, requestOptions)
-    //             .then(response => response.json())
-    //             .then(reply => {
-    //                 // console.log(reply)
-    //                 if (reply.reply !== null) {
-    //                     setTopicRegistered(true);
-    //                     setSupervisor(reply.reply.topic);
-    //                 } else {
-    //                     setTopicRegistered(false);
-    //                 }
-    //             });
-    //     } else {
-    //         setGroupRegistered(false);
-    //     }
-    // }
+        </div>
+    );
 
     function CheckGroup() {
         const requestOptions = {
@@ -221,25 +166,4 @@ export const RequestSupervisor = () => {
                 });
         }
     }
-
-    return (
-        <div className="row">
-            <div className="col-12" style={{fontSize: '45px', textAlign: 'center'}}>
-                Request Supervisor & Co-Supervisor
-            </div>
-            <div className="col-12">
-                <div style={{
-                    width: '100%',
-                    marginTop: '50px',
-                    display: 'flex',
-                    justifyContent: 'center'
-                }}>
-                    <div style={{width: '1000px'}}>
-                        {supervisorsList}
-                        {content}
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
 };
