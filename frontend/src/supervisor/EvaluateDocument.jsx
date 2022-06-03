@@ -18,11 +18,11 @@ export const EvaluateDocument = () => {
     }
 
     return (
+        
         <div className={'row'}>
+            
+            <h1>Group Markings</h1>
             <div className={'col-6'} style={{verticalAlign: "baseline"}}>
-                <div className={'col-6'} style={{fontSize: '45px', textAlign: 'center'}}>
-                    Group Evaluation
-                </div>
                 <div className={'col-6'}>
                     <div style={{width: '600px'}}>
                         <form  align="center">

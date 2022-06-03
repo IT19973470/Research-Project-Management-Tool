@@ -41,6 +41,7 @@ export const Evaluation = () => {
     <div>
 
 <div style={{width: '500px'}}>
+                        <h1>Marking Scheme</h1>
                         <table className="table table-striped" style={{marginTop: '40px'}}>
                             <thead>
                             <tr>
@@ -62,7 +63,11 @@ export const Evaluation = () => {
                             </tbody>
                         </table>
                     </div>
+
+                    <hr></hr>
+
         <div>
+            <h1>Document Submissions</h1>
         {
         submission && submission.map((submission, key) => {
             return(<div style={{border: '3px solid #aaaaaa',borderRadius:' 10px',marginRight: '10px',marginTop:'10px'}}>
