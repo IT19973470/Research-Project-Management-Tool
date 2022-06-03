@@ -11,8 +11,10 @@ export const ViewTopics = () => {
     const [topic, setTopic] = useState('');
     const [accepted, setAccepted] = useState('');
     const [studentGroup, setStudentGroup] = useState('');
+    const [group,showGroup]=React.useState(false)
 
     function getFields(student) {
+        showGroup(true)
         console.log(student.groupId)
         setGroupId(student)
     }
@@ -56,15 +58,14 @@ export const ViewTopics = () => {
                             <td>{researchTopic.groupId}</td>
                             <td>{researchTopic.topic}</td>
                             <td>{researchTopic.accepted.toString()}</td>
-                            <td><button onClick={()=>getFields(researchTopic)}>View</button></td>
+                            <td align={'center'}><button onClick={()=>getFields(researchTopic)}>View</button></td>
                         </tr>
                     })
                 }
                 </tbody>
             </table>
-            {
-                <GroupDetails IdPass={groupId}/>
-            }
+
+            { group ? <GroupDetails IdPass={groupId}/> : null }
         </div>
 
     );
