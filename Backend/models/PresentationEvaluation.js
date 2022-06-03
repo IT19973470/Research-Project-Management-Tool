@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const StudentGroup = require('../models/StudentGroup');
 
 const PresentationEvaluationSchema = new Schema({
     _evaluationId:{

@@ -3,10 +3,8 @@ import GroupDetails from "./GroupDetails";
 
 export const EvaluatePresentation = () => {
     const [marking, setMarking] = useState(null);
-    const [_evaluationId, setId] = useState("");
     const [presentationMark, setMarks] = useState("");
     const [presentationFeedback, setPresentationFeedback] = useState("");
-    const [researchTopic, setResearchTopic] = useState('');
     const [groupId, setGroupId] = useState('');
     const [studentGroup, setStudentGroup] = useState('');
 

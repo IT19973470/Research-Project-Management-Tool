@@ -64,5 +64,33 @@ router.route('/viewFeedback').get((req,res) => {
     });
 });
 
+router.route("/updateFeedback/:id").put(async (req, res) => {
+    let id = req.params.id;
+    const {_id, presentationMark, presentationFeedback} = req.body;
+    const updateFeedback = {
+        _id,
+        presentationMark,
+        presentationFeedback
+    }
+    const update = await PresentationEvaluation.findOneAndUpdate(id, updateFeedback)
+        .then((feedback) => {
+            res.status(200).send({status: "Feedback updated", feedback: feedback})
+        }).catch((err) => {
+            res.status(500).send({status: "Error", error: err.message})
+        })
+
+});
+
+router.route("/deleteById/:id").delete(async (req, res) => {
+    let id = req.params.id;
+    await PresentationEvaluation.findOneAndDelete(id)
+        .then(() => {
+            res.status(200).send({status: "Feedback deleted"})
+        }).catch((err) => {
+            console.log(err.message);
+            res.status(500).send({status: "Error", error: err.message})
+        })
+});
+
 
 module.exports = router;
