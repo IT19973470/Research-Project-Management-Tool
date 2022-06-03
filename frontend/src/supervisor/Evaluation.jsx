@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const Evaluation = () => {
     const [submission, setSumbission] = useState(null);
+    const [marking, setMarking] = useState(null)
     const [title, setTitle] =useState("");
     const [details, setDetails] =useState("");
     const [deadline, setDeadline] =useState("");
@@ -22,19 +23,47 @@ export const Evaluation = () => {
                 setSumbission(data)
             });
     })
-
+    useEffect (()=>{
+        const requestOptions = {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
+        };
+        fetch('http://localhost:9000/rpmt/admin/displayMarking',requestOptions)
+            .then(response=>{ return response.json()})
+            .then(data=>{
+                 console.log(data)
+                setMarking(data)
+            });
+    })
     
 
     return (
     <div>
-    {
 
-        // <div className="col-12" style={{fontSize: '45px', textAlign: 'center'}}>
-        //         View Marking
-        //     </div>
-
-
-
+<div style={{width: '500px'}}>
+                        <table className="table table-striped" style={{marginTop: '40px'}}>
+                            <thead>
+                            <tr>
+                                <th >#</th>
+                                <th scope="col" width="20%">Criteria</th>
+                                <th scope="col">Mark Distribution</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {
+                                marking && marking.map((marking, key) => {
+                                    return <tr key={key}>
+                                        <td>{key + 1}</td>
+                                        <td>{marking.criteria}</td>
+                                        <td>{marking.marks}</td>
+                                            </tr>
+                                })
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+        <div>
+        {
         submission && submission.map((submission, key) => {
             return(<div style={{border: '3px solid #aaaaaa',borderRadius:' 10px',marginRight: '10px',marginTop:'10px'}}>
                 <div style={{margin: '10px',display: 'flex'}}>
@@ -61,12 +90,10 @@ export const Evaluation = () => {
                     </div>
                 </div>
             </div>)
-
-        })
-
-        
+         })        
     }
-
-</div>
+            
+        </div>
+    </div>
     );
 };
