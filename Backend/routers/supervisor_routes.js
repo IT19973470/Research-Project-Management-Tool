@@ -59,4 +59,27 @@ router.route('/viewMarking').get((req, res) => {
     })
 });
 
+router.route('/viewGroup').get(async (req, res) => {
+    await StudentGroup.find().then((details) => {
+        res.json(details)
+    })
+
+});
+
+router.route('/viewMarking').get((req,res) => {
+    Mark.find().then((marking) => {
+        res.json(marking);
+    }).catch(err => {
+        console.log(err)
+    });
+});
+
+router.route('/viewFeedback').get((req,res) => {
+    DocumentEvaluation.find().then((feedback) => {
+        res.json(feedback);
+    }).catch(err => {
+        console.log(err)
+    });
+});
+
 module.exports = router;
