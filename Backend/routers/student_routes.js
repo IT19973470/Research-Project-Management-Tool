@@ -127,23 +127,27 @@ router.post('/add_group', (req, res, next) => {
 
 router.post('/add_research_topic', (req, res, next) => {
     GroupTopic.updateMany(
-        {groupId: req.body.groupId, "topics.topicRegistered": true},
+        {groupId: req.body.groupId, topicRegistered: true},
         {$set: {topicRegistered: false, topicAccepted: 0}}
     ).then(() => {
-        req.body.topic._id = mongoose.Types.ObjectId();
-        GroupTopic.create(req.body.topic).then((topic) => {
-            console.log(topic)
+        req.body._id = mongoose.Types.ObjectId();
+        GroupTopic.create(req.body).then((topic) => {
             StudentGroup.updateOne(
                 {groupId: req.body.groupId},
-                {
-                    $push: {
-                        topics: req.body.topic._id
-                    }
-                }
+                {$push: {topics: req.body._id}}
             ).then(() => {
                 res.send({reply: true})
             }).catch(next);
         })
+    })
+});
+
+router.put('/update_research_topic/:id', (req, res, next) => {
+    GroupTopic.updateOne(
+        {_id: req.params.id},
+        req.body
+    ).then((researchTopic) => {
+        res.send({reply: true});
     }).catch(next);
 });
 

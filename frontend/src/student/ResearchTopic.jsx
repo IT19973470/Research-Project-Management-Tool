@@ -8,11 +8,13 @@ import {Environment} from "../../../Backend/Environment";
 export const ResearchTopic = () => {
     let navigate = useNavigate();
 
+    const [topicId, setTopicId] = useState('');
     const [topic, setTopic] = useState('');
     const [topicDesc, setTopicDesc] = useState('');
     const [topicAccepted, setTopicAccepted] = useState(false);
     const [topics, setTopics] = useState([]);
     const [groupRegistered, setGroupRegistered] = useState(false);
+    const [openForUpdate, setOpenForUpdate] = useState(false);
 
     useEffect(() => {
         CheckGroup();
@@ -21,80 +23,17 @@ export const ResearchTopic = () => {
     let content;
     let contentTopicAccepted;
 
-    if (!groupRegistered) {
-        content =
-            <div>
-                <div>
-                    Please register for a group before select a research topic.
-                </div>
-            </div>
-    } else {
-        content =
-            <div>
-                <div style={{display: 'flex'}}>
-                    <div style={{width: '100%'}}>
-                        <span style={{marginRight: '30px'}}>Topic</span>
-                        <span style={{width: '100%'}}>
-                            <input type="text" className="form-control"
-                                   onChange={e => setTopic(e.target.value)}/>
-                        </span>
-                        <span style={{marginRight: '30px'}}>Description</span>
-                        <span style={{width: '100%'}}>
-                            <input type="text" className="form-control"
-                                   onChange={e => setTopicDesc(e.target.value)}/>
-                        </span>
-                    </div>
-                </div>
-                <div style={{width: '100%', textAlign: 'center'}}>
-                    <button className="btn btn-warning"
-                            style={{marginTop: '30px', fontSize: '20px', fontWeight: 'bold'}}
-                            onClick={() => {
-                                RegisterTopic()
-                            }}>
-                        Register
-                    </button>
-                </div>
-                <div>
-                    {
-                        topics && topics.map(function (topicObj, key) {
-                            return <div key={key} style={{
-                                border: '1px solid black',
-                                borderRadius: '10px',
-                                marginTop: '15px',
-                                padding: '10px'
-                            }}>
-                                <div>
-                                    <span style={{fontWeight: 'bold'}}>Topic : </span>
-                                    <span>{topicObj.topic}</span>
-                                </div>
-                                <div>
-                                    <span style={{fontWeight: 'bold'}}>Topic is finalized by the group : </span>
-                                    {
-                                        (topicObj.topicRegistered) ?
-                                            <i className="fa fa-check" style={{color: 'green'}}></i> :
-                                            <i className="fa fa-times" style={{color: 'red'}}></i>
-                                    }
-                                </div>
-                                <div>
-                                    <span style={{fontWeight: 'bold'}}>Topic is accepted by the panel : </span>
-                                    {
-                                        (topicObj.topicAccepted === 0) ?
-                                            <i className="fa fa-times" style={{color: 'red'}}></i> :
-                                            (topicObj.topicAccepted === 1) ?
-                                                <span>Pending</span> :
-                                                <i className="fa fa-check" style={{color: 'green'}}></i>
-                                    }
-                                </div>
-                                <div>
-                                    <span style={{fontWeight: 'bold'}}>Added on : </span>
-                                    <span>{topicObj.topicAdded}</span>
-                                </div>
-                            </div>
-                        })
-                    }
-                </div>
-            </div>
-    }
+    // if (!groupRegistered) {
+    //     content =
+    //         <div>
+    //             <div>
+    //                 Please register for a group before select a research topic.
+    //             </div>
+    //         </div>
+    // } else {
+    //     content =
+    //
+    // }
 
     // if (topicAccepted) {
     //     contentTopicAccepted =
@@ -121,7 +60,128 @@ export const ResearchTopic = () => {
                     justifyContent: 'center'
                 }}>
                     <div style={{width: '800px'}}>
-                        {content}
+                        {
+                            groupRegistered ?
+                                <div>
+                                    <div style={{display: 'flex'}}>
+                                        <div style={{width: '100%'}}>
+                                            <span style={{marginRight: '30px'}}>Topic</span>
+                                            <span style={{width: '100%'}}>
+                                                <input type="text" className="form-control" value={topic}
+                                                       onChange={e => setTopic(e.target.value)}/>
+                                            </span>
+                                            <span style={{marginRight: '30px'}}>Description</span>
+                                            <span style={{width: '100%'}}>
+                                                <textarea className="form-control" value={topicDesc}
+                                                          onChange={e => setTopicDesc(e.target.value)}/>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div style={{width: '100%', textAlign: 'center'}}>
+                                        {
+                                            !openForUpdate ?
+                                                <button className="btn btn-warning"
+                                                        style={{
+                                                            marginTop: '30px',
+                                                            fontSize: '20px',
+                                                            fontWeight: 'bold'
+                                                        }}
+                                                        onClick={() => {
+                                                            RegisterTopic()
+                                                        }}>
+                                                    Register
+                                                </button> :
+                                                < button className="btn btn-warning"
+                                                         style={{
+                                                             marginTop: '30px',
+                                                             fontSize: '20px',
+                                                             fontWeight: 'bold'
+                                                         }}
+                                                         onClick={() => {
+                                                             UpdateTopic()
+                                                         }}>
+                                                    Update
+                                                </button>
+                                        }
+                                    </div>
+                                    <div>
+                                        {
+                                            topics && topics.map(function (topicObj, key) {
+                                                return <div className="row" key={key} style={{
+                                                    border: '1px solid black',
+                                                    borderRadius: '10px',
+                                                    marginTop: '15px',
+                                                    padding: '10px'
+                                                }}>
+                                                    <div className="col-10">
+                                                        <div>
+                                                            <span style={{fontWeight: 'bold'}}>Topic : </span>
+                                                            <span>{topicObj.topic}</span>
+                                                        </div>
+                                                        <div style={{display: 'flex'}}>
+                                                            <div style={{fontWeight: 'bold', marginRight: '10px'}}>Topic
+                                                                Description :
+                                                            </div>
+                                                            <div
+                                                                style={{whiteSpace: 'pre-wrap'}}>{topicObj.topicDescription}</div>
+                                                        </div>
+                                                        <div>
+                                                            <span style={{fontWeight: 'bold'}}>Topic is finalized by the group : </span>
+                                                            {
+                                                                (topicObj.topicRegistered) ?
+                                                                    <i className="fa fa-check"
+                                                                       style={{color: 'green'}}></i> :
+                                                                    <i className="fa fa-times"
+                                                                       style={{color: 'red'}}></i>
+                                                            }
+                                                        </div>
+                                                        <div>
+                                                            <span style={{fontWeight: 'bold'}}>Topic is accepted by the panel : </span>
+                                                            {
+                                                                (topicObj.topicAccepted === 0) ?
+                                                                    <i className="fa fa-times"
+                                                                       style={{color: 'red'}}></i> :
+                                                                    (topicObj.topicAccepted === 1) ?
+                                                                        <span>Pending</span> :
+                                                                        <i className="fa fa-check"
+                                                                           style={{color: 'green'}}></i>
+                                                            }
+                                                        </div>
+                                                        <div>
+                                                            <span style={{fontWeight: 'bold'}}>Added on : </span>
+                                                            <span>{topicObj.topicAdded}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-2"
+                                                         style={{
+                                                             display: 'grid',
+                                                             justifyContent: 'center',
+                                                             alignContent: 'center'
+                                                         }}>
+                                                        {
+                                                            (topicObj.topicRegistered) ?
+                                                                <i className="fa fa-pencil"
+                                                                   style={{color: 'green'}}
+                                                                   onClick={() => {
+                                                                       setOpenForUpdate(true);
+                                                                       setTopicId(topicObj._id)
+                                                                       setTopic(topicObj.topic);
+                                                                       setTopicDesc(topicObj.topicDescription)
+                                                                   }}></i> :
+                                                                <span></span>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            })
+                                        }
+                                    </div>
+                                </div> :
+                                <div>
+                                    <div>
+                                        Please register for a group before select a research topic.
+                                    </div>
+                                </div>
+                        }
                     </div>
                 </div>
             </div>
@@ -150,6 +210,33 @@ export const ResearchTopic = () => {
         // }
     }
 
+    function UpdateTopic() {
+        const requestOptions = {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                topic: topic,
+                topicDescription: topicDesc,
+            })
+        };
+        fetch('http://localhost:9000/rpmt/student/update_research_topic/' + topicId, requestOptions)
+            .then(response => response.json())
+            .then(reply => {
+                if (reply) {
+                    RegisteredForTopic()
+                    setOpenForUpdate(false);
+                    setTopic('')
+                    setTopicDesc('')
+                }
+                // if (reply !== null && UserData.type === 'customer') {
+                //     UserData.id = reply.id;
+                //     navigate('/view_items');
+                // } else if (reply !== null && UserData.type === 'trader') {
+                //     navigate('/trader_items');
+                // }
+            });
+    }
+
     // function UnregisterTopic() {
     //     const requestOptions = {
     //         method: 'DELETE',
@@ -176,13 +263,11 @@ export const ResearchTopic = () => {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 groupId: JSON.parse(localStorage.getItem('group')).groupId,
-                topic: {
-                    topic: topic,
-                    topicAccepted: 1,
-                    topicRegistered: true,
-                    topicDescription: topicDesc,
-                    topicAdded: new Date().toLocaleDateString('en-CA')
-                }
+                topic: topic,
+                topicAccepted: 1,
+                topicRegistered: true,
+                topicDescription: topicDesc,
+                topicAdded: new Date().toLocaleDateString('en-CA')
             })
         };
         fetch('http://localhost:9000/rpmt/student/add_research_topic', requestOptions)
@@ -190,7 +275,7 @@ export const ResearchTopic = () => {
             .then(reply => {
                 if (reply !== null) {
                     // setTopicRegistered(true);
-                    setTopics(reply);
+                    RegisteredForTopic()
                     // setTopics(topics => [...topics, reply.topic]);
                     // console.log(reply)
                 }

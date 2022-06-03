@@ -317,10 +317,11 @@ export const StudentGroups = () => {
         fetch(Environment.url + 'student/get_groups', requestOptions)
             .then(response => response.json())
             .then(groups => {
+                // console.log(groups)
                 groups.forEach(group => {
                     if (group.students.length === 4) {
                         filledGrps.push(group)
-                    } else if (group.students.length > 0) {
+                    } else {
                         availableGrps.push(group)
                     }
                 })
