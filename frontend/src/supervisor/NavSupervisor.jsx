@@ -20,7 +20,11 @@ export const NavSupervisor = () => {
             </div>
             <div onClick={() => {
                 navigate(prefix + '/evaluation')
-            }}>Evaluation
+            }}>View Documents
+            </div>
+            <div onClick={()=>{
+                navigate(prefix + '/evaluate_document')
+            }}>Evaluate Groups
             </div>
         </div>
     );

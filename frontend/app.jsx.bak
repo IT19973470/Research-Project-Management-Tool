@@ -25,7 +25,6 @@ import ViewRolls from "./src/admin/ViewRolls";
 import { ViewTopicSup } from "./src/supervisor/ViewTopicsSup";
 import { Evaluation } from "./src/supervisor/Evaluation";
 import {EvaluatePresentation} from "./src/panel_member/EvaluatePresentation";
-import { EvaluateDocument } from "./src/supervisor/EvaluateDocument";
 // import {Header} from "./Header";
 // import {ViewItems} from "./src/customer/ViewItems";
 // import {ViewWishList} from "./src/customer/ViewWishList";
@@ -68,11 +67,13 @@ export const App = () => {
             <Route path='/supervisor/view_topics' element={<ViewTopicSup/>}/>
             <Route path='supervisor/add_supervisor' element={<AddSupervisorTopic/>}/>
             <Route path='supervisor/evaluation' element={<Evaluation/>}/>
-            <Route path='supervisor/evaluate_document' element={<EvaluateDocument/>}/>
 
 
             <Route path='/panel_member/evaluate_presentations' element={<EvaluatePresentation/>}/>
 
+
+            //Supervisor
+            <Route path='/supervisor_topic' element={<AddSupervisorTopic/>}/>
 
         </Routes>
     )
