@@ -3,15 +3,13 @@ const router = express.Router();
 const ResearchTopic = require('../models/ResearchTopic');
 const StudentGroup = require('../models/StudentGroup');
 const Mark = require('../models/Marking');
-const Student = require('../models/Student');
-const Staff = require("../models/Staff");
-const Submission = require("../models/Submission");
 const PresentationEvaluation = require("../models/PresentationEvaluation");
+const PanelMember = require("../models/PanelMember");
 
-router.post('/staff_register', (req, res, next) => {
-    req.body._id = req.body.id;
-    Staff.create(req.body).then((staff) => {
-        res.send(staff);
+router.post('/panelMemberRegister', (req, res,  next) => {
+    // req.body._id = req.body.id;
+    PanelMember.create(req.body).then((panelMember) => {
+        res.send(panelMember);
     }).catch(next);
 });
 
