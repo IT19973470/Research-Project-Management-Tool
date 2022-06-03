@@ -24,6 +24,7 @@ import AddPannel from "./src/admin/AddPannel";
 import ViewRolls from "./src/admin/ViewRolls";
 import { ViewTopicSup } from "./src/supervisor/ViewTopicsSup";
 import { Evaluation } from "./src/supervisor/Evaluation";
+import {EvaluatePresentation} from "./src/panel_member/EvaluatePresentation";
 // import {Header} from "./Header";
 // import {ViewItems} from "./src/customer/ViewItems";
 // import {ViewWishList} from "./src/customer/ViewWishList";
@@ -61,10 +62,19 @@ export const App = () => {
             <Route path='/panel_member/view_topics' element={<ViewTopics/>}/>
             <Route path='/panel_member/group_details' element={<GroupDetails/>}/>
             <Route path='/panel_member/group' element={<Group/>}/>
+
             //sup
             <Route path='/supervisor/view_topics' element={<ViewTopicSup/>}/>
             <Route path='supervisor/add_supervisor' element={<AddSupervisorTopic/>}/>
             <Route path='supervisor/evaluation' element={<Evaluation/>}/>
+
+
+            <Route path='/panel_member/evaluate_presentations' element={<EvaluatePresentation/>}/>
+
+
+            //Supervisor
+            <Route path='/supervisor_topic' element={<AddSupervisorTopic/>}/>
+
 
         </Routes>
     )
