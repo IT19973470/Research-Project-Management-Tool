@@ -75,8 +75,11 @@ export const SubmitDocuments = () => {
         </div>
     );
 
+    let fileE;
+
     function setFileTarget(e) {
         // console.log(e.target.files[0].name)
+        fileE = e;
         setFile(e.target.files[0])
         setFileName(e.target.files[0].name)
     }
@@ -92,9 +95,10 @@ export const SubmitDocuments = () => {
             body: formData
         }).then(response => response.json())
             .then(reply => {
-                console.log(reply)
+                fileE.target.value = null
+                GetLinks();
             }).catch((error) => {
-            console.error('Error:', error);
+            // console.error('Error:', error);
         });
 
         // }

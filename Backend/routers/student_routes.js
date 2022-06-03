@@ -237,14 +237,35 @@ router.post('/submit_document/:submissionId/:groupId', (req, res) => {
             if (err) {
                 res.send(err)
             } else {
-                FileSubmission.create({
+                FileSubmission.findOne({
                     groupId: req.params.groupId,
-                    submissionId: req.params.submissionId,
-                    fileName: req.files.file.name
+                    submissionId: req.params.submissionId
+                }).then((fileSubmission) => {
+                    if (fileSubmission) {
+                        FileSubmission.updateOne(
+                            {
+                                groupId: req.params.groupId,
+                                submissionId: req.params.submissionId
+                            },
+                            {fileName: req.files.file.name}
+                        ).then(() => {
+                            res.send({reply: true});
+                        })
+                    } else {
+                        FileSubmission.create(
+                            {
+                                groupId: req.params.groupId,
+                                submissionId: req.params.submissionId,
+                                fileName: req.files.file.name
+                            }
+                        ).then(() => {
+                            res.send({reply: true});
+                        })
+                    }
                 })
-                console.log(req.params.submissionId)
+                // console.log(req.params.submissionId)
                 // FileSubmission.create()
-                res.send({reply: true});
+
             }
         })
     }

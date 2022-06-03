@@ -26,10 +26,10 @@ export const NavStudent = () => {
                 navigate(prefix + '/submit_documents')
             }}>Submit Documents
             </div>
-            <div onClick={() => {
-                navigate(prefix + '/download_templates')
-            }}>Download Templates
-            </div>
+            {/*<div onClick={() => {*/}
+                {/*navigate(prefix + '/download_templates')*/}
+            {/*}}>Download Templates*/}
+            {/*</div>*/}
         </div>
     );
 };
