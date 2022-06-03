@@ -6,6 +6,8 @@ const StudentGroup = require('../models/StudentGroup');
 const GroupTopic = require('../models/GroupTopic');
 const User = require('../models/User');
 const FileSubmission = require('../models/FileSubmission');
+const ChatGroup = require('../models/ChatGroup');
+const Supers = require('../models/Supers');
 const mongoose = require('mongoose');
 
 router.get('/check_group/:id', (req, res, next) => {
@@ -295,19 +297,21 @@ router.get('/get_supervisors/:id', (req, res, next) => {
         }
     ];
     StudentGroup.findOne({groupId: req.params.id}).then((grpSupervisor) => {
-        supers.forEach((superObj) => {
-            if (grpSupervisor && grpSupervisor.supervisor._id == superObj._id) {
-                superObj.markedSuper = 1
-            } else {
-                superObj.markedSuper = 0
-            }
-            if (grpSupervisor && grpSupervisor.coSupervisor._id == superObj._id) {
-                superObj.markedCoSuper = 1
-            } else {
-                superObj.markedCoSuper = 0
-            }
+        Supers.find().then(supers => {
+            supers.forEach((superObj) => {
+                if (grpSupervisor && grpSupervisor.supervisor._id == superObj._id) {
+                    superObj.markedSuper = 1
+                } else {
+                    superObj.markedSuper = 0
+                }
+                if (grpSupervisor && grpSupervisor.coSupervisor._id == superObj._id) {
+                    superObj.markedCoSuper = 1
+                } else {
+                    superObj.markedCoSuper = 0
+                }
+            })
+            res.send(supers);
         })
-        res.send(supers);
     })
 });
 
@@ -376,5 +380,26 @@ router.delete('/remove_file/:submissionId/:groupId', (req, res, next) => {
         res.send({reply: true})
     })
 })
+
+router.get('/get_chats_group/:id/:supervisorId', (req, res, next) => {
+    // console.log(req.params.id+' '+req.params.supervisorId)
+    ChatGroup.find({groupId: req.params.id, supervisorId: req.params.supervisorId}).then((chats) => {
+        res.send(chats)
+    })
+})
+
+router.post('/send_message', (req, res, next) => {
+    // console.log(req.body)
+    ChatGroup.create(req.body).then((chats) => {
+        res.send({reply: true})
+    })
+})
+
+// router.post('/supers', (req, res, next) => {
+//     // console.log(req.body)
+//     Supers.create(req.body).then((chats) => {
+//         res.send({reply: true})
+//     })
+// })
 
 module.exports = router;
