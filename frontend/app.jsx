@@ -16,7 +16,7 @@ import {DownloadTemplates} from "./src/student/DownloadTemplates";
 import {ModifyUsers} from "./src/admin/ModifyUsers";
 import {Marking} from "./src/admin/Marking";
 import {Submission} from "./src/admin/submission";
-import {SupervisorRegister} from "./src/supervisor/SupervisorRegister";
+import {AddSupervisorTopic, SupervisorRegister} from "./src/supervisor/AddSupervisorTopic";
 import {ViewTopics} from "./src/panel_member/ViewTopics";
 import {GroupDetails} from "./src/panel_member/GroupDetails";
 import {Group} from "./src/panel_member/Group";
@@ -46,7 +46,6 @@ export const App = () => {
             <Route path='modify_users' element={<ModifyUsers/>}/>
             <Route path='marking' element={<Marking/>}/>
             <Route path='submission' element={<Submission/>}/>
-            <Route path='supervisor' element={<SupervisorRegister/>}/>
             <Route path='panel' element={<AddPannel/>}/>
             <Route path='rolls' element={<ViewRolls/>}/>
             {/*<Route path='view_cart' element={<ViewCart/>}/>*/}
@@ -62,6 +61,11 @@ export const App = () => {
             <Route path='/panel_member/group_details' element={<GroupDetails/>}/>
             <Route path='/panel_member/group' element={<Group/>}/>
             <Route path='/panel_member/evaluate_presentations' element={<EvaluatePresentation/>}/>
+
+
+            //Supervisor
+            <Route path='/supervisor_topic' element={<AddSupervisorTopic/>}/>
+
         </Routes>
     )
 };

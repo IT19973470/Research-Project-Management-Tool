@@ -4,34 +4,40 @@ const ResearchTopic = require('../models/ResearchTopic');
 const StudentGroup = require('../models/StudentGroup');
 const SupervisorTopic = require('../models/SupervisorTopic')
 const Student = require('../models/Student');
-const Staff = require("../models/Staff");
+const supervisor = require("../models/Supervisor");
+const GroupSupervisor = require('../models/GroupSupervisor');
+const Marking = require('../models/Marking');
 
+// router.route("/add_supervisor").post((req,res)=>{
+//     const name = req.body.name;
+//     const address = req.body.address;
+//     const email = req.body.email;
+//     const password  = req.body.password;
 
-let router1 = router.post('/addSupervisorTopic', (req, res, next) => {
+//     const newSupervisor = new Supervisor({
+//         name,
+//         address,
+//         email,
+//         password
+//     })
+
+//     newSupervisor.save().then(()=>{
+//         res.json("Supervisor Added")
+//     }).catch((err)=>{
+//         console.log(err);
+//     })
+// })
+let router1 = router.post('/add_supervisor', (req, res, next) => {
     console.log(req.body)
-    SupervisorTopic.create(
-        {
-            _id: 'S' + Math.floor(Math.random() * 10000), 
-            interests:req.body.interests,
-            name:req.body.name,
-            email:req.body.email,
-            address : req.body.address,
-            mobile:req.body.mobile
-        }
+    supervisor.create(
+        {_id: req.body._id,name:req.body.name,address:req.body.address,email:req.body.email,password:req.body.password, interests:req.body.interests}
     ).then((data) => {
         res.send(data);
     }).catch(next);
 
 });
 
-router.post('/supervisor_register', (req, res, next) => {
-    req.body._id = req.body.id;
-    Staff.create(req.body).then((staff) => {
-        res.send(staff);
-    }).catch(next);
-});
-
-router.route('/viewTopicsbysupervisor').get((req, res) => {
+router.route('/viewTopics').get((req, res) => {
     ResearchTopic.find().then((topics) => {
         res.json(topics);
     }).catch(err => {
@@ -39,12 +45,58 @@ router.route('/viewTopicsbysupervisor').get((req, res) => {
     })
 });
 
-router.route('/viewGroupbysupervisor/:id').get(async (req, res) => {
-    let groupId = req.params.id;
-    await StudentGroup.find({groupId: groupId}).then((details) => {
-        res.json(details)
+router.route("/acceptTopic/:id").put(async (req, res) => {
+    let _id = req.params.id;
+    const {accepted} = req.body;
+    const updateTopic= {
+        accepted 
+    }
+    const update = await ResearchTopic.findByIdAndUpdate(_id, updateTopic)
+    .then((user) => {
+        res.status(200).send({status: "Topic updated"})
+    }).catch((err) => {
+        res.status(500).send({status: "Error", error: err.message})
     })
 
+})
+
+// router.route("/acceptTopic/:groupID").put(async (req, res) => {
+//     console.log(req.body)
+//     let groupId = req.params.groupId;
+//     ResearchTopic.updateOne(
+//         {groupId:groupId},
+//         {$set: {accepted: true}}
+//     ).then((acceptTopics) => {
+//         res.send(acceptTopics);
+//     })
+// })
+
+
+router.route("/acceptGroups/:groupID").put(async (req, res) => {
+    console.log(req.body)
+    let groupID = req.params.groupId;
+    GroupSupervisor.updateOne(
+        {groupId:groupID},
+        {$set: {supervisor: req.body.supervisor}}
+    ).then((groupSupervisor) => {
+        res.send(groupSupervisor);
+    })
+})
+
+// router.route('/viewDocuments').get((req, res) => {
+//     ResearchTopic.find().then((topics) => {
+//         res.json(topics);
+//     }).catch(err => {
+//         console.log(err);
+//     })
+// });
+
+router.route('/viewMarking').get((req, res) => {
+    Marking.find().then((Markings) => {
+        res.json(Markings);
+    }).catch(err => {
+        console.log(err);
+    })
 });
 
 module.exports = router;

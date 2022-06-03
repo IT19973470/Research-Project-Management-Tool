@@ -6,7 +6,7 @@ import Footer from "./Footer";
 import {ContentSup} from "./ContentSup";
 
 
-createRoot(document.getElementById('appSup')).render(
+createRoot(document.getElementById('Sup')).render(
     <Router>
         <div>
             <Header/>
