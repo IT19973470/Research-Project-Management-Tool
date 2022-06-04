@@ -16,16 +16,16 @@ export const NavSupervisor = () => {
             }}>View Topics
             </div>
             <div onClick={() => {
-                navigate(prefix + '/add_supervisor')
-            }}>Add Supervisor
-            </div>
-            <div onClick={() => {
                 navigate(prefix + '/view_documents')
             }}>View Documents
             </div>
             <div onClick={()=>{
                 navigate(prefix + '/evaluate_document')
             }}>Evaluate Groups
+            </div>
+            <div onClick={() => {
+                navigate(prefix + '/chat')
+            }}>Chat
             </div>
         </div>
     );

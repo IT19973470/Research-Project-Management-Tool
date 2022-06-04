@@ -33,7 +33,9 @@ export const Login = () => {
                                 setUserType(e.target.value)
                             }}>
                                 <option value="student">Student</option>
+                                <option value="admin">Admin</option>
                                 <option value="supervisor">Supervisor</option>
+                                <option value="panel">Panel Member</option>
                             </select>
                         </span>
                         </div>
@@ -88,7 +90,7 @@ export const Login = () => {
                     } else if (user.userType === 'supervisor') {
                         navigate('/supervisor/view_topics');
                     } else if (user.userType === 'panel') {
-                        navigate('/student/student_groups');
+                        navigate('/panel_member/view_topics');
                     }
                 }
             });

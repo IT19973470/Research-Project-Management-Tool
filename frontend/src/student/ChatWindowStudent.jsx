@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Environment} from "../../../Backend/Environment";
 
-export const ChatWindow = () => {
+export const ChatWindowStudent = () => {
     let navigate = useNavigate();
 
     const [topic, setTopic] = useState('');

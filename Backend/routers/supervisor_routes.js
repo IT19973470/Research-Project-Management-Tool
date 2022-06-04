@@ -13,7 +13,14 @@ const User = require("../models/User");
 let router1 = router.post('/add_supervisor', (req, res, next) => {
     console.log(req.body)
     supervisor.create(
-        {_id: req.body._id,name:req.body.name,address:req.body.address,email:req.body.email,password:req.body.password, interests:req.body.interests}
+        {
+            _id: req.body._id,
+            name: req.body.name,
+            address: req.body.address,
+            email: req.body.email,
+            password: req.body.password,
+            interests: req.body.interests
+        }
     ).then((data) => {
         User.create(req.body).then(() => {
             res.send(data);
@@ -31,18 +38,31 @@ router.route('/viewTopics').get((req, res) => {
     })
 });
 
+router.route('/get_groups/:id').get((req, res) => {
+    StudentGroup.find({
+            $or: [{'supervisor._id': req.params.id}, {'coSupervisor._id': req.params.id}]
+        }
+    ).then((groups) => {
+        // console.log(groups)
+        res.json(groups);
+    }).catch(err => {
+        console.log(err);
+    })
+})
+;
+
 router.route("/acceptTopic/:id").put(async (req, res) => {
     let _id = req.params.id;
     const {accepted} = req.body;
-    const updateTopic= {
-        accepted 
+    const updateTopic = {
+        accepted
     }
     const update = await ResearchTopic.findByIdAndUpdate(_id, updateTopic)
-    .then((user) => {
-        res.status(200).send({status: "Topic updated"})
-    }).catch((err) => {
-        res.status(500).send({status: "Error", error: err.message})
-    })
+        .then((user) => {
+            res.status(200).send({status: "Topic updated"})
+        }).catch((err) => {
+            res.status(500).send({status: "Error", error: err.message})
+        })
 
 })
 
@@ -70,7 +90,7 @@ router.route('/viewGroup').get(async (req, res) => {
 
 });
 
-router.route('/viewMarking').get((req,res) => {
+router.route('/viewMarking').get((req, res) => {
     Mark.find().then((marking) => {
         res.json(marking);
     }).catch(err => {
@@ -78,7 +98,7 @@ router.route('/viewMarking').get((req,res) => {
     });
 });
 
-router.route('/viewFeedback').get((req,res) => {
+router.route('/viewFeedback').get((req, res) => {
     DocumentEvaluation.find().then((feedback) => {
         res.json(feedback);
     }).catch(err => {

@@ -22,16 +22,17 @@ import {Group} from "./src/panel_member/Group";
 import AddPannel from "./src/admin/AddPannel";
 import ViewRolls from "./src/admin/ViewRolls";
 import {CreateAccountAdmin} from "./src/admin/CreateAccountAdmin";
-import { ViewTopicSup } from "./src/supervisor/ViewTopicsSup";
-import { Evaluation } from "./src/supervisor/Evaluation";
+import {ViewTopicSup} from "./src/supervisor/ViewTopicsSup";
+import {Evaluation} from "./src/supervisor/Evaluation";
 import {EvaluatePresentation} from "./src/panel_member/EvaluatePresentation";
-import { EvaluateDocument } from "./src/supervisor/EvaluateDocument";
+import {EvaluateDocument} from "./src/supervisor/EvaluateDocument";
 import {ViewFeedback} from "./src/panel_member/ViewFeedback";
 import {PanelMemberRegister} from "./src/panel_member/PanelMemberRegister";
 import ModifyPanel from "./src/admin/ModifyPanel";
 import ModifyAdmin from "./src/admin/ModifyAdmin";
 import {ViewTopicEvaluation} from "./src/panel_member/ViewTopicEvaluation";
-import {ChatWindow} from "./src/student/ChatWindow";
+import {ChatWindowStudent} from "./src/student/ChatWindowStudent";
+import {ChatWindowSupervisor} from "./src/supervisor/ChatWindowSupervisor";
 import {SignUp} from "./src/SignUp";
 // import {Header} from "./Header";
 // import {ViewItems} from "./src/customer/ViewItems";
@@ -53,7 +54,7 @@ export const App = () => {
             <Route path='/student/research_topic' element={<ResearchTopic/>}/>
             <Route path='/student/request_supervisor' element={<RequestSupervisor/>}/>
             <Route path='/student/submit_documents' element={<SubmitDocuments/>}/>
-            <Route path='/student/chat' element={<ChatWindow/>}/>
+            <Route path='/student/chat' element={<ChatWindowStudent/>}/>
             //admin
             <Route path='modify_users' element={<ModifyUsers/>}/>
             <Route path='marking' element={<Marking/>}/>
@@ -84,9 +85,7 @@ export const App = () => {
             <Route path='supervisor/add_supervisor' element={<AddSupervisorTopic/>}/>
             <Route path='supervisor/view_documents' element={<Evaluation/>}/>
             <Route path='supervisor/evaluate_document' element={<EvaluateDocument/>}/>
-
-
-
+            <Route path='/supervisor/chat' element={<ChatWindowSupervisor/>}/>
 
 
         </Routes>
