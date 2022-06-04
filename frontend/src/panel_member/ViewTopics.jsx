@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import GroupDetails from "./GroupDetails";
+import {GroupDetails} from "./GroupDetails";
 import {Common} from "./../commons/Common";
 
 export const ViewTopics = () => {

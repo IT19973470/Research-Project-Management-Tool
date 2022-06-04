@@ -2,10 +2,11 @@
   "name": "frontend",
   "versimon": "1.0.0",
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
-  "main": "index.js",
+  "default": "index.html",
   "type": "module",
   "scripts": {
-    "start": "parcel index.html"
+    "start": "parcel index.html",
+    "build": "parcel build index.html --dist-dir dist/react"
   },
   "author": "imalka",
   "license": "ISC",

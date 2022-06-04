@@ -2,20 +2,21 @@ import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {Common} from "./../commons/Common";
 
-export default function GroupDetails(groupId) {
+// export default function GroupDetails(groupId) {
+export const GroupDetails = () => {
     let navigate = useNavigate();
     //console.log(groupId)
     let [studentGroup, setStudentGroup] = useState('');
     const [suggestions, setSuggestions] = useState("");
     const [topicFeedback, setTopicFeedback] = useState("");
-     const [groupID, setGroupId] = useState('');
+    const [groupID, setGroupId] = useState('');
 
     useEffect(() => {
         viewGroupDetails();
     },)
 
     // studentGroup.groupId = this.props.groupId;
-    function viewFeedback(){
+    function viewFeedback() {
         navigate('/panel_member/view_topic_feedback');
     }
 
@@ -73,7 +74,9 @@ export default function GroupDetails(groupId) {
                                 <td>{studentGroup.groupId}</td>
                                 <td>{groupId.IdPass.topic}</td>
                                 <td><span>{studentGroup.students.join(', ')}</span></td>
-                                <td><button onClick={()=>viewFeedback()}>Go</button></td>
+                                <td>
+                                    <button onClick={() => viewFeedback()}>Go</button>
+                                </td>
                             </tr>
                         })
                     }
@@ -99,7 +102,8 @@ export default function GroupDetails(groupId) {
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="na,e">Suggestions:</label>
-                                    <input type="text" className="form-control" id="suggestions" placeholder="Enter Suggestions"
+                                    <input type="text" className="form-control" id="suggestions"
+                                           placeholder="Enter Suggestions"
                                            onChange={(e) => {
                                                setSuggestions(e.target.value)
                                            }}/>

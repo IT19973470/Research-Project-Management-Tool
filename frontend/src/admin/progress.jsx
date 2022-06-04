@@ -1,6 +1,6 @@
 import React from 'react';
 import {Common} from "./../commons/Common";
-import ProtoTypes from 'prop-types'
+// import ProtoTypes from 'prop-types'
 
 const Progress =({percentage})=>{
     return(
@@ -13,7 +13,7 @@ const Progress =({percentage})=>{
         </div>
     )
 }
-Progress.ProtoTypes={
-    percentage:ProtoTypes.number.isRequired
-}
+// Progress.ProtoTypes={
+//     percentage:ProtoTypes.number.isRequired
+// }
 export default Progress
