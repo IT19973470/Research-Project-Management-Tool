@@ -82,4 +82,32 @@ router.route('/viewFeedback').get((req,res) => {
     });
 });
 
+router.route("/updateFeedback/:id").put(async (req, res) => {
+    let id = req.params.id;
+    const {groupId, documentMark, documentFeedback} = req.body;
+    const updateFeedback = {
+        groupId,
+        documentMark,
+        documentFeedback
+    }
+    const update = await DocumentEvaluation.findByIdAndUpdate(id, updateFeedback)
+        .then((feedback) => {
+            res.status(200).send({status: "Feedback updated", feedback: feedback})
+        }).catch((err) => {
+            res.status(500).send({status: "Error", error: err.message})
+        })
+
+});
+
+router.route("/deleteById/:id").delete(async (req, res) => {
+    let id = req.params.id;
+    await DocumentEvaluation.findOneAndDelete(id)
+        .then(() => {
+            res.status(200).send({status: "Feedback deleted"})
+        }).catch((err) => {
+            console.log(err.message);
+            res.status(500).send({status: "Error", error: err.message})
+        })
+});
+
 module.exports = router;

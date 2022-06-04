@@ -147,7 +147,7 @@ export const EvaluatePresentation = () => {
                     <table className="table table-striped" style={{marginTop: '40px'}}>
                         <thead>
                         <tr>
-                            <th>#</th>
+                            <th scope="col" width="5%">#</th>
                             <th scope="col" width="20%">Group ID</th>
                             <th scope="col" width="20%">Members</th>
                             <th scope="col" width="20%">Presentation</th>

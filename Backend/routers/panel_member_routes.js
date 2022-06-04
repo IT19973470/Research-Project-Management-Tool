@@ -5,6 +5,7 @@ const StudentGroup = require('../models/StudentGroup');
 const Mark = require('../models/Marking');
 const PresentationEvaluation = require("../models/PresentationEvaluation");
 const PanelMember = require("../models/PanelMember");
+const TopicEvaluation = require("../models/TopicEvaluation");
 
 router.post('/panelMemberRegister', (req, res,  next) => {
     // req.body._id = req.body.id;
@@ -51,7 +52,6 @@ router.post('/addPresentationMarking', (req, res, next) => {
         PresentationEvaluation.create(req.body).then((data) => {
             res.send(data);
         }).catch(next);
-
 });
 
 router.route('/viewFeedback').get((req,res) => {
@@ -70,7 +70,7 @@ router.route("/updateFeedback/:id").put(async (req, res) => {
         presentationMark,
         presentationFeedback
     }
-    const update = await PresentationEvaluation.findOneAndUpdate(id, updateFeedback)
+    const update = await PresentationEvaluation.findByIdAndUpdate(id, updateFeedback)
         .then((feedback) => {
             res.status(200).send({status: "Feedback updated", feedback: feedback})
         }).catch((err) => {
@@ -82,6 +82,52 @@ router.route("/updateFeedback/:id").put(async (req, res) => {
 router.route("/deleteById/:id").delete(async (req, res) => {
     let id = req.params.id;
     await PresentationEvaluation.findOneAndDelete(id)
+        .then(() => {
+            res.status(200).send({status: "Feedback deleted"})
+        }).catch((err) => {
+            console.log(err.message);
+            res.status(500).send({status: "Error", error: err.message})
+        })
+});
+
+
+router.post('/addTopicFeedback', (req, res, next) => {
+    console.log(req.body)
+    req.body._evaluationId = 'T' + Math.floor(Math.random() * 10000);
+    TopicEvaluation.create(req.body).then((data) => {
+        res.send(data);
+    }).catch(next);
+});
+
+router.route('/viewTopicFeedback').get((req,res) => {
+    TopicEvaluation.find().then((feedback) => {
+        res.json(feedback);
+    }).catch(err => {
+        console.log(err)
+    });
+});
+
+router.route("/updateTopicFeedback/:id").put(async (req, res) => {
+    let id = req.params.id;
+    const {_evaluationId, suggestions, topicFeedback} = req.body;
+    const updateFeedback = {
+        _evaluationId,
+        suggestions,
+        topicFeedback
+    }
+    console.log(req.body)
+    console.log(id)
+    const update=await TopicEvaluation.findByIdAndUpdate(id, updateFeedback)
+        .then((feedback) => {
+            res.status(200).send({status: "Feedback updated", feedback: feedback})
+        }).catch((err) => {
+            res.status(500).send({status: "Error", error: err.message})
+        });
+});
+
+router.route("/deleteTopicFeedbackById/:id").delete(async (req, res) => {
+    let id = req.params.id;
+    await TopicEvaluation.findOneAndDelete(id)
         .then(() => {
             res.status(200).send({status: "Feedback deleted"})
         }).catch((err) => {

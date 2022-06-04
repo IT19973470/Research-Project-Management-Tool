@@ -7,6 +7,7 @@ export const ViewFeedback = () => {
     const [presentationFeedback, setPresentationFeedback] = useState("");
     const [groupId, setGroupId] = useState('');
     const [_evaluationId, setEvaluationId] = useState('');
+    const [dbID, setDbId] = useState("");
 
     useEffect(() => {
         viewFeedback();
@@ -14,6 +15,7 @@ export const ViewFeedback = () => {
 
     function getFields(feedback) {
         console.log(feedback)
+        setDbId(feedback._id)
         setEvaluationId(feedback._evaluationId)
         setGroupId(feedback.groupId)
         setMarks(feedback.presentationMark)
@@ -46,7 +48,7 @@ export const ViewFeedback = () => {
             })
         };
         console.log(feedback)
-        fetch('http://localhost:9000/rpmt/panel_member/updateFeedback/'+ _evaluationId,requestOptions)
+        fetch('http://localhost:9000/rpmt/panel_member/updateFeedback/'+ dbID,requestOptions)
     }
 
     function deleteByID(did){
