@@ -170,7 +170,7 @@ let router3 = router.post('/addPannel', (req, res, next) => {
 });
 router.post('/admin_register', (req, res, next) => {
     console.log(req.body)
-    req.body._id = req.body.id
+    req.body._id = req.body._id
     Admin.create(req.body).then((admin) => {
         User.create(req.body).then(() => {
             res.send(admin);
