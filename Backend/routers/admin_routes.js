@@ -271,7 +271,7 @@ router.route("/viewRoles").get((req, res) => {
         },
         {
             $lookup:
-                {from: "supervisors", localField: "stafflist", foreignField: "_id", as: "Staff"}
+                {from: "panelmembers", localField: "stafflist", foreignField: "_id", as: "Staff"}
         },
         {
             $lookup:
@@ -290,8 +290,8 @@ router.route("/upload").post((req, res) => {
         return res.status(401).json({msg: 'No'})
     }
     const file = req.files.file;
-    console.log('C:/xampp/htdocs/NodeFile/up/'+file.name)
-    file.mv('C:/xampp/htdocs/NodeFile/up/'+file.name, err => {
+    console.log('C:/xampp/htdocs/NodeFile/down/'+file.name)
+    file.mv('C:/xampp/htdocs/NodeFile/down/'+file.name, err => {
         if (err) {
             console.error(err);
             res.status(500).send(err);
