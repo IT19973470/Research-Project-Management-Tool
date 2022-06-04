@@ -1,7 +1,8 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
-const url = 'mongodb://localhost/rpmt'
+// const url = 'mongodb://localhost/rpmt'
+const url = 'mongodb+srv://Gayan:123@test.hla6i.mongodb.net/rpmt?retryWrites=true&w=majority'
 const fileUpload = require('express-fileupload')
 
 const app = express();
