@@ -1,5 +1,8 @@
 import React, {Component, useEffect, useState} from 'react';
 import './ModifySupervisor.css';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTrashCan,faPencil,faPlus} from '@fortawesome/free-solid-svg-icons'
+
 export default function  ModifySupervisor()  {
 
     const [supervisor, setSupervisor] = useState(null);
@@ -114,8 +117,8 @@ export default function  ModifySupervisor()  {
                                         <td>{supervisor.address}</td>
                                         <td>{supervisor.email}</td>
                                         <td>{supervisor.interests.join(', ')}</td>
-                                        <td><button onClick={()=>getTextFields(supervisor)} style={{backgroundColor: "transparent",border:"none",color:"black"}}>Update</button></td>
-                                        <td><button onClick={()=>deleteID(supervisor._id)} style={{backgroundColor: "transparent",border:"none",color:"black"}}>Delete</button></td>
+                                        <td><button onClick={()=>getTextFields(supervisor)} style={{backgroundColor: "transparent",border:"none",color:"black"}}><FontAwesomeIcon icon={faPencil} /></button></td>
+                                        <td><button onClick={()=>deleteID(supervisor._id)} style={{backgroundColor: "transparent",border:"none",color:"black"}}><FontAwesomeIcon icon={faTrashCan} /></button></td>
                                     </tr>
                                 })
                             }
@@ -142,10 +145,20 @@ export default function  ModifySupervisor()  {
                                         <option>Select Interest</option>
                                         <option></option>
                                     </select>
-                                    <input type="text" value={data} className="form-control" id="name1" placeholder="Select Interest"  onChange={(e)=>{setText(e.target.value)}}/></div>
-                                  <button type="button"  onClick={handleChange} className="btn btn-primary" >+</button>
+                                    <div className="row">
+                                        <div className="col-11">
+                                            <input type="text" value={data} className="form-control" id="name1" placeholder="Select Interest"  onChange={(e)=>{setText(e.target.value)}}/>
+                                        </div>
+                                    <div className="col-1" style={{marginLeft:'450px',marginTop:'-5px'}}>
+                                        <button type="button"  onClick={handleChange} className="btn btn-dark" style={{borderRadius:'20px'}}><FontAwesomeIcon icon={faPlus} /></button>
+                                    </div>
+                                    </div>
+                                </div>
                             </div>
+                            <br/>
                             <button type="button"  onClick={update} className="btn btn-primary" >Update</button>
+                            <br/>
+                            <br/>
                         </form>
                     </div>
                 </div>

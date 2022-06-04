@@ -62,7 +62,9 @@ export const Marking = () => {
                     <label htmlFor="na,e">Marks:</label>
                     <input type="text"  className="form-control" id="marks" placeholder="Enter Marking"  onChange={(e)=>{setMarks(e.target.value)}}/>
                 </div>
+                <br/>
                 <button type="button"  onClick={add} className="btn btn-primary" >Add</button>
+                <br/>
             </form>
             <div className="col-12" style={{fontSize: '45px', textAlign: 'center'}}>
                 View Marking

@@ -1,6 +1,8 @@
 import React, {Component, useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ModifyStudent from "./ModifyStudent";
+import {faTrashCan,faPencil,faPlus} from '@fortawesome/free-solid-svg-icons'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 export default function ModifyPanel(){
 
@@ -84,8 +86,8 @@ export default function ModifyPanel(){
                                         <td>{student.name}</td>
                                         <td>{student.email}</td>
                                         <td>{student.designation}</td>
-                                        <td><button onClick={()=>getFields(student)} style={{backgroundColor: "transparent",border:"none",color:"black"}}>Update</button></td>
-                                        <td><button onClick={()=>deleteID(student._id)} style={{backgroundColor: "transparent",border:"none",color:"black"}}>Delete</button></td>
+                                        <td><button onClick={()=>getFields(student)} style={{backgroundColor: "transparent",border:"none",color:"black"}}><FontAwesomeIcon icon={faPencil} /></button></td>
+                                        <td><button onClick={()=>deleteID(student._id)} style={{backgroundColor: "transparent",border:"none",color:"black"}}><FontAwesomeIcon icon={faTrashCan} /></button></td>
 
                                     </tr>
                                 })
@@ -111,6 +113,7 @@ export default function ModifyPanel(){
                                 <label htmlFor="na,e">Address:</label>
                                 <input type="text" value={designation} className="form-control" id="age" placeholder="Enter Panel Member address"  onChange={(e)=>{setDesignation(e.target.value)}}/>
                             </div>
+                            <br/>
                             <button type="button"  onClick={update} className="btn btn-primary" >Update</button>
                         </form>
                     </div>
