@@ -381,6 +381,10 @@ router.delete('/remove_file/:submissionId/:groupId', (req, res, next) => {
     })
 })
 
+router.get('/download_file/:file', (req, res, next) => {
+    res.download('C:/xampp/htdocs/NodeFile/' + req.params.file);
+})
+
 router.get('/get_chats_group/:id/:supervisorId', (req, res, next) => {
     // console.log(req.params.id+' '+req.params.supervisorId)
     ChatGroup.find({groupId: req.params.id, supervisorId: req.params.supervisorId}).then((chats) => {

@@ -35,21 +35,42 @@ export const ChatWindow = () => {
                     <div style={{width: '100%'}}>
                         {
                             messages && messages.map(function (messageObj, key) {
-                                return <div className="row" key={key}>
-                                    <div className="col-6"></div>
-                                    <div className="col-6" style={{
-                                        border: '1px solid grey',
-                                        borderRadius: '10px',
-                                        marginTop: '15px',
-                                        padding: '10px'
-                                    }}>
-                                        <div>
-                                            <span>{messageObj.message}</span>
-                                        </div>
-                                        <div style={{display: 'flex', justifyContent: 'right'}}>
-                                            <span style={{fontSize: '14px'}}>{messageObj.messageSent}</span>
-                                        </div>
-                                    </div>
+                                return <div key={key}>
+                                    {
+                                        (messageObj.messagedBy === 'group') ?
+                                            <div className="row">
+                                                <div className="col-6"></div>
+                                                <div className="col-6" style={{
+                                                    border: '1px solid grey',
+                                                    borderRadius: '10px',
+                                                    marginTop: '15px',
+                                                    padding: '10px'
+                                                }}>
+                                                    <div>
+                                                        <span>{messageObj.message}</span>
+                                                    </div>
+                                                    <div style={{display: 'flex', justifyContent: 'right'}}>
+                                                        <span style={{fontSize: '14px'}}>{messageObj.messageSent}</span>
+                                                    </div>
+                                                </div>
+                                            </div> :
+                                            <div className="row">
+                                                <div className="col-6" style={{
+                                                    border: '1px solid grey',
+                                                    borderRadius: '10px',
+                                                    marginTop: '15px',
+                                                    padding: '10px'
+                                                }}>
+                                                    <div>
+                                                        <span>{messageObj.message}</span>
+                                                    </div>
+                                                    <div style={{display: 'flex', justifyContent: 'right'}}>
+                                                        <span style={{fontSize: '14px'}}>{messageObj.messageSent}</span>
+                                                    </div>
+                                                </div>
+                                                <div className="col-6"></div>
+                                            </div>
+                                    }
                                 </div>
                             })
                         }
@@ -124,18 +145,18 @@ export const ChatWindow = () => {
     function GetChats(supervisorId) {
         clearInterval(timer);
         setTimer(setInterval(() => {
-            //     console.log(supervisorId)
-            // console.log(timer)
-            const requestOptions = {
-                method: 'GET',
-                headers: {'Content-Type': 'application/json'}
-            };
-            fetch('http://localhost:9000/rpmt/student/get_chats_group/' + JSON.parse(localStorage.getItem('group')).groupId + '/' + supervisorId, requestOptions)
-                .then(response => response.json())
-                .then(reply => {
-                    setMessages(reply)
-                });
-            }, 1000)
+                //     console.log(supervisorId)
+                // console.log(timer)
+                const requestOptions = {
+                    method: 'GET',
+                    headers: {'Content-Type': 'application/json'}
+                };
+                fetch('http://localhost:9000/rpmt/student/get_chats_group/' + JSON.parse(localStorage.getItem('group')).groupId + '/' + supervisorId, requestOptions)
+                    .then(response => response.json())
+                    .then(reply => {
+                        setMessages(reply)
+                    });
+            }, 2000)
         )
     }
 
