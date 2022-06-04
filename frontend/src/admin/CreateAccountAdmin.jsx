@@ -80,7 +80,7 @@ export const CreateAccountAdmin = () => {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                id: id,
+                _id: id,
                 name: name,
                 email: email,
                 address: address,
