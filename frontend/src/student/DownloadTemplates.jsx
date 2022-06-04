@@ -2,7 +2,7 @@ import React, {Component, useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export const SubmitDocuments = () => {
+export const DownloadTemplates = () => {
     let navigate = useNavigate();
 
     const [topic, setTopic] = useState('');
@@ -73,7 +73,7 @@ export const SubmitDocuments = () => {
     return (
         <div className="row">
             <div className="col-12" style={{fontSize: '45px', textAlign: 'center'}}>
-                Submit Documents
+                Download Templates
             </div>
             <div className="col-12">
                 <div style={{

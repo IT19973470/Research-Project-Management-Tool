@@ -4,9 +4,9 @@ const Student = require('../models/Student');
 let Mark = require('../models/Marking');
 let Submission = require('../models/Submission')
 let SupervisorTopic = require("../models/SupervisorTopic")
-let AddPannel = require("../models/Panel")
-let studentGroup = require("../models/StudentGroup")
-let researchtopics = require("../models/ResearchTopic")
+let AddPannel =require("../models/Panel")
+let studentGroup=require("../models/StudentGroup")
+let researchtopics=require("../models/ResearchTopic")
 router.route("/displayUsers").get((req, res) => {
     Student.find().then((students) => {
         res.json(students)
@@ -106,7 +106,7 @@ router.post('/addMarking', (req, res, next) => {
 let router2 = router.post('/addSupervisorTopic', (req, res, next) => {
     console.log(req.body)
     SupervisorTopic.create(
-        {_id: 'S' + Math.floor(Math.random() * 10000), interests: req.body.interests}
+        {_id: 'S' + Math.floor(Math.random() * 10000), interests:req.body.interests}
     ).then((data) => {
         res.send(data);
     }).catch(next);
@@ -116,12 +116,7 @@ let router2 = router.post('/addSupervisorTopic', (req, res, next) => {
 let router3 = router.post('/addPannel', (req, res, next) => {
     console.log(req.body)
     AddPannel.create(
-        {
-            _id: 'P' + Math.floor(Math.random() * 10000),
-            name: req.body.name,
-            grouplist: req.body.grouplist,
-            stafflist: req.body.stafflist
-        }
+        {_id: 'P' + Math.floor(Math.random() * 10000), name:req.body.name,grouplist:req.body.grouplist,stafflist:req.body.stafflist}
     ).then((data) => {
         res.send(data);
     }).catch(next);
@@ -132,7 +127,7 @@ router.route("/updateS/:id").put(async (req, res) => {
     console.log(req.body)
     let userID = req.params.id;
     SupervisorTopic.updateMany(
-        {_id: userID},
+        {_id:userID},
         {$set: {interests: req.body.interests}}
     ).then((studentGroup) => {
         res.send(studentGroup);
@@ -191,16 +186,14 @@ router.route("/displayGroups").get((req, res) => {
 
 router.route("/viewRoles").get((req, res) => {
     AddPannel.aggregate([
-        {
-            $lookup:
-                {from: "studentgroups", localField: "grouplist", foreignField: "groupId", as: "Groups"},
+        {$lookup:
+            {from:"studentgroups",localField:"grouplist",foreignField:"groupId",as:"Groups"},
         },
-        {
-            $lookup:
-                {from: "supervisortopics", localField: "stafflist", foreignField: "_id", as: "Staff"}
+        {$lookup:
+                {from:"supervisortopics",localField:"stafflist",foreignField:"_id",as:"Staff"}
         }
 
-    ]).then((s) => {
+    ]).then((s)=>{
         res.json(s)
     })
 })

@@ -3,12 +3,9 @@ const upload = require('express-fileupload')
 const router = express.Router();
 const Student = require('../models/Student');
 const StudentGroup = require('../models/StudentGroup');
-const GroupTopic = require('../models/GroupTopic');
 const User = require('../models/User');
-const FileSubmission = require('../models/FileSubmission');
-const ChatGroup = require('../models/ChatGroup');
-const Supers = require('../models/Supers');
-const mongoose = require('mongoose');
+const ResearchTopic = require('../models/ResearchTopic');
+const GroupSupervisor = require('../models/GroupSupervisor');
 
 router.get('/check_group/:id', (req, res, next) => {
     let students = [];
@@ -16,84 +13,21 @@ router.get('/check_group/:id', (req, res, next) => {
         students: req.params.id
     }).then((studentsArr) => {
         studentsArr && studentsArr.students.forEach((studentId) => {
-            getStudent(studentId).then(student => {
-                    students.push(student)
+            Student.findOne({_id: studentId}).then((student) => {
+                // console.log(student)
+                students.push(student)
+                if (students.length === studentsArr.students.length) {
+                    res.send({students: students, groupId: studentsArr.groupId});
                 }
-            )
-        })
-        Promise.all(studentPromises).then(() => {
-            if (studentsArr !== null) {
-                res.send({
-                    students: students,
-                    groupId: studentsArr.groupId,
-                    leader: studentsArr.leader
-                });
-            } else {
-                res.send([])
-            }
+            })
         })
     }).catch(next);
 });
 
-router.get('/set_leader/:id/:leaderId', (req, res, next) => {
+router.delete('/remove_from_group/:groupId/:id', (req, res, next) => {
     StudentGroup.updateOne(
-        {groupId: req.params.id},
-        {leader: req.params.leaderId}
-    ).then((studentsArr) => {
-        res.send({reply: true})
-    }).catch(next);
-});
-
-router.get('/get_groups', (req, res, next) => {
-    let studentGrp = [];
-    StudentGroup.find().then((studentGroupsArr) => {
-        studentGroupsArr && studentGroupsArr.forEach((studentGrpObj) => {
-            let students = [];
-            let leader;
-            studentGrpObj && studentGrpObj.students.forEach((studentId) => {
-                getStudent(studentId).then(student => {
-                        students.push(student)
-                    }
-                )
-            })
-            getStudent(studentGrpObj.leader).then(student => {
-                leader = student;
-            })
-            Promise.all(studentPromises).then(() => {
-                studentGrp.push({
-                    groupId: studentGrpObj.groupId,
-                    students: students,
-                    leader: leader
-                })
-            })
-        })
-        Promise.all(studentPromises).then(() => {
-            res.send(studentGrp)
-        })
-    }).catch(next);
-});
-
-let studentPromises = [];
-
-function getStudent(studentId) {
-    let studentPromise = new Promise(resolve => {
-        Student.findOne({_id: studentId}).then((student) => {
-            resolve(student);
-        })
-    })
-    studentPromises.push(studentPromise);
-    return studentPromise;
-}
-
-router.delete('/remove_from_group/:groupId/:id/:leader', (req, res, next) => {
-    let body;
-    if (req.params.leader) {
-        body = {$pull: {'students': req.params.id}, leader: ''}
-    } else {
-        body = {$pull: {'students': req.params.id}}
-    }
-    StudentGroup.updateOne(
-        {groupId: req.params.groupId}, body
+        {groupId: req.params.groupId},
+        {$pull: {'students': req.params.id}}
     ).then((studentsArr) => {
         res.send({reply: true});
     }).catch(next);
@@ -111,12 +45,9 @@ router.post('/student_register', (req, res, next) => {
 router.post('/add_group', (req, res, next) => {
     if (req.body.groupId === '') {
         req.body.groupId = 'G' + Math.floor(Math.random() * 10000);
-        req.body.students = [req.body.student];
-        if (req.body.leader) {
-            req.body.leader = req.body.student
-        }
+        req.body.students = [req.body.student]
         StudentGroup.create(req.body).then((studentGroup) => {
-            res.send(req.body);
+            res.send(studentGroup);
         }).catch(next);
     } else {
         StudentGroup.updateOne(
@@ -129,145 +60,74 @@ router.post('/add_group', (req, res, next) => {
 });
 
 router.post('/add_research_topic', (req, res, next) => {
-    GroupTopic.updateMany(
-        {groupId: req.body.groupId, topicRegistered: true},
-        {$set: {topicRegistered: false, topicAccepted: 0}}
-    ).then(() => {
-        req.body._id = mongoose.Types.ObjectId();
-        GroupTopic.create(req.body).then((topic) => {
-            StudentGroup.updateOne(
-                {groupId: req.body.groupId},
-                {$push: {topics: req.body._id}}
-            ).then(() => {
-                res.send({reply: true})
-            }).catch(next);
-        })
-    })
-});
-
-router.put('/update_research_topic/:id', (req, res, next) => {
-    GroupTopic.updateOne(
-        {_id: req.params.id},
-        req.body
-    ).then((researchTopic) => {
-        res.send({reply: true});
+    ResearchTopic.create(req.body).then((researchTopic) => {
+        res.send(researchTopic);
     }).catch(next);
 });
 
 router.delete('/remove_research_topic/:id', (req, res, next) => {
-    StudentGroup.updateOne(
+    ResearchTopic.updateOne(
         {
             $and: [
                 {groupId: req.params.id},
-                {topicRegistered: true}
+                {registered: true}
             ]
         },
-        {topicRegistered: false}
+        {registered: false}
     ).then((researchTopic) => {
         res.send({reply: true});
     }).catch(next);
 });
 
 router.get('/topic_registered/:id', (req, res, next) => {
-    let topics = [];
-    StudentGroup.findOne({
-        groupId: req.params.id
+    ResearchTopic.findOne({
+        $and: [
+            {groupId: req.params.id},
+            {registered: true}
+        ]
     }).then((researchTopic) => {
-        // if (researchTopic !== null) {
-        researchTopic && researchTopic.topics.forEach(topicId => {
-            getTopic(topicId).then(topic => {
-                    topics.push(topic)
-                }
-            )
-        })
-        Promise.all(topicPromises).then(() => {
-            if (researchTopic !== null) {
-                res.send({reply: topics.reverse()});
-            } else {
-                res.send({reply: []});
-            }
-        })
-        // } else {
-        //     res.send({reply: null});
-        // }
+        if (researchTopic !== null) {
+            res.send({reply: researchTopic});
+        } else {
+            res.send({reply: null});
+        }
     }).catch(next);
 });
 
-let topicPromises = [];
-
-function getTopic(topicId) {
-    let topicPromise = new Promise(resolve => {
-        GroupTopic.findOne({_id: topicId}).then((groupTopic) => {
-            resolve(groupTopic)
-        })
-    })
-    topicPromises.push(topicPromise);
-    return topicPromise;
-}
-
 router.post('/add_group_supervisor', (req, res, next) => {
-    StudentGroup.findOne({groupId: req.body.groupId}).then((supervisor) => {
+    GroupSupervisor.findOne({groupId: req.body.groupId}).then((supervisor) => {
         let body;
         if (req.body.val === 0) {
             body = {
-                supervisor: {_id: req.body.supervisor, accepted: false}
+                supervisor: req.body.supervisor
             }
         } else {
             body = {
-                coSupervisor: {_id: req.body.coSupervisor, accepted: false}
+                coSupervisor: req.body.coSupervisor
             }
         }
         if (supervisor !== null) {
-            StudentGroup.updateOne(
+            GroupSupervisor.updateOne(
                 {groupId: req.body.groupId}, body
             ).then((supervisorObj) => {
                 res.send({supervisor: req.body.supervisor, coSupervisor: req.body.coSupervisor, val: req.body.val});
             }).catch(next);
         } else {
-            StudentGroup.create(req.body).then((groupSupervisor) => {
+            GroupSupervisor.create(req.body).then((groupSupervisor) => {
                 res.send(groupSupervisor);
             }).catch(next);
         }
     });
 });
 
-router.post('/submit_document/:submissionId/:groupId', (req, res) => {
-    // console.log(req.files)
+router.post('/submit_documents', (req, res) => {
     if (req.files) {
         let file = req.files.file;
-        file.mv('C:/xampp/htdocs/NodeFile/up/' + file.name, (err) => {
+        file.mv('C:/xampp/htdocs/NodeFile/' + file.name, (err) => {
             if (err) {
                 res.send(err)
             } else {
-                FileSubmission.findOne({
-                    groupId: req.params.groupId,
-                    submissionId: req.params.submissionId
-                }).then((fileSubmission) => {
-                    if (fileSubmission) {
-                        FileSubmission.updateOne(
-                            {
-                                groupId: req.params.groupId,
-                                submissionId: req.params.submissionId
-                            },
-                            {fileName: req.files.file.name}
-                        ).then(() => {
-                            res.send({reply: true});
-                        })
-                    } else {
-                        FileSubmission.create(
-                            {
-                                groupId: req.params.groupId,
-                                submissionId: req.params.submissionId,
-                                fileName: req.files.file.name
-                            }
-                        ).then(() => {
-                            res.send({reply: true});
-                        })
-                    }
-                })
-                // console.log(req.params.submissionId)
-                // FileSubmission.create()
-
+                res.send('File Uploaded');
             }
         })
     }
@@ -278,102 +138,36 @@ router.get('/get_supervisors/:id', (req, res, next) => {
         {
             _id: 1,
             name: 'Gayan',
-            interests: ['ML', 'AI']
+            interests: 'ML'
         },
         {
             _id: 2,
             name: 'Kamal',
-            interests: ['AI']
+            interests: 'AI'
         },
         {
             _id: 3,
             name: 'Sunil',
-            interests: ['Network']
+            interests: 'Network'
         },
         {
             _id: 4,
             name: 'Amal',
-            interests: ['IOT']
+            interests: 'IOT'
         }
     ];
-    StudentGroup.findOne({groupId: req.params.id}).then((grpSupervisor) => {
-        Supers.find().then(supers => {
-            supers.forEach((superObj) => {
-                if (grpSupervisor && grpSupervisor.supervisor._id == superObj._id) {
-                    superObj.markedSuper = 1
-                } else {
-                    superObj.markedSuper = 0
-                }
-                if (grpSupervisor && grpSupervisor.coSupervisor._id == superObj._id) {
-                    superObj.markedCoSuper = 1
-                } else {
-                    superObj.markedCoSuper = 0
-                }
-            })
-            res.send(supers);
-        })
-    })
-});
-
-router.get('/get_upload_links/:groupId', (req, res, next) => {
-    let supers = [
-        {
-            _id: 1,
-            title: 'File Upload 1',
-            details: 'qwe',
-            deadline: '2020-02-01',
-            type: 'pdf',
-            fileNameTemp:'image (9).jpg'
-        },
-        {
-            _id: 2,
-            title: 'File Upload 2',
-            details: 'qwe',
-            deadline: '2020-02-02',
-            type: 'pdf',
-            fileNameTemp:'image (9).jpg'
-        },
-        {
-            _id: 3,
-            title: 'File Upload 3',
-            details: 'qwe',
-            deadline: '2020-02-03',
-            type: 'pdf',
-            fileNameTemp:'2.png'
-        },
-        {
-            _id: 4,
-            title: 'File Upload 4',
-            details: 'qwe',
-            deadline: '2020-02-05',
-            type: 'pdf',
-            fileNameTemp:'2.png'
-        }
-    ];
-    // let objs=[];
-    FileSubmission.find({groupId: req.params.groupId}).then((uploads) => {
+    GroupSupervisor.findOne({groupId: req.params.id}).then((grpSupervisor) => {
         supers.forEach((superObj) => {
-            uploads.forEach(file => {
-                // console.log(uploads)
-                if (superObj._id == file.submissionId) {
-                    // console.log(superObj)
-                    superObj.markedUpload = true;
-                    superObj.fileName = file.fileName
-                } else if (!superObj.markedUpload) {
-                    superObj.markedUpload = false;
-                }
-                // objs.push()
-            })
-            //         if (grpSupervisor && grpSupervisor.supervisor._id == superObj._id) {
-            //             superObj.markedSuper = 1
-            //         } else {
-            //             superObj.markedSuper = 0
-            //         }
-            //         if (grpSupervisor && grpSupervisor.coSupervisor._id == superObj._id) {
-            //             superObj.markedCoSuper = 1
-            //         } else {
-            //             superObj.markedCoSuper = 0
-            //         }
+            if (grpSupervisor.supervisor == superObj._id) {
+                superObj.markedSuper = true
+            } else {
+                superObj.markedSuper = false
+            }
+            if (grpSupervisor.coSupervisor == superObj._id) {
+                superObj.markedCoSuper = true
+            } else {
+                superObj.markedCoSuper = false
+            }
         })
         res.send(supers);
     })
@@ -391,37 +185,5 @@ router.post('/submit_documents', (req, res) => {
         })
     }
 });
-
-router.delete('/remove_file/:submissionId/:groupId', (req, res, next) => {
-    FileSubmission.deleteOne({groupId: req.params.groupId}).then(() => {
-        res.send({reply: true})
-    })
-})
-
-router.get('/download_file/:file', (req, res, next) => {
-    console.log('C:/xampp/htdocs/NodeFile/down/' + req.params.file)
-    res.download('C:/xampp/htdocs/NodeFile/down/' + req.params.file);
-})
-
-router.get('/get_chats_group/:id/:supervisorId', (req, res, next) => {
-    // console.log(req.params.id+' '+req.params.supervisorId)
-    ChatGroup.find({groupId: req.params.id, supervisorId: req.params.supervisorId}).then((chats) => {
-        res.send(chats)
-    })
-})
-
-router.post('/send_message', (req, res, next) => {
-    // console.log(req.body)
-    ChatGroup.create(req.body).then((chats) => {
-        res.send({reply: true})
-    })
-})
-
-// router.post('/supers', (req, res, next) => {
-//     // console.log(req.body)
-//     Supers.create(req.body).then((chats) => {
-//         res.send({reply: true})
-//     })
-// })
 
 module.exports = router;

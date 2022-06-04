@@ -1,18 +1,18 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const FileSubmissionSchema = new Schema({
+const GroupSupervisorSchema = new Schema({
     groupId: {
         type: String,
         required: [true, 'ID field is required']
     },
-    submissionId: {
+    supervisor: {
         type: String
     },
-    fileName: {
+    coSupervisor: {
         type: String
     }
 });
 
-const fileSubmission = mongoose.model('FileSubmission', FileSubmissionSchema);
-module.exports = fileSubmission;
+const groupSupervisor = mongoose.model('GroupSupervisor', GroupSupervisorSchema);
+module.exports = groupSupervisor;
