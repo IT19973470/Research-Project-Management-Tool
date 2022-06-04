@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import {Common} from "./../commons/Common";
 
 export const EvaluateDocument = () => {
     
@@ -31,7 +32,7 @@ export const EvaluateDocument = () => {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/supervisor/viewFeedback', requestOptions)
+        fetch(Common.url + '/supervisor/viewFeedback', requestOptions)
             .then(response => {
                 return response.json()
             })
@@ -52,7 +53,7 @@ export const EvaluateDocument = () => {
                 documentFeedback:documentFeedback
             })
         };
-        fetch('http://localhost:9000/rpmt/supervisor/evaluate_document',requestOptions)
+        fetch(Common.url + '/supervisor/evaluate_document',requestOptions)
     }
 
     function update(){
@@ -68,7 +69,7 @@ export const EvaluateDocument = () => {
             })
         };
         // console.log(feedback)
-        fetch('http://localhost:9000/rpmt/supervisor/updateFeedback/'+ dbID,requestOptions)
+        fetch(Common.url + '/supervisor/updateFeedback/'+ dbID,requestOptions)
     }
 
     function deleteByID(did){
@@ -77,7 +78,7 @@ export const EvaluateDocument = () => {
             headers:{'Content-Type':'application/json'},
         };
         // console.log(feedback)
-        fetch('http://localhost:9000/rpmt/supervisor/deleteById/'+did,requestOptions)
+        fetch(Common.url + '/supervisor/deleteById/'+did,requestOptions)
     }
 
     return (

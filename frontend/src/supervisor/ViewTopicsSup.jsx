@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import {Common} from "./../commons/Common";
 import {useNavigate} from "react-router-dom";
 
 
@@ -27,7 +28,7 @@ export const ViewTopicSup = () => {
                 accepted:value,
             })
         };
-        fetch('http://localhost:9000/rpmt/supervisor/acceptTopic/'+id,requestOptions)
+        fetch(Common.url + '/supervisor/acceptTopic/'+id,requestOptions)
 
          
         console.log(x)
@@ -40,7 +41,7 @@ export const ViewTopicSup = () => {
                 supervisor:users._id
             })
         };
-        fetch('http://localhost:9000/rpmt/supervisor/acceptTopic/'+id,requestOptions2)
+        fetch(Common.url + '/supervisor/acceptTopic/'+id,requestOptions2)
     }
 
    
@@ -50,7 +51,7 @@ export const ViewTopicSup = () => {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/supervisor/viewTopics', requestOptions)
+        fetch(Common.url + '/supervisor/viewTopics', requestOptions)
             .then(response => { return response.json()})
             .then(data => {
                 // console.log(data);

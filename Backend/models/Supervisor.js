@@ -25,6 +25,12 @@ const SupervisorSchema = new Schema({
     },
     interests: {
         type: Array
+    },
+    markedSuper: {
+        type: Number
+    },
+    markedCoSuper: {
+        type: Number
     }
 
 });

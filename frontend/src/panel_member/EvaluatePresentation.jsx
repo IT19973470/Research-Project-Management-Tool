@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import GroupDetails from "./GroupDetails";
+import {Common} from "./../commons/Common";
 
 export const EvaluatePresentation = () => {
     const [marking, setMarking] = useState(null);
@@ -22,7 +23,7 @@ export const EvaluatePresentation = () => {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/panel_member/viewMarking', requestOptions)
+        fetch(Common.url + '/panel_member/viewMarking', requestOptions)
             .then(response => {
                 return response.json()
             })
@@ -42,7 +43,7 @@ export const EvaluatePresentation = () => {
                 presentationFeedback: presentationFeedback
             })
         };
-        fetch('http://localhost:9000/rpmt/panel_member/addPresentationMarking', requestOptions)
+        fetch(Common.url + '/panel_member/addPresentationMarking', requestOptions)
     }
 
     function viewGroupDetails() {
@@ -50,7 +51,7 @@ export const EvaluatePresentation = () => {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/panel_member/viewGroup', requestOptions)
+        fetch(Common.url + '/panel_member/viewGroup', requestOptions)
             .then(response => {
                 return response.json()
             })

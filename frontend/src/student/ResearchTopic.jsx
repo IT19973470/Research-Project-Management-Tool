@@ -1,4 +1,5 @@
 import React, {Component, useEffect, useState} from 'react';
+import {Common} from "./../commons/Common";
 import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import '@fortawesome/fontawesome-free/css/fontawesome.css'
@@ -196,7 +197,7 @@ export const ResearchTopic = () => {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/student/topic_registered/' + JSON.parse(localStorage.getItem('group')).groupId, requestOptions)
+        fetch(Common.url + '/student/topic_registered/' + JSON.parse(localStorage.getItem('group')).groupId, requestOptions)
             .then(response => response.json())
             .then(reply => {
                 if (reply.reply !== null) {
@@ -219,7 +220,7 @@ export const ResearchTopic = () => {
                 topicDescription: topicDesc,
             })
         };
-        fetch('http://localhost:9000/rpmt/student/update_research_topic/' + topicId, requestOptions)
+        fetch(Common.url + '/student/update_research_topic/' + topicId, requestOptions)
             .then(response => response.json())
             .then(reply => {
                 if (reply) {
@@ -242,7 +243,7 @@ export const ResearchTopic = () => {
     //         method: 'DELETE',
     //         headers: {'Content-Type': 'application/json'}
     //     };
-    //     fetch('http://localhost:9000/rpmt/student/remove_research_topic/' + JSON.parse(localStorage.getItem('group')).groupId, requestOptions)
+    //     fetch(Common.url + '/student/remove_research_topic/' + JSON.parse(localStorage.getItem('group')).groupId, requestOptions)
     //         .then(response => response.json())
     //         .then(reply => {
     //             if (reply) {
@@ -270,7 +271,7 @@ export const ResearchTopic = () => {
                 topicAdded: new Date().toLocaleDateString('en-CA')
             })
         };
-        fetch('http://localhost:9000/rpmt/student/add_research_topic', requestOptions)
+        fetch(Common.url + '/student/add_research_topic', requestOptions)
             .then(response => response.json())
             .then(reply => {
                 if (reply !== null) {

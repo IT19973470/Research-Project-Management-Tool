@@ -7,7 +7,8 @@ const GroupTopic = require('../models/GroupTopic');
 const User = require('../models/User');
 const FileSubmission = require('../models/FileSubmission');
 const ChatGroup = require('../models/ChatGroup');
-const Supers = require('../models/Supers');
+const Supervisor = require('../models/Supervisor');
+const Submission = require('../models/Submission');
 const mongoose = require('mongoose');
 
 router.get('/check_group/:id', (req, res, next) => {
@@ -274,30 +275,8 @@ router.post('/submit_document/:submissionId/:groupId', (req, res) => {
 });
 
 router.get('/get_supervisors/:id', (req, res, next) => {
-    let supers = [
-        {
-            _id: 1,
-            name: 'Gayan',
-            interests: ['ML', 'AI']
-        },
-        {
-            _id: 2,
-            name: 'Kamal',
-            interests: ['AI']
-        },
-        {
-            _id: 3,
-            name: 'Sunil',
-            interests: ['Network']
-        },
-        {
-            _id: 4,
-            name: 'Amal',
-            interests: ['IOT']
-        }
-    ];
     StudentGroup.findOne({groupId: req.params.id}).then((grpSupervisor) => {
-        Supers.find().then(supers => {
+        Supervisor.find().then(supers => {
             supers.forEach((superObj) => {
                 if (grpSupervisor && grpSupervisor.supervisor._id == superObj._id) {
                     superObj.markedSuper = 1
@@ -316,66 +295,58 @@ router.get('/get_supervisors/:id', (req, res, next) => {
 });
 
 router.get('/get_upload_links/:groupId', (req, res, next) => {
-    let supers = [
-        {
-            _id: 1,
-            title: 'File Upload 1',
-            details: 'qwe',
-            deadline: '2020-02-01',
-            type: 'pdf',
-            fileNameTemp:'image (9).jpg'
-        },
-        {
-            _id: 2,
-            title: 'File Upload 2',
-            details: 'qwe',
-            deadline: '2020-02-02',
-            type: 'pdf',
-            fileNameTemp:'image (9).jpg'
-        },
-        {
-            _id: 3,
-            title: 'File Upload 3',
-            details: 'qwe',
-            deadline: '2020-02-03',
-            type: 'pdf',
-            fileNameTemp:'2.png'
-        },
-        {
-            _id: 4,
-            title: 'File Upload 4',
-            details: 'qwe',
-            deadline: '2020-02-05',
-            type: 'pdf',
-            fileNameTemp:'2.png'
-        }
-    ];
+    // let supers = [
+    //     {
+    //         _id: 1,
+    //         title: 'File Upload 1',
+    //         details: 'qwe',
+    //         deadline: '2020-02-01',
+    //         type: 'pdf',
+    //         fileNameTemp:'image (9).jpg'
+    //     },
+    //     {
+    //         _id: 2,
+    //         title: 'File Upload 2',
+    //         details: 'qwe',
+    //         deadline: '2020-02-02',
+    //         type: 'pdf',
+    //         fileNameTemp:'image (9).jpg'
+    //     },
+    //     {
+    //         _id: 3,
+    //         title: 'File Upload 3',
+    //         details: 'qwe',
+    //         deadline: '2020-02-03',
+    //         type: 'pdf',
+    //         fileNameTemp:'2.png'
+    //     },
+    //     {
+    //         _id: 4,
+    //         title: 'File Upload 4',
+    //         details: 'qwe',
+    //         deadline: '2020-02-05',
+    //         type: 'pdf',
+    //         fileNameTemp:'2.png'
+    //     }
+    // ];
     // let objs=[];
     FileSubmission.find({groupId: req.params.groupId}).then((uploads) => {
-        supers.forEach((superObj) => {
-            uploads.forEach(file => {
-                // console.log(uploads)
-                if (superObj._id == file.submissionId) {
-                    // console.log(superObj)
-                    superObj.markedUpload = true;
-                    superObj.fileName = file.fileName
-                } else if (!superObj.markedUpload) {
-                    superObj.markedUpload = false;
-                }
-                // objs.push()
+        Submission.find().then(submissions => {
+            submissions.forEach((superObj) => {
+                uploads.forEach(file => {
+                    // console.log(uploads)
+                    if (superObj._id == file.submissionId) {
+                        // console.log(superObj)
+                        superObj.markedUpload = true;
+                        superObj.fileName = file.fileName
+                    } else if (!superObj.markedUpload) {
+                        superObj.markedUpload = false;
+                    }
+                    // objs.push()
+                })
             })
-            //         if (grpSupervisor && grpSupervisor.supervisor._id == superObj._id) {
-            //             superObj.markedSuper = 1
-            //         } else {
-            //             superObj.markedSuper = 0
-            //         }
-            //         if (grpSupervisor && grpSupervisor.coSupervisor._id == superObj._id) {
-            //             superObj.markedCoSuper = 1
-            //         } else {
-            //             superObj.markedCoSuper = 0
-            //         }
+            res.send(submissions);
         })
-        res.send(supers);
     })
 });
 

@@ -1,4 +1,5 @@
 import React, {Component, useEffect, useState} from 'react';
+import {Common} from "./../commons/Common";
 import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -19,7 +20,7 @@ export const Evaluation = () => {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/admin/displaySubmission',requestOptions)
+        fetch(Common.url + '/admin/displaySubmission',requestOptions)
             .then(response=>{ return response.json()})
             .then(data=>{
                 // console.log(data)
@@ -31,7 +32,7 @@ export const Evaluation = () => {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/admin/displayMarking',requestOptions)
+        fetch(Common.url + '/admin/displayMarking',requestOptions)
             .then(response=>{ return response.json()})
             .then(data=>{
                  console.log(data)
@@ -44,7 +45,7 @@ export const Evaluation = () => {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/panel_member/viewGroup', requestOptions)
+        fetch(Common.url + '/panel_member/viewGroup', requestOptions)
             .then(response => {
                 return response.json()
             })

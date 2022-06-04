@@ -1,5 +1,6 @@
 import React, {Component, useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {Common} from "./../commons/Common";
 
 export const PanelMemberRegister = () => {
 
@@ -18,11 +19,12 @@ export const PanelMemberRegister = () => {
                 name:name,
                 designation:designation,
                 email:email,
-                password:password
+                password:password,
+                userType: 'panel'
             })
         };
 
-        fetch('http://localhost:9000/rpmt/panel_member/panelMemberRegister',requestOptions)
+        fetch(Common.url + '/panel_member/panelMemberRegister',requestOptions)
     }
 
     return(

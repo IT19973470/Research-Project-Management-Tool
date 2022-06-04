@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import GroupDetails from "./GroupDetails";
+import {Common} from "./../commons/Common";
 
 export const ViewTopics = () => {
 
@@ -23,7 +24,7 @@ export const ViewTopics = () => {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/panel_member/viewTopics', requestOptions)
+        fetch(Common.url + '/panel_member/viewTopics', requestOptions)
             .then(response => { return response.json()})
             .then(data => {
                 // console.log(data);

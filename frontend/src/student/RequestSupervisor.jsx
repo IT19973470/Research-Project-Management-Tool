@@ -1,4 +1,5 @@
 import React, {Component, useEffect, useState} from 'react';
+import {Common} from "./../commons/Common";
 import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Environment} from "../../../Backend/Environment";
@@ -178,7 +179,7 @@ export const RequestSupervisor = () => {
                 coSupervisor: register === 1 ? supervisorObj._id : ''
             })
         };
-        fetch('http://localhost:9000/rpmt/student/add_group_supervisor', requestOptions)
+        fetch(Common.url + '/student/add_group_supervisor', requestOptions)
             .then(response => response.json())
             .then(reply => {
                 if (reply !== null) {
@@ -209,7 +210,7 @@ export const RequestSupervisor = () => {
                 method: 'GET',
                 headers: {'Content-Type': 'application/json'}
             };
-            fetch('http://localhost:9000/rpmt/student/get_supervisors/' + groupId, requestOptions)
+            fetch(Common.url + '/student/get_supervisors/' + groupId, requestOptions)
                 .then(response => response.json())
                 .then(supervisors => {
                     console.log(supervisors)

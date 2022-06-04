@@ -1,4 +1,5 @@
 import React, {Component, useState} from 'react';
+import {Common} from "./../commons/Common";
 import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -83,10 +84,11 @@ export const CreateAccountAdmin = () => {
                 name: name,
                 email: email,
                 address: address,
-                password: password
+                password: password,
+                userType: 'admin'
             })
         };
-        fetch('http://localhost:9000/rpmt/admin/admin_register', requestOptions)
+        fetch(Common.url + '/admin/admin_register', requestOptions)
             .then(response => response.json())
             .then(reply => {
                 // console.log(reply);

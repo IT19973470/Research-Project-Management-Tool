@@ -1,4 +1,5 @@
 import React, {Component, useEffect, useState} from 'react';
+import {Common} from "./../commons/Common";
 import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -22,11 +23,12 @@ export const AddSupervisorTopic = () => {
                 address:address,
                 email:email,
                 password:pass,
-                interests:array
+                interests:array,
+                userType: 'supervisor'
             })
         };
 
-       fetch('http://localhost:9000/rpmt/supervisor/add_supervisor',requestOptions)
+       fetch(Common.url + '/supervisor/add_supervisor',requestOptions)
     }
     const handleChange = () => {
         console.log(interests)

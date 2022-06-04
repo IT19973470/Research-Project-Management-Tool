@@ -1,4 +1,5 @@
 import React, {Component, useEffect, useState} from 'react';
+import {Common} from "./../commons/Common";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ModifyStudent from "./ModifyStudent";
 import {faUpload} from "@fortawesome/free-solid-svg-icons";
@@ -18,7 +19,7 @@ export default function ModifyStudent(){
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/admin/displayUsers',requestOptions)
+        fetch(Common.url + '/admin/displayUsers',requestOptions)
             .then(response=>{ return response.json()})
             .then(data=>{
                 // console.log(data)
@@ -45,7 +46,7 @@ export default function ModifyStudent(){
             })
         };
         console.log(students)
-        fetch('http://localhost:9000/rpmt/admin/update/'+id,requestOptions)
+        fetch(Common.url + '/admin/update/'+id,requestOptions)
     }
     function deleteID(did){
         const requestOptions ={
@@ -53,7 +54,7 @@ export default function ModifyStudent(){
             headers:{'Content-Type':'application/json'},
         };
         console.log(students)
-        fetch('http://localhost:9000/rpmt/admin/delete/'+did,requestOptions)
+        fetch(Common.url + '/admin/delete/'+did,requestOptions)
     }
 
     return(<div className="row">

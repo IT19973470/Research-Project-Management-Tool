@@ -1,4 +1,5 @@
 import React, {Component, useState, useEffect} from 'react';
+import {Common} from "./../commons/Common";
 import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Environment} from "../../../Backend/Environment";
@@ -274,7 +275,7 @@ export const StudentGroups = () => {
                 leader: leader
             })
         };
-        fetch('http://localhost:9000/rpmt/student/add_group', requestOptions)
+        fetch(Common.url + '/student/add_group', requestOptions)
             .then(response => response.json())
             .then(reply => {
                 console.log(reply)
@@ -295,7 +296,7 @@ export const StudentGroups = () => {
             method: 'DELETE',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/student/remove_from_group/' + JSON.parse(localStorage.getItem('group')).groupId + '/' + JSON.parse(localStorage.getItem('user'))._id + '/' + grpLeader, requestOptions)
+        fetch(Common.url + '/student/remove_from_group/' + JSON.parse(localStorage.getItem('group')).groupId + '/' + JSON.parse(localStorage.getItem('user'))._id + '/' + grpLeader, requestOptions)
             .then(response => response.json())
             .then(reply => {
                 if (reply) {

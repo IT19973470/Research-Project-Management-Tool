@@ -1,4 +1,5 @@
 import React, {Component, useEffect, useState} from 'react';
+import {Common} from "./../commons/Common";
 import './ModifySupervisor.css';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrashCan,faPencil,faPlus} from '@fortawesome/free-solid-svg-icons'
@@ -19,7 +20,7 @@ export default function  ModifySupervisor()  {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/admin/displaySupervisor',requestOptions)
+        fetch(Common.url + '/admin/displaySupervisor',requestOptions)
             .then(response=>{ return response.json()})
             .then(data=>{
                 console.log(data)
@@ -72,14 +73,14 @@ export default function  ModifySupervisor()  {
                 interests:array
             })
         };
-        fetch('http://localhost:9000/rpmt/admin/updateS/'+id,requestOptions)
+        fetch(Common.url + '/admin/updateS/'+id,requestOptions)
     }
     function deleteID(did){
         const requestOptions ={
             method:'DELETE',
             headers:{'Content-Type':'application/json'},
         };
-        fetch('http://localhost:9000/rpmt/admin/deleteS/'+did ,requestOptions)
+        fetch(Common.url + '/admin/deleteS/'+did ,requestOptions)
     }
 
 

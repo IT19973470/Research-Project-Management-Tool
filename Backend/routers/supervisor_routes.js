@@ -8,13 +8,17 @@ const supervisor = require("../models/Supervisor");
 const GroupSupervisor = require('../models/GroupSupervisor');
 const Marking = require('../models/Marking');
 const DocumentEvaluation = require('../models/DocumentationEvaluation');
+const User = require("../models/User");
 
 let router1 = router.post('/add_supervisor', (req, res, next) => {
     console.log(req.body)
     supervisor.create(
         {_id: req.body._id,name:req.body.name,address:req.body.address,email:req.body.email,password:req.body.password, interests:req.body.interests}
     ).then((data) => {
-        res.send(data);
+        User.create(req.body).then(() => {
+            res.send(data);
+        })
+        // res.send(data);
     }).catch(next);
 
 });

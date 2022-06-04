@@ -1,4 +1,5 @@
 import React, {Component, useEffect, useState} from 'react';
+import {Common} from "./../commons/Common";
 import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Environment} from "../../../Backend/Environment";
@@ -123,7 +124,7 @@ export const SubmitDocuments = () => {
     function upload(submissionId) {
         let formData = new FormData();
         formData.append('file', file)
-        fetch('http://localhost:9000/rpmt/student/submit_document/' + submissionId + '/' + JSON.parse(localStorage.getItem('group')).groupId, {
+        fetch(Common.url + '/student/submit_document/' + submissionId + '/' + JSON.parse(localStorage.getItem('group')).groupId, {
             method: 'POST',
             body: formData
         }).then(response => response.json())
@@ -138,7 +139,7 @@ export const SubmitDocuments = () => {
     }
 
     function download(fileName) {
-        window.location.href = 'http://localhost:9000/rpmt/student/download_file/' + fileName
+        window.location.href = Common.url + '/student/download_file/' + fileName
     }
 
     function removeFile(submissionId) {
@@ -146,7 +147,7 @@ export const SubmitDocuments = () => {
             method: 'DELETE',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/student/remove_file/' + submissionId + '/' + JSON.parse(localStorage.getItem('group')).groupId, requestOptions)
+        fetch(Common.url + '/student/remove_file/' + submissionId + '/' + JSON.parse(localStorage.getItem('group')).groupId, requestOptions)
             .then(response => response.json())
             .then(reply => {
                 if (reply) {
@@ -166,7 +167,7 @@ export const SubmitDocuments = () => {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/student/get_upload_links/' + JSON.parse(localStorage.getItem('group')).groupId, requestOptions)
+        fetch(Common.url + '/student/get_upload_links/' + JSON.parse(localStorage.getItem('group')).groupId, requestOptions)
             .then(response => response.json())
             .then(reply => {
                 setLinks(reply)

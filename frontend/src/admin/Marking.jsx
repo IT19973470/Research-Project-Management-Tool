@@ -1,4 +1,5 @@
 import React, {Component, useEffect, useState} from 'react';
+import {Common} from "./../commons/Common";
 import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -14,7 +15,7 @@ export const Marking = () => {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/admin/displayMarking',requestOptions)
+        fetch(Common.url + '/admin/displayMarking',requestOptions)
             .then(response=>{ return response.json()})
             .then(data=>{
                  console.log(data)
@@ -40,7 +41,7 @@ export const Marking = () => {
         };
         console.log(criteria)
         console.log(marks)
-        fetch('http://localhost:9000/rpmt/admin/add',requestOptions)
+        fetch(Common.url + '/admin/add',requestOptions)
     }
     function deleteID(did){
         const requestOptions ={
@@ -48,7 +49,7 @@ export const Marking = () => {
             headers:{'Content-Type':'application/json'},
         };
         console.log(marks)
-        fetch('http://localhost:9000/rpmt/admin/deleteMarking/'+did,requestOptions)
+        fetch(Common.url + '/admin/deleteMarking/'+did,requestOptions)
     }
     return(
         <div className="row" align="center">

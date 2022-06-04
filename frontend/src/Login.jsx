@@ -2,16 +2,18 @@ import React, {Component, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import {UserData} from "./UserData.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {Common} from "./commons/Common";
 
 export const Login = () => {
     let navigate = useNavigate();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [userType, setUserType] = useState('student');
 
     return (
         <div className="row">
-        {/*<div className="row" style={{minHeight: 'calc(100vh - 325px)'}}>*/}
+            {/*<div className="row" style={{minHeight: 'calc(100vh - 325px)'}}>*/}
             {/*<div className="col-12" style={{fontSize: '45px', textAlign: 'center'}}>*/}
             {/*Research Project Management Tool*/}
             {/*</div>*/}
@@ -23,8 +25,19 @@ export const Login = () => {
                     display: 'flex',
                     justifyContent: 'center'
                 }}>
-                    <div style={{width: '500px'}}>
+                    <div style={{width: '600px'}}>
                         <div style={{display: 'flex'}}>
+                            <span style={{marginRight: '30px'}}>Type</span>
+                            <span style={{width: '100%'}}>
+                            <select className="form-control" onChange={(e) => {
+                                setUserType(e.target.value)
+                            }}>
+                                <option value="student">Student</option>
+                                <option value="supervisor">Supervisor</option>
+                            </select>
+                        </span>
+                        </div>
+                        <div style={{display: 'flex', marginTop: '15px'}}>
                             <span style={{marginRight: '30px'}}>Username</span>
                             <span style={{width: '100%'}}>
                             <input type="text" className="form-control"
@@ -46,15 +59,6 @@ export const Login = () => {
                                     }}>
                                 Sign In
                             </button>
-                            {/*<button className="btn btn-warning"*/}
-                            {/*style={{*/}
-                            {/*marginTop: '30px',*/}
-                            {/*fontSize: '20px',*/}
-                            {/*fontWeight: 'bold',*/}
-                            {/*marginLeft: '30px'*/}
-                            {/*}}>*/}
-                            {/*Sign Up*/}
-                            {/*</button>*/}
                         </div>
                     </div>
                 </div>
@@ -68,15 +72,24 @@ export const Login = () => {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 email: email,
-                password: password
+                password: password,
+                userType: userType
             })
         };
-        fetch('http://localhost:9000/rpmt/user/login', requestOptions)
+        fetch(Common.url + '/user/login', requestOptions)
             .then(response => response.json())
-            .then(reply => {
-                if (reply !== null) {
-                    localStorage.setItem('user', JSON.stringify(reply));
-                    navigate('/student/student_groups');
+            .then(user => {
+                if (user !== null) {
+                    localStorage.setItem('user', JSON.stringify(user));
+                    if (user.userType === 'student') {
+                        navigate('/student/student_groups');
+                    } else if (user.userType === 'admin') {
+                        navigate('/student/student_groups');
+                    } else if (user.userType === 'supervisor') {
+                        navigate('/supervisor/view_topics');
+                    } else if (user.userType === 'panel') {
+                        navigate('/student/student_groups');
+                    }
                 }
             });
     }

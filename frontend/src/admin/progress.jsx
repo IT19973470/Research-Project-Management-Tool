@@ -1,5 +1,7 @@
 import React from 'react';
+import {Common} from "./../commons/Common";
 import ProtoTypes from 'prop-types'
+
 const Progress =({percentage})=>{
     return(
         <div className='progress'>

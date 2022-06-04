@@ -1,4 +1,5 @@
 import React, {Component, useEffect, useState} from 'react';
+import {Common} from "./../commons/Common";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ModifyStudent from "./ModifyStudent";
 import {faTrashCan,faPencil} from "@fortawesome/free-solid-svg-icons";
@@ -17,7 +18,7 @@ export default function ModifyAdmin(){
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/admin/displayAdmin',requestOptions)
+        fetch(Common.url + '/admin/displayAdmin',requestOptions)
             .then(response=>{ return response.json()})
             .then(data=>{
                 // console.log(data)
@@ -44,7 +45,7 @@ export default function ModifyAdmin(){
             })
         };
         console.log(students)
-        fetch('http://localhost:9000/rpmt/admin/updateAdmin/'+id,requestOptions)
+        fetch(Common.url + '/admin/updateAdmin/'+id,requestOptions)
     }
     function deleteID(did){
         const requestOptions ={
@@ -52,7 +53,7 @@ export default function ModifyAdmin(){
             headers:{'Content-Type':'application/json'},
         };
         console.log(students)
-        fetch('http://localhost:9000/rpmt/admin/deleteAdmin/'+did,requestOptions)
+        fetch(Common.url + '/admin/deleteAdmin/'+did,requestOptions)
     }
 
     return(<div className="row">

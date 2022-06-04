@@ -45,12 +45,12 @@ export const Header = () => {
                             {/*Login*/}
                             {/*</div>*/}
                         </div>
-                        <div style={{marginLeft: '80px', marginTop: '22px', color: '#e0ddd8', fontSize: '20px'}}>
-                            <span
-                                style={{border: '2px solid #e0ddd8', padding: '5px 10px', borderRadius: '10px'}}>
-                                    Login
-                            </span>
-                        </div>
+                        {/*<div style={{marginLeft: '80px', marginTop: '22px', color: '#e0ddd8', fontSize: '20px'}}>*/}
+                            {/*<span*/}
+                                {/*style={{border: '2px solid #e0ddd8', padding: '5px 10px', borderRadius: '10px'}}>*/}
+                                    {/*Login*/}
+                            {/*</span>*/}
+                        {/*</div>*/}
                     </div>
                     <div className="col-4" style={{display: 'flex', justifyContent: 'flex-end'}}>
                         <div style={{marginTop: '14px'}}>
@@ -73,7 +73,7 @@ export const Header = () => {
                                     fontSize: '16px'
                                 }}
                                 onClick={() => {
-                                    navigate('/register');
+                                    navigate('/sign_up');
                                 }}>
                                 Create Account |
                             </div>

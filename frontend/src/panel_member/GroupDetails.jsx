@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {Common} from "./../commons/Common";
 
 export default function GroupDetails(groupId) {
     let navigate = useNavigate();
@@ -23,7 +24,7 @@ export default function GroupDetails(groupId) {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/panel_member/viewGroup/' + groupId.IdPass.groupId, requestOptions)
+        fetch(Common.url + '/panel_member/viewGroup/' + groupId.IdPass.groupId, requestOptions)
             .then(response => {
                 return response.json()
             })
@@ -45,7 +46,7 @@ export default function GroupDetails(groupId) {
                 topicFeedback: topicFeedback
             })
         };
-        fetch('http://localhost:9000/rpmt/panel_member/addTopicFeedback', requestOptions)
+        fetch(Common.url + '/panel_member/addTopicFeedback', requestOptions)
     }
 
     return (

@@ -1,4 +1,5 @@
 import React, {Component, useEffect, useState, useRef} from 'react';
+import {Common} from "./../commons/Common";
 import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Environment} from "../../../Backend/Environment";
@@ -121,7 +122,7 @@ export const ChatWindow = () => {
                 messageSent: new Date().toLocaleDateString('en-CA')
             })
         };
-        fetch('http://localhost:9000/rpmt/student/send_message', requestOptions)
+        fetch(Common.url +'/student/send_message', requestOptions)
             .then(response => response.json())
             .then(reply => {
                 if (reply) {
@@ -151,7 +152,7 @@ export const ChatWindow = () => {
                     method: 'GET',
                     headers: {'Content-Type': 'application/json'}
                 };
-                fetch('http://localhost:9000/rpmt/student/get_chats_group/' + JSON.parse(localStorage.getItem('group')).groupId + '/' + supervisorId, requestOptions)
+                fetch(Common.url + '/student/get_chats_group/' + JSON.parse(localStorage.getItem('group')).groupId + '/' + supervisorId, requestOptions)
                     .then(response => response.json())
                     .then(reply => {
                         setMessages(reply)
@@ -168,7 +169,7 @@ export const ChatWindow = () => {
                 method: 'GET',
                 headers: {'Content-Type': 'application/json'}
             };
-            fetch('http://localhost:9000/rpmt/student/get_supervisors/' + groupId, requestOptions)
+            fetch(Common.url + '/student/get_supervisors/' + groupId, requestOptions)
                 .then(response => response.json())
                 .then(supervisors => {
                     // console.log(supervisors)

@@ -1,5 +1,6 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
+import {Common} from "./../commons/Common";
 
 const prefix = '/panel_member';
 

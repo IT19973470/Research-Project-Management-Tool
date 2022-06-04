@@ -6,11 +6,15 @@ const Mark = require('../models/Marking');
 const PresentationEvaluation = require("../models/PresentationEvaluation");
 const PanelMember = require("../models/PanelMember");
 const TopicEvaluation = require("../models/TopicEvaluation");
+const User = require("../models/User");
 
 router.post('/panelMemberRegister', (req, res,  next) => {
     // req.body._id = req.body.id;
     PanelMember.create(req.body).then((panelMember) => {
-        res.send(panelMember);
+        User.create(req.body).then(() => {
+            res.send(panelMember);
+        })
+        // res.send(panelMember);
     }).catch(next);
 });
 

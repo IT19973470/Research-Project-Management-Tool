@@ -32,6 +32,7 @@ import ModifyPanel from "./src/admin/ModifyPanel";
 import ModifyAdmin from "./src/admin/ModifyAdmin";
 import {ViewTopicEvaluation} from "./src/panel_member/ViewTopicEvaluation";
 import {ChatWindow} from "./src/student/ChatWindow";
+import {SignUp} from "./src/SignUp";
 // import {Header} from "./Header";
 // import {ViewItems} from "./src/customer/ViewItems";
 // import {ViewWishList} from "./src/customer/ViewWishList";
@@ -45,6 +46,8 @@ export const App = () => {
     return (
         <Routes>
             <Route path='/' exact element={<Login/>}/>
+            <Route path='/sign_up' exact element={<SignUp/>}/>
+
             <Route path='/student/register_student' element={<RegisterStudent/>}/>
             <Route path='/student/student_groups' element={<StudentGroups/>}/>
             <Route path='/student/research_topic' element={<ResearchTopic/>}/>

@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import {Common} from "./../commons/Common";
 
 export const ViewFeedback = () => {
 
@@ -27,7 +28,7 @@ export const ViewFeedback = () => {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/panel_member/viewFeedback', requestOptions)
+        fetch(Common.url + '/panel_member/viewFeedback', requestOptions)
             .then(response => {
                 return response.json()
             })
@@ -48,7 +49,7 @@ export const ViewFeedback = () => {
             })
         };
         console.log(feedback)
-        fetch('http://localhost:9000/rpmt/panel_member/updateFeedback/'+ dbID,requestOptions)
+        fetch(Common.url + '/panel_member/updateFeedback/'+ dbID,requestOptions)
     }
 
     function deleteByID(did){
@@ -57,7 +58,7 @@ export const ViewFeedback = () => {
             headers:{'Content-Type':'application/json'},
         };
         console.log(feedback)
-        fetch('http://localhost:9000/rpmt/panel_member/deleteById/'+did,requestOptions)
+        fetch(Common.url + '/panel_member/deleteById/'+did,requestOptions)
     }
 
     return(

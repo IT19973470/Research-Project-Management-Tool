@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import {Common} from "./../commons/Common";
 
 export const ViewTopicEvaluation = () => {
     const [dbID, setDbId] = useState("");
@@ -17,7 +18,7 @@ export const ViewTopicEvaluation = () => {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/panel_member/viewTopicFeedback', requestOptions)
+        fetch(Common.url + '/panel_member/viewTopicFeedback', requestOptions)
             .then(response => {
                 return response.json()
             })
@@ -48,7 +49,7 @@ export const ViewTopicEvaluation = () => {
             })
         };
         console.log(_evaluationId)
-        fetch('http://localhost:9000/rpmt/panel_member/updateTopicFeedback/'+ dbID,requestOptions)
+        fetch(Common.url + '/panel_member/updateTopicFeedback/'+ dbID,requestOptions)
     }
 
     function deleteByID(did){
@@ -57,7 +58,7 @@ export const ViewTopicEvaluation = () => {
             headers:{'Content-Type':'application/json'},
         };
         console.log(feedback)
-        fetch('http://localhost:9000/rpmt/panel_member/deleteTopicFeedbackById/'+did,requestOptions)
+        fetch(Common.url + '/panel_member/deleteTopicFeedbackById/'+did,requestOptions)
     }
 
     return(

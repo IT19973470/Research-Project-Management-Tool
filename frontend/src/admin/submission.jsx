@@ -6,6 +6,8 @@ import axios from "axios";
 import Progress from "./progress"
 import {faInfo, faUpload,faCloudUpload} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {Common} from "./../commons/Common";
+
 export const Submission = () => {
     const [submission, setSumbission] = useState(null);
     const [title, setTitle] =useState("");
@@ -21,7 +23,7 @@ export const Submission = () => {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/admin/displaySubmission',requestOptions)
+        fetch(Common.url + '/admin/displaySubmission',requestOptions)
             .then(response=>{ return response.json()})
             .then(data=>{
                 // console.log(data)
@@ -97,7 +99,7 @@ export const Submission = () => {
             })
         };
         console.log(deadline)
-        fetch('http://localhost:9000/rpmt/admin/addMarking',requestOptions)
+        fetch(Common.url + '/admin/addMarking',requestOptions)
     }
 
     return (

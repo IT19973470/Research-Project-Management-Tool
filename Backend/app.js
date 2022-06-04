@@ -4,7 +4,6 @@ const cors = require('cors')
 const url = 'mongodb://localhost/rpmt'
 const fileUpload = require('express-fileupload')
 
-var fileUpload =require('express-fileupload')
 const app = express();
 app.use(cors())
 mongoose.connect(url);
@@ -24,7 +23,6 @@ app.use('/rpmt/staff', require('./routers/staff_routes'));
 app.use('/rpmt/supervisor', require('./routers/supervisor_routes'));
 
 
-app.use(fileUpload())
 app.post("/upload",(req,res)=>{
     console.log(req.files)
     if(req.files===null){

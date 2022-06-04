@@ -1,5 +1,7 @@
 import React, {Component, useEffect, useState} from 'react';
 import './ModifySupervisor.css';
+import {Common} from "./../commons/Common";
+
 export default function  AddPannel()  {
 
     const [supervisor, setSupervisor] = useState(null);
@@ -19,7 +21,7 @@ export default function  AddPannel()  {
         method: 'GET',
         headers: {'Content-Type': 'application/json'}
     };
-    fetch('http://localhost:9000/rpmt/admin/displayGroups',requestOptions1)
+    fetch(Common.url + '/admin/displayGroups',requestOptions1)
         .then(response1=>{ return response1.json()})
         .then(data1=>{
             setStudents(data1)
@@ -31,7 +33,7 @@ export default function  AddPannel()  {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/admin/displayPanel', requestOptions2)
+        fetch(Common.url + '/admin/displayPanel', requestOptions2)
             .then(response2 => {
                 return response2.json()
             })
@@ -82,14 +84,14 @@ export default function  AddPannel()  {
                 stafflist:array1
             })
         };
-        fetch('http://localhost:9000/rpmt/admin/addPannel',requestOptions)
+        fetch(Common.url + '/admin/addPannel',requestOptions)
     }
     function deleteID(did){
         const requestOptions ={
             method:'DELETE',
             headers:{'Content-Type':'application/json'},
         };
-        fetch('http://localhost:9000/rpmt/admin/deleteS/'+did ,requestOptions)
+        fetch(Common.url + '/admin/deleteS/'+did ,requestOptions)
     }
 
 

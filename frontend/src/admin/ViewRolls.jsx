@@ -1,4 +1,5 @@
 import React, {Component, useEffect, useState} from 'react';
+import {Common} from "./../commons/Common";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ModifyStudent from "./ModifyStudent";
 
@@ -15,7 +16,7 @@ export default function ViewRolls(){
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/admin/viewRoles',requestOptions)
+        fetch(Common.url + '/admin/viewRoles',requestOptions)
             .then(response=>{ return response.json()})
             .then(data=>{
                  console.log(data[3].Groups[1].students)
@@ -43,7 +44,7 @@ export default function ViewRolls(){
             })
         };
         console.log(students)
-        fetch('http://localhost:9000/rpmt/admin/update/'+id,requestOptions)
+        fetch(Common.url + '/admin/update/'+id,requestOptions)
     }
     function deleteID(did){
         const requestOptions ={
@@ -51,7 +52,7 @@ export default function ViewRolls(){
             headers:{'Content-Type':'application/json'},
         };
         console.log(students)
-        fetch('http://localhost:9000/rpmt/admin/delete/'+did,requestOptions)
+        fetch(Common.url + '/admin/delete/'+did,requestOptions)
     }
 
     return(<div className="row">

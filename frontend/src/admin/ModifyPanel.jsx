@@ -1,4 +1,5 @@
 import React, {Component, useEffect, useState} from 'react';
+import {Common} from "./../commons/Common";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ModifyStudent from "./ModifyStudent";
 import {faTrashCan,faPencil,faPlus} from '@fortawesome/free-solid-svg-icons'
@@ -17,7 +18,7 @@ export default function ModifyPanel(){
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/admin/displayPanel',requestOptions)
+        fetch(Common.url + '/admin/displayPanel',requestOptions)
             .then(response=>{ return response.json()})
             .then(data=>{
                 // console.log(data)
@@ -44,7 +45,7 @@ export default function ModifyPanel(){
             })
         };
         console.log(students)
-        fetch('http://localhost:9000/rpmt/admin/updatePanel/'+id,requestOptions)
+        fetch(Common.url + '/admin/updatePanel/'+id,requestOptions)
     }
     function deleteID(did){
         const requestOptions ={
@@ -52,7 +53,7 @@ export default function ModifyPanel(){
             headers:{'Content-Type':'application/json'},
         };
         console.log(students)
-        fetch('http://localhost:9000/rpmt/admin/deletePanel/'+did,requestOptions)
+        fetch(Common.url + '/admin/deletePanel/'+did,requestOptions)
     }
 
     return(<div className="row">
