@@ -9,22 +9,22 @@ export const Header = () => {
     return (
 
         <div className="row">
-                <div className="col-12 navHeader2">
-                    <div className="row" style={{padding: '5px'}}>
-                        <div className="row" style={{
-                            fontWeight: 'bold',
-                            fontSize: '10px',
-                            marginLeft: '20px',
-                            color: '#e0ddd8',
-                            textAlign: 'center'
-                        }}>
-                            <div className="col-3" >Research Project Management Tool</div>
-                            <div className="col-3"><FontAwesomeIcon icon={faHome} /><br/> Home</div>
-                            <div className="col-3"> <FontAwesomeIcon icon={faBars} /><br/>Menu</div>
-                            <div className="col-3"> <FontAwesomeIcon icon={faInfo} /><br/>Info</div>
-                        </div>
-                    </div>
-                </div>
+                {/*<div className="col-12 navHeader2">*/}
+                    {/*<div className="row" style={{padding: '5px'}}>*/}
+                        {/*<div className="row" style={{*/}
+                            {/*fontWeight: 'bold',*/}
+                            {/*fontSize: '10px',*/}
+                            {/*marginLeft: '20px',*/}
+                            {/*color: '#e0ddd8',*/}
+                            {/*textAlign: 'center'*/}
+                        {/*}}>*/}
+                            {/*<div className="col-3" >Research Project Management Tool</div>*/}
+                            {/*<div className="col-3"><FontAwesomeIcon icon={faHome} /><br/> Home</div>*/}
+                            {/*<div className="col-3"> <FontAwesomeIcon icon={faBars} /><br/>Menu</div>*/}
+                            {/*<div className="col-3"> <FontAwesomeIcon icon={faInfo} /><br/>Info</div>*/}
+                        {/*</div>*/}
+                    {/*</div>*/}
+                {/*</div>*/}
 
             <div className="col-12 navHeader">
                 <div className="row" style={{padding: '10px'}}>

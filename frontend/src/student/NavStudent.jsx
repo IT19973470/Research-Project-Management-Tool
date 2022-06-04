@@ -27,8 +27,8 @@ export const NavStudent = () => {
             }}>Submit Documents
             </div>
             <div onClick={() => {
-                navigate(prefix + '/download_templates')
-            }}>Download Templates
+                navigate(prefix + '/chat')
+            }}>Chat
             </div>
         </div>
     );
