@@ -10,7 +10,7 @@ export default function  AddPannel()  {
     var [array2, setArray2] = useState([]);
     const [data, setText]=useState("")
     useEffect (()=>{
-        getGroups(),getSupervisor()
+        getGroups(),getPanelMembers()
 
     }, [])
 
@@ -26,17 +26,17 @@ export default function  AddPannel()  {
         });
 
     }
-    function getSupervisor() {
+    function getPanelMembers() {
         const requestOptions2 = {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/admin/displaySupervisor', requestOptions2)
+        fetch('http://localhost:9000/rpmt/admin/displayPanel', requestOptions2)
             .then(response2 => {
                 return response2.json()
             })
             .then(data2 => {
-                //   console.log(data)
+                   console.log(data2)
                 setSupervisor(data2)
             });
 
@@ -96,7 +96,7 @@ export default function  AddPannel()  {
     {
         return <div className="row">
             <div className="col-12" style={{fontSize: '45px', textAlign: 'center'}}>
-                Manage Supervisor
+                Manage Pannel
             </div>
             <div className="col-12">
                 <div style={{
@@ -106,12 +106,19 @@ export default function  AddPannel()  {
                     justifyContent: 'center'
                 }}>
                     <div style={{width: '500px'}}>
+                        <h3 style={{
+                            width: '100%',
+                            marginTop: '20px',
+                            display: 'flex',
+                            justifyContent: 'center'}}>Panel Details</h3>
                         <table className="table table-striped" style={{marginTop: '40px'}}>
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col" width="20%">ID</th>
-                                <th scope="col">Interest</th>
+                                <th scope="col" width="20%">Name</th>
+                                <th scope="col" width="20%">Email</th>
+
                             </tr>
                             </thead>
                             <tbody>
@@ -120,8 +127,8 @@ export default function  AddPannel()  {
                                     return <tr key={key}>
                                         <td>{key + 1}</td>
                                         <td>{supervisor._id}</td>
-                                        <td>{supervisor.interests.join(', ')}</td>
-
+                                        <td>{supervisor.name}</td>
+                                        <td>{supervisor.email}</td>
                                         <td><button onClick={()=>getTextFields(supervisor)} style={{backgroundColor: "transparent",border:"none",color:"black"}}>Add</button></td>
 
                                     </tr>
@@ -129,6 +136,11 @@ export default function  AddPannel()  {
                             }
                             </tbody>
                         </table>
+                        <h3 style={{
+                            width: '100%',
+                            marginTop: '20px',
+                            display: 'flex',
+                            justifyContent: 'center'}}>Project Group Details</h3>
                             <table className="table table-striped" style={{marginTop: '40px'}}>
                                 <thead>
                                 <tr>
@@ -158,7 +170,7 @@ export default function  AddPannel()  {
                         <form  align="center">
                             <div className="form-group">
 
-                                <h1>Update users</h1>
+                                <h1>Add Panel</h1>
                                 <label htmlFor="na,e">Panel Name:</label>
                                 <input type="text"  className="form-control" id="name" placeholder="Enter Panel Name"  onChange={(e)=>{setName(e.target.value)}}/>
                                 <label htmlFor="na,e">Supervisor ID:</label>
@@ -168,7 +180,7 @@ export default function  AddPannel()  {
                                 <br/>
                                 {array2.map(array2 => <span>{array2}<br/></span>)}
                             </div>
-                            <button type="button"  onClick={add} className="btn btn-primary" >Update</button>
+                            <button type="button"  onClick={add} className="btn btn-primary" >Add</button>
                         </form>
                     </div>
                 </div>

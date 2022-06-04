@@ -21,7 +21,6 @@ export const Marking = () => {
                 setMarking(data)
             });
     })
-
     function getFields(student) {
         console.log(student)
         // setId(student._id)
@@ -52,7 +51,7 @@ export const Marking = () => {
         fetch('http://localhost:9000/rpmt/admin/deleteMarking/'+did,requestOptions)
     }
     return(
-        <div className="row">
+        <div className="row" align="center">
             <form  align="center">
                 <div className="form-group">
                     <h1>Add marking</h1>
@@ -63,7 +62,9 @@ export const Marking = () => {
                     <label htmlFor="na,e">Marks:</label>
                     <input type="text"  className="form-control" id="marks" placeholder="Enter Marking"  onChange={(e)=>{setMarks(e.target.value)}}/>
                 </div>
+                <br/>
                 <button type="button"  onClick={add} className="btn btn-primary" >Add</button>
+                <br/>
             </form>
             <div className="col-12" style={{fontSize: '45px', textAlign: 'center'}}>
                 View Marking

@@ -1,24 +1,23 @@
 import React, {Component, useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ModifyStudent from "./ModifyStudent";
-import {faUpload} from "@fortawesome/free-solid-svg-icons";
+import {faTrashCan,faPencil,faPlus} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTrashCan,faPencil} from '@fortawesome/free-solid-svg-icons'
 
-export default function ModifyStudent(){
+export default function ModifyPanel(){
 
     const [students, setStudents] = useState(null);
     const [name, setName] =useState("");
     const [email, setEmail] =useState("");
     const [id, setId] =useState("");
-    const [address, setAddress] =useState("");
+    const [designation, setDesignation] =useState("");
 
     useEffect (()=>{
         const requestOptions = {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/admin/displayUsers',requestOptions)
+        fetch('http://localhost:9000/rpmt/admin/displayPanel',requestOptions)
             .then(response=>{ return response.json()})
             .then(data=>{
                 // console.log(data)
@@ -31,7 +30,7 @@ export default function ModifyStudent(){
         setId(student._id)
         setName(student.name)
         setEmail(student.email)
-        setAddress(student.address)
+        setDesignation(student.designation)
     }
     function update(){
         const requestOptions ={
@@ -41,11 +40,11 @@ export default function ModifyStudent(){
                 _id:id,
                 name:name,
                 email:email,
-                address:address
+                designation:designation
             })
         };
         console.log(students)
-        fetch('http://localhost:9000/rpmt/admin/update/'+id,requestOptions)
+        fetch('http://localhost:9000/rpmt/admin/updatePanel/'+id,requestOptions)
     }
     function deleteID(did){
         const requestOptions ={
@@ -53,12 +52,12 @@ export default function ModifyStudent(){
             headers:{'Content-Type':'application/json'},
         };
         console.log(students)
-        fetch('http://localhost:9000/rpmt/admin/delete/'+did,requestOptions)
+        fetch('http://localhost:9000/rpmt/admin/deletePanel/'+did,requestOptions)
     }
 
     return(<div className="row">
             <div className="col-12" style={{fontSize: '45px', textAlign: 'center'}}>
-                Manage Student
+                Manage Panel Member
             </div>
             <div className="col-12">
                 <div style={{
@@ -72,7 +71,7 @@ export default function ModifyStudent(){
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col" width="20%">Student ID</th>
+                                <th scope="col" width="20%">Panel ID</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Address</th>
@@ -86,7 +85,7 @@ export default function ModifyStudent(){
                                         <td>{student._id}</td>
                                         <td>{student.name}</td>
                                         <td>{student.email}</td>
-                                        <td>{student.address}</td>
+                                        <td>{student.designation}</td>
                                         <td><button onClick={()=>getFields(student)} style={{backgroundColor: "transparent",border:"none",color:"black"}}><FontAwesomeIcon icon={faPencil} /></button></td>
                                         <td><button onClick={()=>deleteID(student._id)} style={{backgroundColor: "transparent",border:"none",color:"black"}}><FontAwesomeIcon icon={faTrashCan} /></button></td>
 
@@ -99,25 +98,23 @@ export default function ModifyStudent(){
                         <form  align="center">
                             <div className="form-group">
                                 <h1>Update users</h1>
-                                <label htmlFor="na,e">Student ID:</label>
-                                <input type="text" value={id} className="form-control" id="name" readOnly={true} placeholder="Enter Student ID"  onChange={(e)=>{setId(e.target.value)}}/>
+                                <label htmlFor="na,e">Panel ID:</label>
+                                <input type="text" value={id} className="form-control" id="name" readOnly={true} placeholder="Enter Panel Member ID"  onChange={(e)=>{setId(e.target.value)}}/>
                             </div>
                             <div className="form-group">
-                                <label htmlFor="na,e">Student Name:</label>
-                                <input type="text" value={name} className="form-control" id="name" placeholder="Enter Student name"  onChange={(e)=>{setName(e.target.value)}}/>
+                                <label htmlFor="na,e">Panel Member Name:</label>
+                                <input type="text" value={name} className="form-control" id="name" placeholder="Enter Panel Member name"  onChange={(e)=>{setName(e.target.value)}}/>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="na,e">Email:</label>
-                                <input type="text" value={email} className="form-control" id="age" placeholder="Enter Student email"  onChange={(e)=>{setEmail(e.target.value)}}/>
+                                <input type="text" value={email} className="form-control" id="age" placeholder="Enter Panel Member email"  onChange={(e)=>{setEmail(e.target.value)}}/>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="na,e">Address:</label>
-                                <input type="text" value={address} className="form-control" id="age" placeholder="Enter Student address"  onChange={(e)=>{setAddress(e.target.value)}}/>
+                                <input type="text" value={designation} className="form-control" id="age" placeholder="Enter Panel Member address"  onChange={(e)=>{setDesignation(e.target.value)}}/>
                             </div>
                             <br/>
                             <button type="button"  onClick={update} className="btn btn-primary" >Update</button>
-                            <br/>
-                            <br/>
                         </form>
                     </div>
                 </div>

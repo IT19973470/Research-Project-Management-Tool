@@ -1,6 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import './Footer.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {  faFacebookF ,faInstagramSquare,faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 
 function Footer() {
     return (
@@ -23,15 +25,14 @@ function Footer() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-2">
+                            <div className="col-2" style={{color:'#b6effb'}}>
                                 <div style={{fontWeight: 'bold'}}>Join Us</div>
                                 <div style={{marginLeft: '40px', marginTop: '10px', fontSize: '14px'}}>
                                     Share your feedback
                                     <br/>
-                                    <i className="fab fa-facebook-square"
-                                       style={{fontSize: '30px', marginTop: '10px'}}></i>
-                                    <i className="fab fa-instagram-square"
-                                       style={{fontSize: '30px', marginTop: '10px', marginLeft: '10px'}}></i>
+                                    <FontAwesomeIcon icon={faLinkedinIn} style={{fontSize: '30px', marginTop: '20px'}} />
+                                     <FontAwesomeIcon icon={faInstagramSquare} style={{fontSize: '30px', marginTop: '10px', marginLeft: '20px'}}/>
+
                                 </div>
                             </div>
                         </div>
