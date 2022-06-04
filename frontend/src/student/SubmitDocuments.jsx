@@ -1,128 +1,156 @@
 import React, {Component, useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {Environment} from "../../../Backend/Environment";
 
 export const SubmitDocuments = () => {
     let navigate = useNavigate();
 
     const [topic, setTopic] = useState('');
     const [topicRegistered, setTopicRegistered] = useState(false);
-    const [topicAccepted, setTopicAccepted] = useState(false);
+    const [links, setLinks] = useState([]);
     const [groupRegistered, setGroupRegistered] = useState(false);
+    const [file, setFile] = useState('');
+    const [fname, setFileName] = useState('');
 
     useEffect(() => {
-        RegisteredForTopic()
+        CheckGroup()
+        GetLinks()
     }, [])
 
-    let content;
-    let contentTopicAccepted;
-
-    if (!groupRegistered) {
-        content =
-            <div>
-                <div>
-                    Please register for a group before select a research topic.
-                </div>
-            </div>
-    }else if (topicRegistered) {
-        content =
-            <div>
-                Topic is {topic}
-                <button className="btn btn-warning"
-                        style={{marginTop: '30px', fontSize: '20px', fontWeight: 'bold'}}
-                        onClick={() => {
-                            UnregisterTopic()
-                        }}>
-                    Unregister
-                </button>
-            </div>
-    } else {
-        content =
-            <div>
-                <div style={{display: 'flex'}}>
-                    <span style={{marginRight: '30px'}}>Description</span>
-                    <span style={{width: '100%'}}>
-                            <input type="text" className="form-control"
-                                   onChange={e => setTopic(e.target.value)}/>
-                        </span>
-                </div>
-                <div style={{width: '100%', textAlign: 'center'}}>
-                    <button className="btn btn-warning"
-                            style={{marginTop: '30px', fontSize: '20px', fontWeight: 'bold'}}
-                            onClick={() => {
-                                RegisterTopic()
-                            }}>
-                        Register
-                    </button>
-                </div>
-            </div>
-    }
-
-    if (topicAccepted) {
-        contentTopicAccepted =
-            <div>
-                Topic is accepted by the supervisor
-            </div>
-    } else {
-        contentTopicAccepted =
-            <div>
-                Topic is not accepted
-            </div>
-    }
-
     return (
-        <div className="row">
-            <div className="col-12" style={{fontSize: '45px', textAlign: 'center'}}>
-                Submit Documents
-            </div>
-            <div className="col-12">
-                <div style={{
-                    width: '100%',
-                    marginTop: '50px',
-                    display: 'flex',
-                    justifyContent: 'center'
-                }}>
-                    <div style={{width: '500px'}}>
-                        {content}
+        <div>
+            {
+                (!groupRegistered) ?
+                    <div>
+                        Please register for a group before select a research topic.
                     </div>
-                </div>
-            </div>
+                    :
+                    <div>
+                        {
+                            links && links.map(function (linkObj, key) {
+                                return <div key={key} style={{
+                                    border: '1px solid black',
+                                    borderRadius: '10px',
+                                    marginTop: '15px',
+                                    padding: '10px'
+                                }}>
+                                    <button className="btn btn-success btn-sm"
+                                            style={{fontWeight: 'bold', marginBottom: '10px'}}
+                                            onClick={() => {
+                                                download(linkObj.fileNameTemp)
+                                            }}>
+                                        Download Template
+                                    </button>
+                                    <div>
+                                        <span style={{fontWeight: 'bold'}}>Title : </span>
+                                        <span>{linkObj.title}</span>
+                                    </div>
+                                    <div style={{display: 'flex'}}>
+                                        <div style={{fontWeight: 'bold', marginRight: '10px'}}>
+                                            Details :
+                                        </div>
+                                        <div
+                                            style={{whiteSpace: 'pre-wrap'}}>{linkObj.details}</div>
+                                    </div>
+                                    <div>
+                                        <span style={{fontWeight: 'bold'}}>Type : </span>
+                                        <span>{linkObj.type}</span>
+                                    </div>
+                                    <div>
+                                        <span style={{fontWeight: 'bold'}}>Deadline : </span>
+                                        <span>{linkObj.deadline}</span>
+                                    </div>
+                                    <div>
+                                        <input type="file" onChange={(e) => {
+                                            setFileTarget(e)
+                                        }}/>
+                                    </div>
+                                    <div className="row" style={{marginTop: '10px'}}>
+                                        <div className="col-12">
+                                            {
+                                                linkObj.markedUpload ?
+                                                    <span>
+                                                        <div style={{
+                                                            fontWeight: 'bold',
+                                                            color: 'green'
+                                                        }}>File is uploaded</div>
+                                                    <div>
+                                                        <span style={{fontWeight: 'bold'}}>File : </span>
+                                                        <span>{linkObj.fileName}</span>
+                                                    </div>
+                                                    </span> :
+                                                    <span></span>
+                                            }
+                                        </div>
+                                        <div className="col-12" style={{textAlign: 'right'}}>
+                                            <button className="btn btn-warning btn-sm" style={{fontWeight: 'bold'}}
+                                                    onClick={() => {
+                                                        upload(linkObj._id)
+                                                    }}>
+                                                Upload
+                                            </button>
+                                            {
+                                                linkObj.markedUpload ?
+                                                    <button className="btn btn-danger btn-sm"
+                                                            style={{fontWeight: 'bold', marginLeft: '10px'}}
+                                                            onClick={() => {
+                                                                removeFile(linkObj._id)
+                                                            }}>
+                                                        Delete
+                                                    </button> :
+                                                    <span></span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            })
+                        }
+                    </div>
+            }
         </div>
     );
 
-    function RegisteredForTopic() {
-        let groupId = JSON.parse(localStorage.getItem('group')) !== null ? JSON.parse(localStorage.getItem('group')).groupId : null;
-        if (groupId !== null) {
-            setGroupRegistered(true);
-            const requestOptions = {
-                method: 'GET',
-                headers: {'Content-Type': 'application/json'}
-            };
-            fetch('http://localhost:9000/rpmt/student/topic_registered/' + JSON.parse(localStorage.getItem('group')).groupId, requestOptions)
-                .then(response => response.json())
-                .then(reply => {
-                    if (reply.reply !== null && reply.reply.registered) {
-                        setTopicRegistered(true);
-                        setTopic(reply.reply.topic);
-                    } else {
-                        setTopicRegistered(false);
-                    }
-                });
-        } else {
-            setGroupRegistered(false);
-        }
+    let fileE;
+
+    function setFileTarget(e) {
+        // console.log(e.target.files[0].name)
+        fileE = e;
+        setFile(e.target.files[0])
+        setFileName(e.target.files[0].name)
     }
 
-    function UnregisterTopic() {
+    function upload(submissionId) {
+        let formData = new FormData();
+        formData.append('file', file)
+        fetch('http://localhost:9000/rpmt/student/submit_document/' + submissionId + '/' + JSON.parse(localStorage.getItem('group')).groupId, {
+            method: 'POST',
+            body: formData
+        }).then(response => response.json())
+            .then(reply => {
+                fileE.target.value = null
+                GetLinks();
+            }).catch((error) => {
+            // console.error('Error:', error);
+        });
+
+        // }
+    }
+
+    function download(fileName) {
+        window.location.href = 'http://localhost:9000/rpmt/student/download_file/' + fileName
+    }
+
+    function removeFile(submissionId) {
         const requestOptions = {
             method: 'DELETE',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/student/remove_research_topic/' + JSON.parse(localStorage.getItem('group')).groupId, requestOptions)
+        fetch('http://localhost:9000/rpmt/student/remove_file/' + submissionId + '/' + JSON.parse(localStorage.getItem('group')).groupId, requestOptions)
             .then(response => response.json())
             .then(reply => {
                 if (reply) {
-                    setTopicRegistered(false);
+                    GetLinks();
                 }
                 // if (reply !== null && UserData.type === 'customer') {
                 //     UserData.id = reply.id;
@@ -133,30 +161,32 @@ export const SubmitDocuments = () => {
             });
     }
 
-    function RegisterTopic() {
+    function GetLinks() {
         const requestOptions = {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                groupId: JSON.parse(localStorage.getItem('group')).groupId,
-                topic: topic,
-                accepted: false,
-                registered: true
-            })
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/student/add_research_topic', requestOptions)
+        fetch('http://localhost:9000/rpmt/student/get_upload_links/' + JSON.parse(localStorage.getItem('group')).groupId, requestOptions)
             .then(response => response.json())
             .then(reply => {
-                if (reply !== null) {
-                    setTopicRegistered(true);
-                    setTopic(reply.topic);
+                setLinks(reply)
+            });
+    }
+
+    function CheckGroup() {
+        const requestOptions = {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
+        };
+        fetch(Environment.url + 'student/check_group/' + JSON.parse(localStorage.getItem('user'))._id, requestOptions)
+            .then(response => response.json())
+            .then(reply => {
+                if (reply.length === 0) {
+                    setGroupRegistered(false)
+                } else {
+                    setGroupRegistered(true)
+                    localStorage.setItem('group', JSON.stringify(reply))
                 }
-                // if (reply !== null && UserData.type === 'customer') {
-                //     UserData.id = reply.id;
-                //     navigate('/view_items');
-                // } else if (reply !== null && UserData.type === 'trader') {
-                //     navigate('/trader_items');
-                // }
             });
     }
 };

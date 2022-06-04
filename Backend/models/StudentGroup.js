@@ -7,6 +7,20 @@ const StudentGroupSchema = new Schema({
     },
     students: {
         type: Array
+    },
+    topics: {
+        type: Array
+    },
+    leader: {
+        type: String
+    },
+    supervisor: {
+        _id: String,
+        accepted: Boolean
+    },
+    coSupervisor: {
+        _id: String,
+        accepted: Boolean
     }
 
 });
