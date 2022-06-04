@@ -249,7 +249,7 @@ export const StudentGroups = () => {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch(Environment.url + 'student/check_group/' + userId, requestOptions)
+        fetch(Common.url + '/student/check_group/' + userId, requestOptions)
             .then(response => response.json())
             .then(reply => {
                 if (reply.length === 0) {
@@ -315,7 +315,7 @@ export const StudentGroups = () => {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch(Environment.url + 'student/get_groups', requestOptions)
+        fetch(Common.url + '/student/get_groups', requestOptions)
             .then(response => response.json())
             .then(groups => {
                 // console.log(groups)
@@ -336,7 +336,7 @@ export const StudentGroups = () => {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch(Environment.url + 'student/set_leader/' + JSON.parse(localStorage.getItem('group')).groupId + '/' + leaderId, requestOptions)
+        fetch(Common.url + '/student/set_leader/' + JSON.parse(localStorage.getItem('group')).groupId + '/' + leaderId, requestOptions)
             .then(response => response.json())
             .then(reply => {
                 CheckGroup(false);

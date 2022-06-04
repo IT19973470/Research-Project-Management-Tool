@@ -194,7 +194,7 @@ export const ChatWindowStudent = () => {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch(Environment.url + 'student/check_group/' + JSON.parse(localStorage.getItem('user'))._id, requestOptions)
+        fetch(Common.url + '/student/check_group/' + JSON.parse(localStorage.getItem('user'))._id, requestOptions)
             .then(response => response.json())
             .then(reply => {
                 if (reply.length === 0) {
