@@ -7,17 +7,23 @@ export const EvaluateDocument = () => {
     const [groupId, setGroupId] = useState('');
     const [feedback, setFeedback] = useState('');
     const [_evaluationId, setEvaluationId] = useState('');
+    const [dbID, setDbId] = useState("");
+    const [groupIdU, setgroupIDU] = useState('');
+    const [feedbackU, setFeedbackU] = useState('');
+    const [markU, setmarkU] = useState(''); 
     
     useEffect(() => {
         viewFeedback();
     })
 
     function getFields(feedback) {
-        console.log(feedback)
+
+         console.log(feedback)
+        setDbId(feedback._id)
         setEvaluationId(feedback._evaluationId)
-        setGroupId(feedback.groupId)
-        setMarks(feedback.documentMark)
-        setDocumentFeedback(feedback.documentFeedback)
+        setgroupIDU(feedback.groupId)
+        setmarkU(feedback.documentMark)
+        setFeedbackU(feedback.documentFeedback)
     }
 
     function viewFeedback() {
@@ -30,7 +36,7 @@ export const EvaluateDocument = () => {
                 return response.json()
             })
             .then(data => {
-                console.log(data);
+               // console.log(data);
                 setFeedback(data);
             })
         // console.log(studentGroup)
@@ -50,17 +56,19 @@ export const EvaluateDocument = () => {
     }
 
     function update(){
+        console.log(dbID)
+        console.log(groupIdU)
         const requestOptions ={
             method:'PUT',
             headers:{'Content-Type':'application/json'},
             body:JSON.stringify({
-                groupId: groupId,
-                documentMark: documentMark,
-                documentFeedback: documentFeedback
+                groupId: groupIdU,
+                documentMark: markU,
+                documentFeedback: feedbackU
             })
         };
-        console.log(feedback)
-        fetch('http://localhost:9000/rpmt/supervisor/updateFeedback/'+ _evaluationId,requestOptions)
+        // console.log(feedback)
+        fetch('http://localhost:9000/rpmt/supervisor/updateFeedback/'+ dbID,requestOptions)
     }
 
     function deleteByID(did){
@@ -68,7 +76,7 @@ export const EvaluateDocument = () => {
             method:'DELETE',
             headers:{'Content-Type':'application/json'},
         };
-        console.log(feedback)
+        // console.log(feedback)
         fetch('http://localhost:9000/rpmt/supervisor/deleteById/'+did,requestOptions)
     }
 
@@ -77,11 +85,11 @@ export const EvaluateDocument = () => {
             <div className={'row'}>
             <div className={'col-6'} style={{verticalAlign: "baseline"}}>
                 <div style={{height: '400px'}}>
-                    <div className={'col-6'} style={{fontSize: '45px', textAlign: 'center'}}>
+                    <h1>
                         Add Feedback
-                    </div>
+                    </h1>
                     <div className={'col-6'}>
-                        <div style={{width: '600px'}}>
+                        <div style={{width: '500px'}}>
                             <form align="center">
                                 <div className="form-group">
                                     <label htmlFor="na,e">Group ID:</label>
@@ -105,6 +113,7 @@ export const EvaluateDocument = () => {
                                             setDocumentFeedback(e.target.value)
                                            }}/>
                                 </div>
+                                <br></br>
 
                                 <button type="button" onClick={add} className="btn btn-primary">Add</button>
                             </form>
@@ -117,35 +126,35 @@ export const EvaluateDocument = () => {
 
             <div className={'col-6'} style={{verticalAlign: "baseline"}}>
                 <div style={{height: '400px'}}>
-                    <div className={'col-6'} style={{fontSize: '45px', textAlign: 'center'}}>
+                    <h1>
                         Update Feedback
-                    </div>
+                    </h1>
                     <div className={'col-6'}>
-                        <div style={{width: '600px'}}>
+                        <div style={{width: '500px'}}>
                             <form align="center">
                                 <div className="form-group">
                                     <label htmlFor="na,e">Group ID:</label>
-                                    <input type="text" className="form-control" value={groupId} id="groupID" placeholder="Enter Group ID"
+                                    <input type="text" className="form-control" value={groupIdU} id="groupID" placeholder="Enter Group ID"
                                            onChange={(e) => {
-                                               setGroupId(e.target.value)
+                                               setgroupIDU(e.target.value)
                                            }}/>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="na,e">Document Mark:</label>
-                                    <input type="text" className="form-control" id="mark1" value={documentMark} placeholder="Enter Mark"
+                                    <input type="text" className="form-control" id="mark1" value={markU} placeholder="Enter Mark"
                                            onChange={(e) => {
-                                               setMarks(e.target.value)
+                                               setmarkU(e.target.value)
                                            }}/>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="na,e">Feedback:</label>
-                                    <input type="text" className="form-control" id="feedback1" value={documentFeedback}
+                                    <input type="text" className="form-control" id="feedback1" value={feedbackU}
                                            placeholder="Enter Feedback"
                                            onChange={(e) => {
-                                            setDocumentFeedback(e.target.value)
+                                            setFeedbackU(e.target.value)
                                            }}/>
                                 </div>
-
+                                <br></br>
                                 <button type="button" onClick={update} className="btn btn-primary">Update</button>
                             </form>
                         </div>
@@ -166,7 +175,7 @@ export const EvaluateDocument = () => {
             <th scope="col" width="10%">Group ID</th>
             <th scope="col" width="10%">Document Mark</th>
             <th scope="col" width="10%">Feedback</th>
-            <th scope="col" width="10%">Update</th>
+            <th scope="col" width="10%">Delete</th>
         </tr>
         </thead>
         <tbody>

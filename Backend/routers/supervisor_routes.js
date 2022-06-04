@@ -84,13 +84,13 @@ router.route('/viewFeedback').get((req,res) => {
 
 router.route("/updateFeedback/:id").put(async (req, res) => {
     let id = req.params.id;
-    const {_id, documentMark, documentFeedback} = req.body;
+    const {groupId, documentMark, documentFeedback} = req.body;
     const updateFeedback = {
-        _id,
+        groupId,
         documentMark,
         documentFeedback
     }
-    const update = await DocumentEvaluation.findOneAndUpdate(id, updateFeedback)
+    const update = await DocumentEvaluation.findByIdAndUpdate(id, updateFeedback)
         .then((feedback) => {
             res.status(200).send({status: "Feedback updated", feedback: feedback})
         }).catch((err) => {
