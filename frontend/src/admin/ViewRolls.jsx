@@ -1,132 +1,118 @@
 import React, {Component, useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import ModifyStudent from "./ModifyStudent";
 
-export default function ViewRolls(){
+export default function ViewRolls() {
 
     const [students, setStudents] = useState(null);
-    const [name, setName] =useState("");
-    const [email, setEmail] =useState("");
-    const [id, setId] =useState("");
-    const [address, setAddress] =useState("");
 
-    useEffect (()=>{
+    useEffect(() => {
         const requestOptions = {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         };
-        fetch('http://localhost:9000/rpmt/admin/viewRoles',requestOptions)
-            .then(response=>{ return response.json()})
-            .then(data=>{
-                 //console.log(data[3].Groups[1].students)
+        fetch('http://localhost:9000/rpmt/admin/viewRoles', requestOptions)
+            .then(response => {
+                return response.json()
+            })
+            .then(data => {
                 console.log(data)
                 setStudents(data)
             });
-    },[])
+    }, [])
 
-    function getFields(student) {
-
-        setId(student._id)
-        setName(student.name)
-        setEmail(student.email)
-        setAddress(student.address)
-    }
-    function update(){
-        const requestOptions ={
-            method:'PUT',
-            headers:{'Content-Type':'application/json'},
-            body:JSON.stringify({
-                _id:id,
-                name:name,
-                email:email,
-                address:address
-            })
-        };
-        console.log(students)
-        fetch('http://localhost:9000/rpmt/admin/update/'+id,requestOptions)
-    }
-    function deleteID(did){
-        const requestOptions ={
-            method:'DELETE',
-            headers:{'Content-Type':'application/json'},
-        };
-        console.log(students)
-        fetch('http://localhost:9000/rpmt/admin/delete/'+did,requestOptions)
-    }
-
-    return(<div className="row">
+    return (<div className="row">
             <div className="col-12" style={{fontSize: '45px', textAlign: 'center'}}>
                 View Rolls
             </div>
-        {
-            students && students.map((student, key) => {
-                return (
+            {
+                students && students.map((student, key) => {
+                    return (
 
-                    <div className="card" style={{
-                        backgroundColor: 'rgba(10, 69, 79, 0.5)',
-                        boxShadow: '0 5px 30px black',
-                        margin: 'auto',
-                        width: ' 40%',
-                        padding: '10px',
-                        marginTop:'50px'
-                    }}>
-                        <div className="item-body" style={{margin: 'auto', width: ' 60%', padding: '10px'}}>
-                            <h5 className="item-title"
-                                style={{color: 'white', margin: 'auto', width: ' 60%', padding: '10px'}}>Panel ID</h5>
-                            <h6 className="item-title"
-                                style={{ margin: 'auto', width: ' 60%', padding: '10px'}}>
-                                 ({student._id})
-                            </h6>
-                            <h5 className="item-title"
-                                style={{color: 'white', margin: 'auto', width: ' 60%', padding: '10px'}}>Panel Name</h5>
-                            <h6 className="item-title"
-                                style={{ margin: 'auto', width: ' 60%', padding: '10px'}}>
-                                ({student.name})
-                            </h6>
-                            <h5 className="item-title"
-                                style={{color: 'white', margin: 'auto', width: ' 60%', padding: '10px'}}>Panel
-                                Staff</h5>
-                            {
-                                student.Staff &&  student.Staff.map((staff, key) => {
-                                    return(
-                                        <h6 style={{ margin: 'auto', width: ' 60%', padding: '10px'}}>({staff._id})</h6>
-                                    )
-                                })
-                            }
-                            <h5 className="item-title"
-                                style={{color: 'white', margin: 'auto', width: ' 60%', padding: '10px'}}>Student
-                                Groups</h5>
-                            {
-                                student.Groups && student.Groups.map((s, key) => {
-                                    return(
-                                        <h6 style={{ margin: 'auto', width: ' 60%', padding: '10px'}}><span> Group:({s.groupId})</span><br/><span> Students:({s.students.join(', ')})</span></h6>
-                                    )
-                                })
-                            }
-                            <h5 className="item-title"
-                                style={{color: 'white', margin: 'auto', width: ' 60%', padding: '10px'}}>Supervisor</h5>
-                            {
-                                student.Supervisor && student.Supervisor.map((su, key) => {
-                                    return(
-                                        <h6 style={{ margin: 'auto', width: ' 60%', padding: '10px'}}><span> ({su.supervisor}):</span><span> {su.groupId}</span></h6>
-                                    )
-                                })
-                            }
-                            <h5 className="item-title"
-                                style={{color: 'white', margin: 'auto', width: ' 60%', padding: '10px'}}>Co-Supervisor</h5>
-                            {
-                                student.Supervisor && student.Supervisor.map((su, key) => {
-                                    return(
-                                        <h6 style={{ margin: 'auto', width: ' 60%', padding: '10px'}}><span> ({su.coSupervisor}):</span><span> {su.groupId}</span></h6>
-                                    )
-                                })
-                            }
+                        <div className="card" style={{
+                            backgroundColor: 'rgba(10, 69, 79, 0.5)',
+                            boxShadow: '0 5px 30px black',
+                            margin: 'auto',
+                            width: ' 40%',
+                            padding: '10px',
+                            marginTop: '50px'
+                        }}>
+                            <div className="item-body" style={{margin: 'auto', width: ' 60%', padding: '10px'}}>
+                                <h5 className="item-title"
+                                    style={{color: 'white', margin: 'auto', width: ' 60%', padding: '10px'}}>Panel
+                                    ID</h5>
+                                <h6 className="item-title"
+                                    style={{margin: 'auto', width: ' 60%', padding: '10px'}}>
+                                    ({student._id})
+                                </h6>
+                                <h5 className="item-title"
+                                    style={{color: 'white', margin: 'auto', width: ' 60%', padding: '10px'}}>Panel
+                                    Name</h5>
+                                <h6 className="item-title"
+                                    style={{margin: 'auto', width: ' 60%', padding: '10px'}}>
+                                    ({student.name})
+                                </h6>
+                                <h5 className="item-title"
+                                    style={{color: 'white', margin: 'auto', width: ' 60%', padding: '10px'}}>Panel
+                                    Staff</h5>
+                                {
+                                    student.Staff && student.Staff.map((staff, key) => {
+                                        return (
+                                            <h6 style={{
+                                                margin: 'auto',
+                                                width: ' 60%',
+                                                padding: '10px'
+                                            }}>({staff._id})</h6>
+                                        )
+                                    })
+                                }
+                                <h5 className="item-title"
+                                    style={{color: 'white', margin: 'auto', width: ' 60%', padding: '10px'}}>Student
+                                    Groups</h5>
+                                {
+                                    student.Groups && student.Groups.map((s, key) => {
+                                        return (
+                                            <h6 style={{margin: 'auto', width: ' 60%', padding: '10px'}}>
+                                                <span> Group:({s.groupId})</span><br/><span> Students:({s.students.join(', ')})</span>
+                                            </h6>
+                                        )
+                                    })
+                                }
+                                <h5 className="item-title"
+                                    style={{
+                                        color: 'white',
+                                        margin: 'auto',
+                                        width: ' 60%',
+                                        padding: '10px'
+                                    }}>Supervisor</h5>
+                                {
+                                    student.Supervisor && student.Supervisor.map((su, key) => {
+                                        return (
+                                            <h6 style={{margin: 'auto', width: ' 60%', padding: '10px'}}>
+                                                <span> ({su.supervisor}):</span><span> {su.groupId}</span></h6>
+                                        )
+                                    })
+                                }
+                                <h5 className="item-title"
+                                    style={{
+                                        color: 'white',
+                                        margin: 'auto',
+                                        width: ' 60%',
+                                        padding: '10px'
+                                    }}>Co-Supervisor</h5>
+                                {
+                                    student.Supervisor && student.Supervisor.map((su, key) => {
+                                        return (
+                                            <h6 style={{margin: 'auto', width: ' 60%', padding: '10px'}}>
+                                                <span> ({su.coSupervisor}):</span><span> {su.groupId}</span></h6>
+                                        )
+                                    })
+                                }
+                            </div>
                         </div>
-                    </div>
-                )
-            })
+                    )
+                })
 
-        }
+            }
             <div className="col-12">
                 <div style={{
                     width: '100%',
@@ -146,29 +132,29 @@ export default function ViewRolls(){
 
                             </tr>
                             </thead>
-                        <tbody>
+                            <tbody>
                             {
                                 students && students.map((student, key) => {
-                                    return(
+                                    return (
 
                                         <tr key={key}>
                                             <td>{student._id}</td>
                                             <td>{student.name}</td>
                                             <td>
-                                            {
-                                                student.Groups && student.Groups.map((s, key) => {
-                                                    return(
+                                                {
+                                                    student.Groups && student.Groups.map((s, key) => {
+                                                        return (
 
-                                                        <span>({s.groupId}:{s.students.join(', ')})</span>
+                                                            <span>({s.groupId}:{s.students.join(', ')})</span>
 
-                                                    )
-                                                })
-                                            }
+                                                        )
+                                                    })
+                                                }
                                             </td>
                                             <td>
                                                 {
-                                                    student.Staff &&  student.Staff.map((staff, key) => {
-                                                        return(
+                                                    student.Staff && student.Staff.map((staff, key) => {
+                                                        return (
 
                                                             <span>{staff._id},</span>
 
@@ -181,7 +167,7 @@ export default function ViewRolls(){
                                 })
 
                             }
-                        </tbody>
+                            </tbody>
                         </table>
                     </div>
                 </div>

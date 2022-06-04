@@ -93,7 +93,7 @@ export const Submission = () => {
                 details:details,
                 deadline:deadline,
                 type:type,
-                file:fname
+                fileNameTemp:fname
             })
         };
         console.log(deadline)
