@@ -7,6 +7,7 @@ const GroupTopic = require('../models/GroupTopic');
 const User = require('../models/User');
 const FileSubmission = require('../models/FileSubmission');
 const ChatGroup = require('../models/ChatGroup');
+const ResearchTopic = require('../models/ResearchTopic');
 const Supervisor = require('../models/Supervisor');
 const Submission = require('../models/Submission');
 const mongoose = require('mongoose');
@@ -136,6 +137,7 @@ router.post('/add_research_topic', (req, res, next) => {
     ).then(() => {
         req.body._id = mongoose.Types.ObjectId();
         GroupTopic.create(req.body).then((topic) => {
+            ResearchTopic.create(req.body).then()
             StudentGroup.updateOne(
                 {groupId: req.body.groupId},
                 {$push: {topics: req.body._id}}

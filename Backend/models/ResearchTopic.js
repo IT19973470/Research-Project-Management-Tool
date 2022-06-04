@@ -3,20 +3,16 @@ const Schema = mongoose.Schema;
 
 const ResearchTopicSchema = new Schema({
     groupId: {
-        type: String,
-        required: [true, 'ID field is required']
+        type: String
     },
     topic: {
-        type: String,
-        required: [true, 'Topic is required']
+        type: String
     },
     accepted: {
-        type: Boolean,
-        required: [true, 'Accept is required']
+        type: Boolean
     },
     registered: {
-        type: Boolean,
-        required: [true, 'Register is required']
+        type: Boolean
     }
 });
 
