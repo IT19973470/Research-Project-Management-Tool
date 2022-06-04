@@ -22,6 +22,7 @@ const StudentGroupSchema = new Schema({
         _id: String,
         accepted: Boolean
     }
+
 });
 
 const studentGroup = mongoose.model('StudentGroup', StudentGroupSchema);

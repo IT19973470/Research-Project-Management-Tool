@@ -2,13 +2,19 @@ import React, {Component, useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './NavAdmin.css';
-
+import axios from "axios";
+import Progress from "./progress"
+import {faInfo, faUpload} from '@fortawesome/free-solid-svg-icons'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 export const Submission = () => {
     const [submission, setSumbission] = useState(null);
     const [title, setTitle] =useState("");
     const [details, setDetails] =useState("");
     const [deadline, setDeadline] =useState("");
     const [type, setType] =useState("");
+    const [file, setFile] =useState('');
+    const [fname, setFileName] =useState('');
+    const [uploadPercentage,setUploadPercentage] =useState("")
 
     useEffect (()=>{
         const requestOptions = {
@@ -22,6 +28,60 @@ export const Submission = () => {
                 setSumbission(data)
             });
     })
+    const onChange =e=>{
+        console.log(e.target.files[0].name)
+        setFile(e.target.files[0])
+        setFileName(e.target.files[0].name)
+    }
+    // const onsubmit =async e=>{
+    //     e.preventDefault();
+    //     const formData = new FormData();
+    //     formData.append('file',file)
+    //     try{
+    //         const res =await axios.post('http://localhost:9000/upload',formData,{
+    //             headers:{
+    //                 'Content-Type':'multipart/form-data'
+    //             },
+    //         });
+    //     }catch(err){
+    //
+    //     }
+    //
+    //
+    // }
+
+    // const onsubmit =async e=>{
+    //     e.preventDefault();
+    //     var formData = new FormData();
+    //     formData.append('file',file)
+    //     try {
+    //         const requestOptions1 = await fetch('http://localhost:9000/upload',{
+    //             method:'POST',
+    //             body:formData
+    //         });
+    //
+    //     }catch (e){}
+    //
+    // }
+
+    const onsubmit =async e=>{
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('file',file)
+        try{
+            const res =await axios.post('http://localhost:9000/upload',formData,{
+                headers:{
+                    'Content-Type':'multipart/form-data'
+                },
+                onUploadProgress:ProgressEvent=>{
+                    setUploadPercentage(parseInt(Math.round((ProgressEvent.loaded*100)/ProgressEvent.total)))
+                    setTimeout(()=>setUploadPercentage(0),1000)
+                }
+            });
+
+        }catch(err){
+        }
+    }
 
     function add(){
         const requestOptions ={
@@ -32,7 +92,8 @@ export const Submission = () => {
                 title:title,
                 details:details,
                 deadline:deadline,
-                type:type
+                type:type,
+                file:fname
             })
         };
         console.log(deadline)
@@ -83,10 +144,6 @@ export const Submission = () => {
         <input type="date"  className="form-control" id="age" placeholder="Enter Date"  onChange={(e)=>{setDeadline(e.target.value)}}/>
     </div>
         <div className="form-group">
-            <label htmlFor="na,e">File:</label>
-            <input type="file"  className="form-control" id="age" placeholder="Enter Date"/>
-        </div>
-        <div className="form-group">
             <label htmlFor="na,e">Type:</label>
            <select  className="form-control" onChange={(e)=>{setType(e.target.value)}} >
                <option></option>
@@ -96,8 +153,31 @@ export const Submission = () => {
 
            </select>
         </div>
-    <button type="button" onClick={add}  className="btn btn-primary" >Add</button>
+
 </form>
+
+    <form onSubmit={onsubmit} align="center">
+        <label htmlFor="na,e">File:</label>
+        <div className="form-group row">
+            <div className="col-11">
+                <input type="file"  className="form-control" id="age" placeholder="Enter Date" onChange={onChange}/>
+                <Progress percentage={uploadPercentage}/>
+            </div>
+            <div className="col-1">
+                <button type="button" align="center" onClick={onsubmit}  className="btn" ><FontAwesomeIcon icon={faUpload} /></button>
+            </div>
+           </div>
+
+        <br/>
+
+
+        <br/>
+        <br/>
+        <button type="button" align="center" onClick={add}  className="btn btn-primary" >Submit</button>
+        <br/>
+        <br/>
+    </form>
+
 
 </div>
     );

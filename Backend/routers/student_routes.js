@@ -379,6 +379,19 @@ router.get('/get_upload_links/:groupId', (req, res, next) => {
     })
 });
 
+router.post('/submit_documents', (req, res) => {
+    if (req.files) {
+        let file = req.files.file;
+        file.mv('C:/xampp/htdocs/NodeFile/' + file.name, (err) => {
+            if (err) {
+                res.send(err)
+            } else {
+                res.send('File Uploaded');
+            }
+        })
+    }
+});
+
 router.delete('/remove_file/:submissionId/:groupId', (req, res, next) => {
     FileSubmission.deleteOne({groupId: req.params.groupId}).then(() => {
         res.send({reply: true})
