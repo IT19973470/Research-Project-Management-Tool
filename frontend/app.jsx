@@ -21,7 +21,6 @@ import {GroupDetails} from "./src/panel_member/GroupDetails";
 import {Group} from "./src/panel_member/Group";
 import {AddPannel} from "./src/admin/AddPannel";
 import {ViewRolls} from "./src/admin/ViewRolls";
-import {CreateAccountAdmin} from "./src/admin/CreateAccountAdmin";
 import {ViewTopicSup} from "./src/supervisor/ViewTopicsSup";
 import {Evaluation} from "./src/supervisor/Evaluation";
 import {EvaluatePresentation} from "./src/panel_member/EvaluatePresentation";
@@ -30,8 +29,6 @@ import {ViewFeedback} from "./src/panel_member/ViewFeedback";
 import {PanelMemberRegister} from "./src/panel_member/PanelMemberRegister";
 import {ViewTopicEvaluation} from "./src/panel_member/ViewTopicEvaluation";
 import {ChatWindow} from "./src/student/ChatWindow";
-import {ModifyPanel} from "./src/admin/ModifyPanel";
-import {ModifyAdmin} from "./src/admin/ModifyAdmin";
 // import {Header} from "./Header";
 // import {ViewItems} from "./src/customer/ViewItems";
 // import {ViewWishList} from "./src/customer/ViewWishList";
@@ -57,9 +54,6 @@ export const App = () => {
             <Route path='submission' element={<Submission/>}/>
             <Route path='panel' element={<AddPannel/>}/>
             <Route path='rolls' element={<ViewRolls/>}/>
-            <Route path='register' element={<CreateAccountAdmin/>}/>
-            <Route path='modify_panel' element={<ModifyPanel/>}/>
-            <Route path='modify_admin' element={<ModifyAdmin/>}/>
             {/*<Route path='view_cart' element={<ViewCart/>}/>*/}
             {/*<Route path='view_wishlist' element={<ViewWishList/>}/>*/}
 

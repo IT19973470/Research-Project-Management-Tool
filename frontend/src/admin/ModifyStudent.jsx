@@ -1,9 +1,6 @@
 import React, {Component, useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ModifyStudent from "./ModifyStudent";
-import {faUpload} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTrashCan,faPencil} from '@fortawesome/free-solid-svg-icons'
 
 export default function ModifyStudent(){
 
@@ -87,8 +84,8 @@ export default function ModifyStudent(){
                                         <td>{student.name}</td>
                                         <td>{student.email}</td>
                                         <td>{student.address}</td>
-                                        <td><button onClick={()=>getFields(student)} style={{backgroundColor: "transparent",border:"none",color:"black"}}><FontAwesomeIcon icon={faPencil} /></button></td>
-                                        <td><button onClick={()=>deleteID(student._id)} style={{backgroundColor: "transparent",border:"none",color:"black"}}><FontAwesomeIcon icon={faTrashCan} /></button></td>
+                                        <td><button onClick={()=>getFields(student)} style={{backgroundColor: "transparent",border:"none",color:"black"}}>Update</button></td>
+                                        <td><button onClick={()=>deleteID(student._id)} style={{backgroundColor: "transparent",border:"none",color:"black"}}>Delete</button></td>
 
                                     </tr>
                                 })
@@ -114,10 +111,7 @@ export default function ModifyStudent(){
                                 <label htmlFor="na,e">Address:</label>
                                 <input type="text" value={address} className="form-control" id="age" placeholder="Enter Student address"  onChange={(e)=>{setAddress(e.target.value)}}/>
                             </div>
-                            <br/>
                             <button type="button"  onClick={update} className="btn btn-primary" >Update</button>
-                            <br/>
-                            <br/>
                         </form>
                     </div>
                 </div>

@@ -1,34 +1,15 @@
 const express = require('express')
 const router = express.Router();
 const Student = require('../models/Student');
-const Admin = require('../models/Admin');
 let Mark = require('../models/Marking');
 let Submission = require('../models/Submission')
 let SupervisorTopic = require("../models/SupervisorTopic")
-let Supervisor = require("../models/Supervisor")
-let AddPannel =require("../models/Panel")
-let studentGroup=require("../models/StudentGroup")
-let researchtopics=require("../models/ResearchTopic")
-const User = require('../models/User');
-const panelMember=require('../models/PanelMember')
-
+let AddPannel = require("../models/Panel")
+let studentGroup = require("../models/StudentGroup")
+let researchtopics = require("../models/ResearchTopic")
 router.route("/displayUsers").get((req, res) => {
     Student.find().then((students) => {
         res.json(students)
-    }).catch((err) => {
-        console.log(err)
-    })
-})
-router.route("/displayPanel").get((req, res) => {
-    panelMember.find().then((panel) => {
-        res.json(panel)
-    }).catch((err) => {
-        console.log(err)
-    })
-})
-router.route("/displayAdmin").get((req, res) => {
-    Admin.find().then((panel) => {
-        res.json(panel)
     }).catch((err) => {
         console.log(err)
     })
@@ -65,29 +46,7 @@ router.route("/delete/:id").delete(async (req, res) => {
 router.route("/deleteS/:id").delete(async (req, res) => {
     let userID = req.params.id;
     console.log(userID)
-    await Supervisor.findByIdAndDelete(userID)
-        .then(() => {
-            res.status(200).send({status: "User deleted"})
-        }).catch((err) => {
-            console.log(err.message);
-            res.status(500).send({status: "Error", error: err.message})
-        })
-})
-router.route("/deletePanel/:id").delete(async (req, res) => {
-    let userID = req.params.id;
-    console.log(userID)
-    await panelMember.findByIdAndDelete(userID)
-        .then(() => {
-            res.status(200).send({status: "User deleted"})
-        }).catch((err) => {
-            console.log(err.message);
-            res.status(500).send({status: "Error", error: err.message})
-        })
-})
-router.route("/deleteAdmin/:id").delete(async (req, res) => {
-    let userID = req.params.id;
-    console.log(userID)
-    await Admin.findByIdAndDelete(userID)
+    await SupervisorTopic.findByIdAndDelete(userID)
         .then(() => {
             res.status(200).send({status: "User deleted"})
         }).catch((err) => {
@@ -168,49 +127,16 @@ let router3 = router.post('/addPannel', (req, res, next) => {
     }).catch(next);
 
 });
-router.post('/admin_register', (req, res, next) => {
-    console.log(req.body)
-    req.body._id = req.body.id
-    Admin.create(req.body).then((admin) => {
-        User.create(req.body).then(() => {
-            res.send(admin);
-        })
-    }).catch(next);
-});
+
 router.route("/updateS/:id").put(async (req, res) => {
     console.log(req.body)
     let userID = req.params.id;
-    Supervisor.updateMany(
-        {_id:userID},
-        {name:req.body.name,address:req.body.address,email:req.body.email,$set: {interests: req.body.interests}}
+    SupervisorTopic.updateMany(
+        {_id: userID},
+        {$set: {interests: req.body.interests}}
     ).then((studentGroup) => {
         res.send(studentGroup);
     })
-
-})
-router.route("/updatePanel/:id").put(async (req, res) => {
-    console.log(req.body)
-    let userID = req.params.id;
-    panelMember.updateMany(
-        {_id:userID},
-        {name:req.body.name,designation:req.body.designation,email:req.body.email}
-    ).then((studentGroup) => {
-        res.send(studentGroup);
-    })
-
-})
-
-router.route("/updateAdmin/:id").put(async (req, res) => {
-    console.log(req.body)
-    let userID = req.params.id;
-    Admin.updateMany(
-        {_id:userID},
-        {name:req.body.name,designation:req.body.designation,email:req.body.email,address: req.body.address}
-    ).then((studentGroup) => {
-        res.send(studentGroup);
-    })
-
-})
 
     // router.route("/deleteSupervisor/:id").delete(async (req, res) => {
     //     let markingID = req.params.id;
@@ -231,7 +157,7 @@ router.route("/updateAdmin/:id").put(async (req, res) => {
     //         res.status(500).send({status: "Error", error: err.message})
     //     })
 
-
+})
 router.route("/displayMarking").get((req, res) => {
     Mark.find().then((students) => {
         res.json(students)
@@ -248,7 +174,7 @@ router.route("/displaySubmission").get((req, res) => {
     })
 })
 router.route("/displaySupervisor").get((req, res) => {
-    Supervisor.find().then((students) => {
+    SupervisorTopic.find().then((students) => {
         res.json(students)
     }).catch((err) => {
         console.log(err)
@@ -269,11 +195,9 @@ router.route("/viewRoles").get((req, res) => {
             $lookup:
                 {from: "studentgroups", localField: "grouplist", foreignField: "groupId", as: "Groups"},
         },
-        {$lookup:
-                {from:"supervisortopics",localField:"stafflist",foreignField:"_id",as:"Staff"}
-        },
-        {$lookup:
-                {from:"groupsupervisors",localField:"grouplist",foreignField:"groupId",as:"Supervisor"}
+        {
+            $lookup:
+                {from: "supervisortopics", localField: "stafflist", foreignField: "_id", as: "Staff"}
         }
 
     ]).then((s) => {
