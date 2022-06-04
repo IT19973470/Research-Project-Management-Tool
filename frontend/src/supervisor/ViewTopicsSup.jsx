@@ -64,9 +64,8 @@ export const ViewTopicSup = () => {
 
     return(
         <div style={{width: '500px'}}>
-            <div className="col-12" style={{fontSize: '45px', textAlign: 'center'}}>
-                View Topics
-            </div>
+            <br></br>
+            <h1>Topics</h1>
             <table className="table table-striped" style={{marginTop: '40px'}}>
                 <thead>
                 <tr>

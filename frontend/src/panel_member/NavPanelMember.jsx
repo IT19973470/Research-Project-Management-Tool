@@ -16,6 +16,14 @@ export const NavPanelMember = () => {
                 navigate(prefix + '/evaluate_presentations')
             }}>Evaluate Presentations
             </div>
+            <div onClick={() => {
+                navigate(prefix + '/view_feedback')
+            }}>View Feedback
+            </div>
+            <div onClick={() => {
+                navigate(prefix + '/panel_member_register')
+            }}>Panel Member Register
+            </div>
         </div>
     );
 }

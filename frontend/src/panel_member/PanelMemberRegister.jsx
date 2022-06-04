@@ -1,16 +1,13 @@
 import React, {Component, useEffect, useState} from 'react';
-import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export const AddSupervisorTopic = () => {
+export const PanelMemberRegister = () => {
 
     const [name, setName] = useState("");
     const [_id, setId] = useState("");
-    const [address, setAddress] = useState("");
+    const [designation, setDesignation] = useState("");
     const [email, setEmail] = useState("");
-    const [pass, setPass] = useState("");
-    const [interests, setTitle] =useState("");
-    const [array, setArray] = useState([]);
+    const [password, setPassword] = useState("");
 
     function add(){
         const requestOptions ={
@@ -19,26 +16,20 @@ export const AddSupervisorTopic = () => {
             body:JSON.stringify({
                 _id:_id,
                 name:name,
-                address:address,
+                designation:designation,
                 email:email,
-                password:pass,
-                interests:array
+                password:password
             })
         };
 
-       fetch('http://localhost:9000/rpmt/supervisor/add_supervisor',requestOptions)
+        fetch('http://localhost:9000/rpmt/panel_member/panelMemberRegister',requestOptions)
     }
-    const handleChange = () => {
-        console.log(interests)
-        setArray((array) => [...array, interests]);
-    };
 
-    return (
-
+    return(
         <div>
             <form  align="center">
-            <div className="form-group">
-                <br></br>
+                <div className="form-group">
+                    <br></br>
                     <h1>Add Supervisor</h1>
                     <label htmlFor="na,e">ID:</label>
                     <input type="text"  className="form-control" id="id"  placeholder="Enter Id" onChange={(e)=>{setId(e.target.value)}}/>
@@ -49,7 +40,7 @@ export const AddSupervisorTopic = () => {
                 </div>
                 <div className="form-group">
                     <label htmlFor="na,e">Address</label>
-                    <input type="text"  className="form-control" id="address"  placeholder="Enter address" onChange={(e)=>{setAddress(e.target.value)}}/>
+                    <input type="text"  className="form-control" id="designation"  placeholder="Enter address" onChange={(e)=>{setDesignation(e.target.value)}}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="na,e">Email:</label>
@@ -57,23 +48,13 @@ export const AddSupervisorTopic = () => {
                 </div>
                 <div className="form-group">
                     <label htmlFor="na,e">Password:</label>
-                    <input type="password"  className="form-control" id="password"  placeholder="Enter password" onChange={(e)=>{setPass(e.target.value)}}/>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="na,e">Interests:</label>
-                    <input type="text"  className="form-control" id="name" placeholder="Enter interests"  onChange={(e)=>{setTitle(e.target.value)}}/>
-                    <div>
-                       {array.map(array => <span>{array}<br/></span>)}
-                    </div>
-                    <br></br>
-                    <button type="button" onClick={handleChange}  className="btn btn-primary" >Add Interest</button>
+                    <input type="password"  className="form-control" id="password"  placeholder="Enter password" onChange={(e)=>{setPassword(e.target.value)}}/>
                 </div>
 
                 <br></br>
 
-                <button type="button" onClick={add}  className="btn btn-primary" >Add</button>
+                <button type="button" onClick={add}  className="btn btn-primary" >Submit</button>
             </form>
-
         </div>
     );
-};
+}

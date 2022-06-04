@@ -27,6 +27,10 @@ import { ViewTopicSup } from "./src/supervisor/ViewTopicsSup";
 import { Evaluation } from "./src/supervisor/Evaluation";
 import {EvaluatePresentation} from "./src/panel_member/EvaluatePresentation";
 import { EvaluateDocument } from "./src/supervisor/EvaluateDocument";
+import {ViewFeedback} from "./src/panel_member/ViewFeedback";
+import {PanelMemberRegister} from "./src/panel_member/PanelMemberRegister";
+import ModifyPanel from "./src/admin/ModifyPanel";
+import ModifyAdmin from "./src/admin/ModifyAdmin";
 
 // import {Header} from "./Header";
 // import {ViewItems} from "./src/customer/ViewItems";
@@ -54,6 +58,8 @@ export const App = () => {
             <Route path='panel' element={<AddPannel/>}/>
             <Route path='rolls' element={<ViewRolls/>}/>
             <Route path='register' element={<CreateAccountAdmin/>}/>
+            <Route path='modify_panel' element={<ModifyPanel/>}/>
+            <Route path='modify_admin' element={<ModifyAdmin/>}/>
             {/*<Route path='view_cart' element={<ViewCart/>}/>*/}
             {/*<Route path='view_wishlist' element={<ViewWishList/>}/>*/}
 
@@ -66,15 +72,18 @@ export const App = () => {
             <Route path='/panel_member/view_topics' element={<ViewTopics/>}/>
             <Route path='/panel_member/group_details' element={<GroupDetails/>}/>
             <Route path='/panel_member/group' element={<Group/>}/>
+            <Route path='/panel_member/evaluate_presentations' element={<EvaluatePresentation/>}/>
+            <Route path='/panel_member/view_feedback' element={<ViewFeedback/>}/>
+            <Route path='/panel_member/panel_member_register' element={<PanelMemberRegister/>}/>
 
             //sup
             <Route path='/supervisor/view_topics' element={<ViewTopicSup/>}/>
             <Route path='supervisor/add_supervisor' element={<AddSupervisorTopic/>}/>
-            <Route path='supervisor/evaluation' element={<Evaluation/>}/>
+            <Route path='supervisor/view_documents' element={<Evaluation/>}/>
             <Route path='supervisor/evaluate_document' element={<EvaluateDocument/>}/>
 
 
-            <Route path='/panel_member/evaluate_presentations' element={<EvaluatePresentation/>}/>
+
 
 
         </Routes>
