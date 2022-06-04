@@ -20,6 +20,14 @@ export const NavAdmin = () => {
                 navigate('/submission')
             }}>Submission
             </div>
+            <div onClick={() => {
+                navigate('/panel')
+            }}>Pannel
+            </div>
+            <div onClick={() => {
+                navigate('/rolls')
+            }}>View Rolls
+            </div>
         </div>
 
     );
