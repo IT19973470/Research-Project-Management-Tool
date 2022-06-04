@@ -94,7 +94,7 @@ export const RegisterStudent = () => {
                 // console.log(reply);
                 // if (reply !== null && UserData.type === 'customer') {
                 //     UserData.id = reply.id;
-                //     navigate('/view_items');
+                    navigate('/');
                 // } else if (reply !== null && UserData.type === 'trader') {
                 //     navigate('/trader_items');
                 // }

@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const AddSupervisorTopic = () => {
+    let navigate = useNavigate();
 
     const [name, setName] = useState("");
     const [_id, setId] = useState("");
@@ -28,7 +29,9 @@ export const AddSupervisorTopic = () => {
             })
         };
 
-       fetch(Common.url + '/supervisor/add_supervisor',requestOptions)
+       fetch(Common.url + '/supervisor/add_supervisor',requestOptions).then(()=>{
+           navigate('/');
+       })
     }
     const handleChange = () => {
         console.log(interests)

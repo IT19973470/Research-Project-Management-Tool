@@ -91,6 +91,7 @@ export const CreateAccountAdmin = () => {
         fetch(Common.url + '/admin/admin_register', requestOptions)
             .then(response => response.json())
             .then(reply => {
+                navigate('/');
                 // console.log(reply);
                 // if (reply !== null && UserData.type === 'customer') {
                 //     UserData.id = reply.id;

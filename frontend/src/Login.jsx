@@ -86,7 +86,7 @@ export const Login = () => {
                     if (user.userType === 'student') {
                         navigate('/student/student_groups');
                     } else if (user.userType === 'admin') {
-                        navigate('/student/student_groups');
+                        navigate('/modify_users');
                     } else if (user.userType === 'supervisor') {
                         navigate('/supervisor/view_topics');
                     } else if (user.userType === 'panel') {

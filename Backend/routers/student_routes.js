@@ -322,7 +322,7 @@ router.delete('/remove_file/:submissionId/:groupId', (req, res, next) => {
 })
 
 router.get('/download_file/:file', (req, res, next) => {
-    console.log('C:/xampp/htdocs/NodeFile/down/' + req.params.file)
+    // console.log('C:/xampp/htdocs/NodeFile/down/' + req.params.file)
     res.download('C:/xampp/htdocs/NodeFile/down/' + req.params.file);
 })
 

@@ -1,9 +1,10 @@
 import React, {Component, useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Common} from "./../commons/Common";
+import {useNavigate} from "react-router-dom";
 
 export const PanelMemberRegister = () => {
-
+    let navigate = useNavigate();
     const [name, setName] = useState("");
     const [_id, setId] = useState("");
     const [designation, setDesignation] = useState("");
@@ -24,7 +25,9 @@ export const PanelMemberRegister = () => {
             })
         };
 
-        fetch(Common.url + '/panel_member/panelMemberRegister',requestOptions)
+        fetch(Common.url + '/panel_member/panelMemberRegister',requestOptions).then(()=>{
+            navigate('/');
+        })
     }
 
     return(

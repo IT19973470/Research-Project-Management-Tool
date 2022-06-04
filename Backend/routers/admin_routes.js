@@ -6,11 +6,11 @@ let Mark = require('../models/Marking');
 let Submission = require('../models/Submission')
 let SupervisorTopic = require("../models/SupervisorTopic")
 let Supervisor = require("../models/Supervisor")
-let AddPannel =require("../models/Panel")
-let studentGroup=require("../models/StudentGroup")
-let researchtopics=require("../models/ResearchTopic")
+let AddPannel = require("../models/Panel")
+let studentGroup = require("../models/StudentGroup")
+let researchtopics = require("../models/ResearchTopic")
 const User = require('../models/User');
-const panelMember=require('../models/PanelMember')
+const panelMember = require('../models/PanelMember')
 
 router.route("/displayUsers").get((req, res) => {
     Student.find().then((students) => {
@@ -147,7 +147,7 @@ router.post('/addMarking', (req, res, next) => {
 let router2 = router.post('/addSupervisorTopic', (req, res, next) => {
     console.log(req.body)
     SupervisorTopic.create(
-        {_id: 'S' + Math.floor(Math.random() * 10000), interests:req.body.interests}
+        {_id: 'S' + Math.floor(Math.random() * 10000), interests: req.body.interests}
     ).then((data) => {
         res.send(data);
     }).catch(next);
@@ -157,7 +157,12 @@ let router2 = router.post('/addSupervisorTopic', (req, res, next) => {
 let router3 = router.post('/addPannel', (req, res, next) => {
     console.log(req.body)
     AddPannel.create(
-        {_id: 'P' + Math.floor(Math.random() * 10000), name:req.body.name,grouplist:req.body.grouplist,stafflist:req.body.stafflist}
+        {
+            _id: 'P' + Math.floor(Math.random() * 10000),
+            name: req.body.name,
+            grouplist: req.body.grouplist,
+            stafflist: req.body.stafflist
+        }
     ).then((data) => {
         res.send(data);
     }).catch(next);
@@ -176,8 +181,8 @@ router.route("/updateS/:id").put(async (req, res) => {
     console.log(req.body)
     let userID = req.params.id;
     Supervisor.updateMany(
-        {_id:userID},
-        {name:req.body.name,address:req.body.address,email:req.body.email,$set: {interests: req.body.interests}}
+        {_id: userID},
+        {name: req.body.name, address: req.body.address, email: req.body.email, $set: {interests: req.body.interests}}
     ).then((studentGroup) => {
         res.send(studentGroup);
     })
@@ -187,8 +192,8 @@ router.route("/updatePanel/:id").put(async (req, res) => {
     console.log(req.body)
     let userID = req.params.id;
     panelMember.updateMany(
-        {_id:userID},
-        {name:req.body.name,designation:req.body.designation,email:req.body.email}
+        {_id: userID},
+        {name: req.body.name, designation: req.body.designation, email: req.body.email}
     ).then((studentGroup) => {
         res.send(studentGroup);
     })
@@ -199,32 +204,32 @@ router.route("/updateAdmin/:id").put(async (req, res) => {
     console.log(req.body)
     let userID = req.params.id;
     Admin.updateMany(
-        {_id:userID},
-        {name:req.body.name,designation:req.body.designation,email:req.body.email,address: req.body.address}
+        {_id: userID},
+        {name: req.body.name, designation: req.body.designation, email: req.body.email, address: req.body.address}
     ).then((studentGroup) => {
         res.send(studentGroup);
     })
 
 })
 
-    // router.route("/deleteSupervisor/:id").delete(async (req, res) => {
-    //     let markingID = req.params.id;
-    //     console.log(markingID)
-    //     await SupervisorTopic.findByIdAndDelete(markingID)
-    //         .then(() => {
-    //             res.status(200).send({status: "Marking deleted"})
-    //         }).catch((err) => {
-    //             console.log(err.message);
-    //             res.status(500).send({status: "Error", error: err.message})
-    //         })
-    // })
+// router.route("/deleteSupervisor/:id").delete(async (req, res) => {
+//     let markingID = req.params.id;
+//     console.log(markingID)
+//     await SupervisorTopic.findByIdAndDelete(markingID)
+//         .then(() => {
+//             res.status(200).send({status: "Marking deleted"})
+//         }).catch((err) => {
+//             console.log(err.message);
+//             res.status(500).send({status: "Error", error: err.message})
+//         })
+// })
 
-    // const update = await Student.findByIdAndUpdate(userID, updateStudent)
-    //     .then((user) => {
-    //         res.status(200).send({status: "User updated", user: user})
-    //     }).catch((err) => {
-    //         res.status(500).send({status: "Error", error: err.message})
-    //     })
+// const update = await Student.findByIdAndUpdate(userID, updateStudent)
+//     .then((user) => {
+//         res.status(200).send({status: "User updated", user: user})
+//     }).catch((err) => {
+//         res.status(500).send({status: "Error", error: err.message})
+//     })
 
 
 router.route("/displayMarking").get((req, res) => {
@@ -260,19 +265,40 @@ router.route("/displayGroups").get((req, res) => {
 
 router.route("/viewRoles").get((req, res) => {
     AddPannel.aggregate([
-        {$lookup:
-            {from:"studentgroups",localField:"grouplist",foreignField:"groupId",as:"Groups"},
+        {
+            $lookup:
+                {from: "studentgroups", localField: "grouplist", foreignField: "groupId", as: "Groups"},
         },
-        {$lookup:
-                {from:"supervisors",localField:"stafflist",foreignField:"_id",as:"Staff"}
+        {
+            $lookup:
+                {from: "supervisors", localField: "stafflist", foreignField: "_id", as: "Staff"}
         },
-        {$lookup:
-                {from:"groupsupervisors",localField:"grouplist",foreignField:"groupId",as:"Supervisor"}
+        {
+            $lookup:
+                {from: "groupsupervisors", localField: "grouplist", foreignField: "groupId", as: "Supervisor"}
         }
 
-    ]).then((s)=>{
+    ]).then((s) => {
         res.json(s)
     })
+})
+
+router.route("/upload").post((req, res) => {
+    // console.log(req.files)
+    if (req.files === null) {
+        // console.log(req.files)
+        return res.status(401).json({msg: 'No'})
+    }
+    const file = req.files.file;
+    console.log('C:/xampp/htdocs/NodeFile/up/'+file.name)
+    file.mv('C:/xampp/htdocs/NodeFile/up/'+file.name, err => {
+        if (err) {
+            console.error(err);
+            res.status(500).send(err);
+        }
+        res.json({fileName: file.name, filePath: `C:/Users/Gayan/Desktop/ds/${file.name}`})
+    })
+
 })
 
 module.exports = router;

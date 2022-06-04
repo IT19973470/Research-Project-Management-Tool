@@ -12,12 +12,10 @@ const Admin = new Schema({
     },
     email: {
         type: String,
-        unique: true,
         required: [true, 'Email is required']
     },
     address: {
         type: String,
-        unique: true,
         required: [true, 'Address is required']
     }
 });

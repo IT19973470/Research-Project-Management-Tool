@@ -23,24 +23,6 @@ app.use('/rpmt/staff', require('./routers/staff_routes'));
 app.use('/rpmt/supervisor', require('./routers/supervisor_routes'));
 
 
-app.post("/upload",(req,res)=>{
-    console.log(req.files)
-    if(req.files===null){
-        console.log(req.files)
-        return res.status(401).json({msg:'No'})
-    }
-    const file=req.files.file;
-    file.mv(`C:/Users/Gayan/OneDrive/AF/${file.name}`,err=>{
-        if(err){
-            console.error(err);
-            res.status(500).send(err);
-        }
-        res.json({fileName:file.name,filePath:`C:/Users/Gayan/Desktop/ds/${file.name}`})
-    })
-
-})
-
-
 app.listen(9000, () => {
     console.log('Server started')
 });
