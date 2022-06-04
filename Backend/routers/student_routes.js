@@ -295,41 +295,6 @@ router.get('/get_supervisors/:id', (req, res, next) => {
 });
 
 router.get('/get_upload_links/:groupId', (req, res, next) => {
-    // let supers = [
-    //     {
-    //         _id: 1,
-    //         title: 'File Upload 1',
-    //         details: 'qwe',
-    //         deadline: '2020-02-01',
-    //         type: 'pdf',
-    //         fileNameTemp:'image (9).jpg'
-    //     },
-    //     {
-    //         _id: 2,
-    //         title: 'File Upload 2',
-    //         details: 'qwe',
-    //         deadline: '2020-02-02',
-    //         type: 'pdf',
-    //         fileNameTemp:'image (9).jpg'
-    //     },
-    //     {
-    //         _id: 3,
-    //         title: 'File Upload 3',
-    //         details: 'qwe',
-    //         deadline: '2020-02-03',
-    //         type: 'pdf',
-    //         fileNameTemp:'2.png'
-    //     },
-    //     {
-    //         _id: 4,
-    //         title: 'File Upload 4',
-    //         details: 'qwe',
-    //         deadline: '2020-02-05',
-    //         type: 'pdf',
-    //         fileNameTemp:'2.png'
-    //     }
-    // ];
-    // let objs=[];
     FileSubmission.find({groupId: req.params.groupId}).then((uploads) => {
         Submission.find().then(submissions => {
             submissions.forEach((superObj) => {
