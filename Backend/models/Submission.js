@@ -22,8 +22,14 @@ const SubmissionSchema = new Schema({
         type: String,
         required: [true, 'Type field is required']
     },
+    fileName: {
+        type: String
+    },
     fileNameTemp: {
         type: String
+    },
+    markedUpload: {
+        type: Boolean
     }
 
 });
