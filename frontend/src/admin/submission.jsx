@@ -4,6 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './NavAdmin.css';
 import axios from "axios";
 import Progress from "./progress"
+import {faInfo, faUpload} from '@fortawesome/free-solid-svg-icons'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 export const Submission = () => {
     const [submission, setSumbission] = useState(null);
     const [title, setTitle] =useState("");
@@ -155,16 +157,23 @@ export const Submission = () => {
 </form>
 
     <form onSubmit={onsubmit} align="center">
-        <div className="form-group">
-            <label htmlFor="na,e">File:</label>
-            <input type="file"  className="form-control" id="age" placeholder="Enter Date" onChange={onChange}/>
-        </div>
-        <Progress percentage={uploadPercentage}/>
+        <label htmlFor="na,e">File:</label>
+        <div className="form-group row">
+            <div className="col-11">
+                <input type="file"  className="form-control" id="age" placeholder="Enter Date" onChange={onChange}/>
+                <Progress percentage={uploadPercentage}/>
+            </div>
+            <div className="col-1">
+                <button type="button" align="center" onClick={onsubmit}  className="btn" ><FontAwesomeIcon icon={faUpload} /></button>
+            </div>
+           </div>
+
         <br/>
-        <input type="submit" className="btn btn-dark" value="upload"/>
+
+
         <br/>
         <br/>
-        <button type="button" align="center" onClick={add}  className="btn btn-primary" >Add Submission</button>
+        <button type="button" align="center" onClick={add}  className="btn btn-primary" >Submit</button>
         <br/>
         <br/>
     </form>
