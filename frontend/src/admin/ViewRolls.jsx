@@ -108,7 +108,7 @@ export default function ViewRolls(){
                             {
                                 student.Supervisor && student.Supervisor.map((su, key) => {
                                     return(
-                                        <h6 style={{ margin: 'auto', width: ' 60%', padding: '10px'}}><span> ({su.supervisor})</span></h6>
+                                        <h6 style={{ margin: 'auto', width: ' 60%', padding: '10px'}}><span> ({su.supervisor}):</span><span> {su.groupId}</span></h6>
                                     )
                                 })
                             }
@@ -117,7 +117,7 @@ export default function ViewRolls(){
                             {
                                 student.Supervisor && student.Supervisor.map((su, key) => {
                                     return(
-                                        <h6 style={{ margin: 'auto', width: ' 60%', padding: '10px'}}><span> ({su.coSupervisor})</span></h6>
+                                        <h6 style={{ margin: 'auto', width: ' 60%', padding: '10px'}}><span> ({su.coSupervisor}):</span><span> {su.groupId}</span></h6>
                                     )
                                 })
                             }
