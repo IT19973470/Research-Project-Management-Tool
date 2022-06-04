@@ -38,7 +38,7 @@ export const SubmitDocuments = () => {
                                     <button className="btn btn-success btn-sm"
                                             style={{fontWeight: 'bold', marginBottom: '10px'}}
                                             onClick={() => {
-                                                download(linkObj.fileName)
+                                                download(linkObj.fileNameTemp)
                                             }}>
                                         Download Template
                                     </button>

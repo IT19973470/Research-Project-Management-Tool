@@ -323,7 +323,7 @@ router.get('/get_upload_links/:groupId', (req, res, next) => {
             details: 'qwe',
             deadline: '2020-02-01',
             type: 'pdf',
-            fileName:'image (9).jpg'
+            fileNameTemp:'image (9).jpg'
         },
         {
             _id: 2,
@@ -331,7 +331,7 @@ router.get('/get_upload_links/:groupId', (req, res, next) => {
             details: 'qwe',
             deadline: '2020-02-02',
             type: 'pdf',
-            fileName:'image (9).jpg'
+            fileNameTemp:'image (9).jpg'
         },
         {
             _id: 3,
@@ -339,7 +339,7 @@ router.get('/get_upload_links/:groupId', (req, res, next) => {
             details: 'qwe',
             deadline: '2020-02-03',
             type: 'pdf',
-            fileName:'2.png'
+            fileNameTemp:'2.png'
         },
         {
             _id: 4,
@@ -347,7 +347,7 @@ router.get('/get_upload_links/:groupId', (req, res, next) => {
             details: 'qwe',
             deadline: '2020-02-05',
             type: 'pdf',
-            fileName:'2.png'
+            fileNameTemp:'2.png'
         }
     ];
     // let objs=[];
