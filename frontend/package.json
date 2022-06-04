@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "parcel index.html",
-    "build": "parcel build index.html --dist-dir dist/react"
+    "build": "parcel build index.html"
   },
   "author": "imalka",
   "license": "ISC",

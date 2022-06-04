@@ -12,7 +12,7 @@ export const Login = () => {
     const [userType, setUserType] = useState('student');
 
     return (
-        <div className="row">
+        <div className="row" style={{minHeight:'calc(100vh - 220px)'}}>
             {/*<div className="row" style={{minHeight: 'calc(100vh - 325px)'}}>*/}
             {/*<div className="col-12" style={{fontSize: '45px', textAlign: 'center'}}>*/}
             {/*Research Project Management Tool*/}
@@ -20,7 +20,7 @@ export const Login = () => {
             <div className="col-12">
                 <div style={{
                     width: '100%',
-
+                    minWidth:'100vh',
                     marginTop: '100px',
                     display: 'flex',
                     justifyContent: 'center'
