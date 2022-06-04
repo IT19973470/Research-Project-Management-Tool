@@ -18,7 +18,7 @@ export default function ViewRolls(){
         fetch('http://localhost:9000/rpmt/admin/viewRoles',requestOptions)
             .then(response=>{ return response.json()})
             .then(data=>{
-                 console.log(data[3].Groups[1].students)
+                 //console.log(data[3].Groups[1].students)
                 console.log(data)
                 setStudents(data)
             });

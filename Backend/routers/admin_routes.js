@@ -264,7 +264,7 @@ router.route("/viewRoles").get((req, res) => {
             {from:"studentgroups",localField:"grouplist",foreignField:"groupId",as:"Groups"},
         },
         {$lookup:
-                {from:"supervisortopics",localField:"stafflist",foreignField:"_id",as:"Staff"}
+                {from:"supervisors",localField:"stafflist",foreignField:"_id",as:"Staff"}
         },
         {$lookup:
                 {from:"groupsupervisors",localField:"grouplist",foreignField:"groupId",as:"Supervisor"}
