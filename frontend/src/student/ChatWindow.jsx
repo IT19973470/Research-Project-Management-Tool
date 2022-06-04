@@ -47,10 +47,10 @@ export const ChatWindow = () => {
                                                     padding: '10px'
                                                 }}>
                                                     <div>
-                                                        <span>{messageObj.message}</span>
+                                                        <span style={{fontWeight: 'bold'}}>{messageObj.message}</span>
                                                     </div>
                                                     <div style={{display: 'flex', justifyContent: 'right'}}>
-                                                        <span style={{fontSize: '14px'}}>{messageObj.messageSent}</span>
+                                                        <span style={{fontSize: '12px'}}>{messageObj.messageSent}</span>
                                                     </div>
                                                 </div>
                                             </div> :
@@ -62,10 +62,10 @@ export const ChatWindow = () => {
                                                     padding: '10px'
                                                 }}>
                                                     <div>
-                                                        <span>{messageObj.message}</span>
+                                                        <span style={{fontWeight: 'bold'}}>{messageObj.message}</span>
                                                     </div>
                                                     <div style={{display: 'flex', justifyContent: 'right'}}>
-                                                        <span style={{fontSize: '14px'}}>{messageObj.messageSent}</span>
+                                                        <span style={{fontSize: '12px'}}>{messageObj.messageSent}</span>
                                                     </div>
                                                 </div>
                                                 <div className="col-6"></div>
@@ -156,7 +156,7 @@ export const ChatWindow = () => {
                     .then(reply => {
                         setMessages(reply)
                     });
-            }, 2000)
+            }, 1000)
         )
     }
 

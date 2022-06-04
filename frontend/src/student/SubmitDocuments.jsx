@@ -35,6 +35,13 @@ export const SubmitDocuments = () => {
                                     marginTop: '15px',
                                     padding: '10px'
                                 }}>
+                                    <button className="btn btn-success btn-sm"
+                                            style={{fontWeight: 'bold', marginBottom: '10px'}}
+                                            onClick={() => {
+                                                download(linkObj.fileName)
+                                            }}>
+                                        Download Template
+                                    </button>
                                     <div>
                                         <span style={{fontWeight: 'bold'}}>Title : </span>
                                         <span>{linkObj.title}</span>
@@ -114,9 +121,6 @@ export const SubmitDocuments = () => {
     }
 
     function upload(submissionId) {
-        // const onsubmit =async e=>{
-        //     e.preventDefault();
-        // console.log(file)
         let formData = new FormData();
         formData.append('file', file)
         fetch('http://localhost:9000/rpmt/student/submit_document/' + submissionId + '/' + JSON.parse(localStorage.getItem('group')).groupId, {
@@ -131,6 +135,10 @@ export const SubmitDocuments = () => {
         });
 
         // }
+    }
+
+    function download(fileName) {
+        window.location.href = 'http://localhost:9000/rpmt/student/download_file/' + fileName
     }
 
     function removeFile(submissionId) {

@@ -235,7 +235,7 @@ router.post('/submit_document/:submissionId/:groupId', (req, res) => {
     // console.log(req.files)
     if (req.files) {
         let file = req.files.file;
-        file.mv('C:/xampp/htdocs/NodeFile/' + file.name, (err) => {
+        file.mv('C:/xampp/htdocs/NodeFile/up/' + file.name, (err) => {
             if (err) {
                 res.send(err)
             } else {
@@ -322,28 +322,32 @@ router.get('/get_upload_links/:groupId', (req, res, next) => {
             title: 'File Upload 1',
             details: 'qwe',
             deadline: '2020-02-01',
-            type: 'pdf'
+            type: 'pdf',
+            fileName:'image (9).jpg'
         },
         {
             _id: 2,
             title: 'File Upload 2',
             details: 'qwe',
             deadline: '2020-02-02',
-            type: 'pdf'
+            type: 'pdf',
+            fileName:'image (9).jpg'
         },
         {
             _id: 3,
             title: 'File Upload 3',
             details: 'qwe',
             deadline: '2020-02-03',
-            type: 'pdf'
+            type: 'pdf',
+            fileName:'2.png'
         },
         {
             _id: 4,
             title: 'File Upload 4',
             details: 'qwe',
             deadline: '2020-02-05',
-            type: 'pdf'
+            type: 'pdf',
+            fileName:'2.png'
         }
     ];
     // let objs=[];
@@ -382,7 +386,8 @@ router.delete('/remove_file/:submissionId/:groupId', (req, res, next) => {
 })
 
 router.get('/download_file/:file', (req, res, next) => {
-    res.download('C:/xampp/htdocs/NodeFile/' + req.params.file);
+    console.log('C:/xampp/htdocs/NodeFile/down/' + req.params.file)
+    res.download('C:/xampp/htdocs/NodeFile/down/' + req.params.file);
 })
 
 router.get('/get_chats_group/:id/:supervisorId', (req, res, next) => {

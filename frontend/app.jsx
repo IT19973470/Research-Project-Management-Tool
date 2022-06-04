@@ -12,7 +12,6 @@ import {StudentGroups} from "./src/student/StudentGroup";
 import {ResearchTopic} from "./src/student/ResearchTopic";
 import {RequestSupervisor} from "./src/student/RequestSupervisor";
 import {SubmitDocuments} from "./src/student/SubmitDocuments";
-import {DownloadTemplates} from "./src/student/DownloadTemplates";
 import {ModifyUsers} from "./src/admin/ModifyUsers";
 import {Marking} from "./src/admin/Marking";
 import {Submission} from "./src/admin/submission";
@@ -35,7 +34,6 @@ export const App = () => {
             <Route path='/student/research_topic' element={<ResearchTopic/>}/>
             <Route path='/student/request_supervisor' element={<RequestSupervisor/>}/>
             <Route path='/student/submit_documents' element={<SubmitDocuments/>}/>
-            <Route path='/student/download_templates' element={<DownloadTemplates/>}/>
             <Route path='/student/chat' element={<ChatWindow/>}/>
             //admin
             <Route path='modify_users' element={<ModifyUsers/>}/>
