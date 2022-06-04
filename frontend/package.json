@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "parcel indexA.html"
+    "start": "parcel indexPM.html"
   },
   "author": "imalka",
   "license": "ISC",
