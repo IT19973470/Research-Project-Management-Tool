@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './NavAdmin.css';
 import axios from "axios";
 import Progress from "./progress"
-import {faInfo, faUpload} from '@fortawesome/free-solid-svg-icons'
+import {faInfo, faUpload,faCloudUpload} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 export const Submission = () => {
     const [submission, setSumbission] = useState(null);
@@ -164,7 +164,7 @@ export const Submission = () => {
                 <Progress percentage={uploadPercentage}/>
             </div>
             <div className="col-1">
-                <button type="button" align="center" onClick={onsubmit}  className="btn" ><FontAwesomeIcon icon={faUpload} /></button>
+                <button type="button" align="center" onClick={onsubmit}  className="btn" ><FontAwesomeIcon icon={faCloudUpload} /></button>
             </div>
            </div>
 
