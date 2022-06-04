@@ -87,17 +87,17 @@ export const Submission = () => {
         }
     }
 
-    function add() {
-        const requestOptions = {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                _id: "",
-                title: title,
-                details: details,
-                deadline: deadline,
-                type: type,
-                file: fname
+    function add(){
+        const requestOptions ={
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({
+                _id:"",
+                title:title,
+                details:details,
+                deadline:deadline,
+                type:type,
+                fileNameTemp:fname
             })
         };
         console.log(deadline)
